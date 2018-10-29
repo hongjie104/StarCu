@@ -63,7 +63,7 @@ export default class MainScene extends PureComponent {
 					</TouchableOpacity>
 				</View>
 				{
-					curTabIndex === 0 && <Mission />
+					curTabIndex === 0 && <Mission navigation={this.props.navigation} />
 				}
 			</View>
 		);

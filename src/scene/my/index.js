@@ -6,6 +6,7 @@ import {
 	View,
 	Text,
 	Image,
+	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
@@ -29,6 +30,9 @@ export default class MyScene extends PureComponent {
 						16211242102
 					</Text>
 				</View>
+				{
+					// 数据统计
+				}
 				<View style={styles.middleContainer}>
 					<View style={styles.infoContainer}>
 						<Image style={styles.imgInfo} source={require('../../imgs/zhze.png')} />
@@ -54,6 +58,68 @@ export default class MyScene extends PureComponent {
 						</View>
 					</View>
 				</View>
+				{
+					// N个按钮
+				}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={[styles.itemContainer, styles.firstItemContainer]}
+				>
+					<View style={styles.itemContainerLeft}>
+						<Image style={styles.itemImg} source={require('../../imgs/grxx.png')} />
+						<Text style={styles.itemName}>
+							个人信息
+						</Text>
+					</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+				</TouchableOpacity>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={styles.itemContainer}
+				>
+					<View style={styles.itemContainerLeft}>
+						<Image style={styles.itemImg} source={require('../../imgs/bzzx.png')} />
+						<Text style={styles.itemName}>
+							帮助中心
+						</Text>
+					</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+				</TouchableOpacity>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={styles.itemContainer}
+				>
+					<View style={styles.itemContainerLeft}>
+						<Image style={styles.itemImg} source={require('../../imgs/lxkf.png')} />
+						<Text style={styles.itemName}>
+							联系客服 400-021-21221
+						</Text>
+					</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+				</TouchableOpacity>
+				{
+					// 退出登录
+				}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={styles.logoutBtn}
+				>
+					<Text style={styles.logoutBtnTxt}>
+						退出登录		
+					</Text>	
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -89,6 +155,8 @@ const styles = StyleSheet.create({
 		height: toDips(136),
 		backgroundColor: 'white',
 		alignItems: 'center',
+		borderColor: 'rgba(224, 224, 224, 1)',
+		borderBottomWidth: 1,
 	},
 	infoContainer: {
 		flexDirection: 'row',
@@ -118,5 +186,56 @@ const styles = StyleSheet.create({
 		width: toDips(1),
 		height: toDips(59),
 		backgroundColor: '#D7D7D7',
+	},
+	itemContainer: {
+		width: toDips(750),
+		height: toDips(110),
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		borderColor: 'rgba(224, 224, 224, 1)',
+		borderBottomWidth: 1,
+	},
+	firstItemContainer: {
+		borderTopWidth: 1,
+		marginTop: toDips(22),
+	},
+	itemContainerLeft: {
+		alignItems: 'center',
+		flexDirection: 'row',
+	},
+	itemImg: {
+		width: toDips(60),
+		height: toDips(60),
+		marginLeft: toDips(35),
+	},
+	itemName: {
+		fontSize: getFontSize(30),
+		color: '#3E3E3E',
+		fontWeight: '500',
+		marginLeft: toDips(32),
+	},
+	arrowImg: {
+		width: toDips(18),
+		height: toDips(34),
+		marginRight: toDips(27),
+	},
+	logoutBtn: {
+		width: toDips(750),
+		height: toDips(110),
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderColor: 'rgba(224, 224, 224, 1)',
+		borderBottomWidth: 1,
+		borderTopWidth: 1,
+		marginTop: toDips(23),
+	},
+	logoutBtnTxt: {
+		fontSize: getFontSize(32),
+		fontWeight: '500',
+		color: '#DD4124',
 	},
 });

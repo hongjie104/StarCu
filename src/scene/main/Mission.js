@@ -8,6 +8,7 @@ import {
 	Image,
 	FlatList,
 	ImageBackground,
+	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
@@ -58,9 +59,25 @@ export default class Mission extends PureComponent {
 		};
 	}
 
+	onItemPress(missionId) {
+		const {navigate} = this.props.navigation;
+		navigate({
+			routeName: 'missionDetail',
+			params: {
+				missionId,
+			},
+		});
+	}
+
 	renderItem({item, index}) {
 		return (
-			<View style={styles.itemContainer}>
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() => {
+					this.onItemPress(item.key);
+				}}
+				style={styles.itemContainer}
+			>
 				<View style={styles.itemInfoContainer}>
 					<ImageBackground style={styles.itemStatusImgBg} source={require('../../imgs/huangk.png')}>
 						<Image style={styles.itemStatusImg} source={require('../../imgs/wwc.png')} />
@@ -84,7 +101,7 @@ export default class Mission extends PureComponent {
 					</View>
 				</View>
 				<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
-			</View>
+			</TouchableOpacity>
 		);
 	}
 
@@ -121,7 +138,9 @@ export default class Mission extends PureComponent {
 				</View>
 				<FlatList
 					data={missionList}
-					renderItem={this.renderItem}
+					renderItem={itemData => {
+						return this.renderItem(itemData);
+					}}
 					getItemLayout={(_, index) => (
 						{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
 					)}

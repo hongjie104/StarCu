@@ -7,6 +7,7 @@ import { createBottomTabNavigator, StackNavigator } from 'react-navigation';
 // import TestScene2 from '../scene/test/TestScene2';
 // import TestScene3 from '../scene/test/TestScene3';
 import MainScene from '../scene/main';
+import MissionDetailScene from '../scene/main/MissionDetail';
 import OrderScene from '../scene/order';
 import MsgScene from '../scene/msg';
 import MyScene from '../scene/my';
@@ -46,11 +47,14 @@ const TabNavigation = createBottomTabNavigator({
 });
 
 export default StackNavigator({
-	'main': {
+	main: {
 		screen: TabNavigation,
 	},
-	'login': {
+	login: {
 		screen: LoginScene,
+	},
+	missionDetail: {
+		screen: MissionDetailScene,
 	},
 }, {
 	// initialRouteName: 'test1',

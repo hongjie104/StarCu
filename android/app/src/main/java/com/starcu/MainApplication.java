@@ -3,6 +3,13 @@ package com.starcu;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.rnfs.RNFSPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.remobile.zip.RCTZipPackage;
+import com.remobile.toast.RCTToastPackage;
+import com.remobile.filetransfer.RCTFileTransferPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -22,7 +29,14 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage()
+          new MainReactPackage(),
+            new ReactVideoPackage(),
+            new LinearGradientPackage(),
+            new RNFSPackage(),
+            new RNDeviceInfo(),
+            new RCTZipPackage(),
+            new RCTToastPackage(),
+            new RCTFileTransferPackage()
       );
     }
 

@@ -1,49 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+'use strict';
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { PureComponent } from 'react';
+import {
+    BackHandler
+} from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import AppNavigation from './src/navigation';
+import toast from './src/utils/toast';
+import * as deviceInfo from './src/utils/deviceInfo';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu!',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+export default class App extends PureComponent {
+    
+    constructor(props) {
+        super(props);
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
+        // 上一次按下android返回键的时间
+        this._lastPressBackTime = 0;
+    }
+
+    componentDidMount() {
+        if (!deviceInfo.isIOS()) {
+            const defaultStateAction = AppNavigation.router.getStateForAction;
+            AppNavigation.router.getStateForAction = (action, state) => {
+                if(state && action.type === NavigationActions.BACK && state.routes.length === 1) {
+                    if (this._lastPressBackTime + 2000 < Date.now()) {
+                        toast('再按一次退出', 'bottom');
+                        this._lastPressBackTime = Date.now();
+                        const routes = [...state.routes];
+                        return {
+                            ...state,
+                            ...state.routes,
+                            index: routes.length - 1
+                        };
+                    }
+                } 
+                return defaultStateAction(action, state);
+            };
+        }
+    }
+
+    render() {
+        return (
+            <AppNavigation ref={c => this._navigation = c} />
+        );
+    }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});

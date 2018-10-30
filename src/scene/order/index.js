@@ -13,9 +13,16 @@ import { toDips, getFontSize } from '../../utils/dimensions';
 
 export default class MsgScene extends PureComponent {
 	
-	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: '订单',
-	});
+	static navigationOptions = {
+		headerTitle: '接单',
+		tabBarIcon: ({ focused, tintColor }) => {
+			const img = focused ? require('../../imgs/ddax.png') : require('../../imgs/dd.png');
+			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
+		},
+		tabBarLabel: ({ focused }) => {
+			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>;
+		},
+	};
 
 	constructor(props) {
 		super(props);

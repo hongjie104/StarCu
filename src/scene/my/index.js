@@ -12,9 +12,16 @@ import { toDips, getFontSize } from '../../utils/dimensions';
 
 export default class MyScene extends PureComponent {
 	
-	// static navigationOptions = ({ navigation, screenProps }) => ({
-	// 	title: ``,
-	// });
+	static navigationOptions = {
+		headerTitle: '我的',
+		tabBarIcon: ({ focused, tintColor }) => {
+			const img = focused ? require('../../imgs/wdax.png') : require('../../imgs/wd.png');
+			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
+		},
+		tabBarLabel: ({ focused }) => {
+			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>;
+		},
+	};
 
 	constructor(props) {
 		super(props);
@@ -34,7 +41,15 @@ export default class MyScene extends PureComponent {
 					// 数据统计
 				}
 				<View style={styles.middleContainer}>
-					<View style={styles.infoContainer}>
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							navigate({
+								routeName: 'AccountScene',
+							});
+						}}
+						style={styles.infoContainer}
+					>
 						<Image style={styles.imgInfo} source={require('../../imgs/zhze.png')} />
 						<View style={styles.infoKeyVal}>
 							<Text style={styles.infoKey}>
@@ -44,7 +59,7 @@ export default class MyScene extends PureComponent {
 								¥20000
 							</Text>
 						</View>
-					</View>
+					</TouchableOpacity>
 					<View style={styles.infoLine} />
 					<View style={styles.infoContainer}>
 						<Image style={styles.imgInfo} source={require('../../imgs/thk.png')} />

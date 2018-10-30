@@ -70,6 +70,13 @@ export default class MainScene extends PureComponent {
 		headerTitle: <HeaderTitle onTabChanged={index => {
 			self.onTabChanged(index);
 		}} />,
+		tabBarIcon: ({ focused, tintColor }) => {
+			const img = focused ? require('../../imgs/syax.png') : require('../../imgs/sy.png');
+			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
+		},
+		tabBarLabel: ({ focused }) => {
+			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>;
+		},
 	};
 
 	constructor(props) {

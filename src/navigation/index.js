@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Platform, YellowBox, Image, Text } from 'react-native'
-import { createBottomTabNavigator, createStackNavigator, StackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import { toDips, getFontSize } from '../utils/dimensions';
 
 import MainScene from '../scene/main';
@@ -10,6 +10,7 @@ import MissionDetailScene from '../scene/main/MissionDetail';
 import OrderScene from '../scene/order';
 import MsgScene from '../scene/msg';
 import MyScene from '../scene/my';
+import AccountScene from '../scene/account';
 import LoginScene from '../scene/login';
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
@@ -20,8 +21,54 @@ YellowBox.ignoreWarnings([
 	'Class CDVPlugin',
 ]);
 
+const TabNavigation = createBottomTabNavigator({
+	homeTab: MainScene,
+	orderTab: OrderScene,
+	msgTab: MsgScene,
+	myTab: MyScene,
+});
+
+TabNavigation.navigationOptions = ({ navigation }) => {
+	const component = TabNavigation.router.getComponentForState(navigation.state);
+	let options = null;
+	if (typeof component.navigationOptions === 'function') {
+		options = component.navigationOptions({ navigation });
+	} else {
+		options = component.navigationOptions;
+	}
+	if (!options) { options = {}; }
+	return {
+		...options,
+		tabBarLabel: ({focused, route: { routeName }}) => {
+			/*
+			{
+				route: {
+					isTransitioning: false,
+					index: 0,
+					routes: [ { routeName: 'MyScene', key: 'id-1540893304900-3' } ],
+					key: 'myTab',
+					routeName: 'myTab',
+					params: undefined
+				},
+				focused: false,
+				tintColor: 'gray'
+			}
+			 */
+			if (routeName === 'homeTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>
+			} else if (routeName === 'orderTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>
+			} else if (routeName === 'msgTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>
+			} else {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>
+			}
+		},
+	};
+};
+
 const stackNavigatorConfig = {
-	// initialRouteName: 'main',
+	initialRouteName: 'main',
 	// mode: 'card',
 	// headerMode: 'none',
 	// headerTintColor: '#DD4124',
@@ -51,66 +98,13 @@ const stackNavigatorConfig = {
 	},
 };
 
-const TabNavigation = createBottomTabNavigator({
-	homeTab: createStackNavigator({
-		MainScene,
-		MissionDetailScene,
-	}, stackNavigatorConfig),
-	orderTab: createStackNavigator({
-		OrderScene,
-		MissionDetailScene,
-	}, stackNavigatorConfig),
-	msgTab: createStackNavigator({ MsgScene }, stackNavigatorConfig),
-	myTab: createStackNavigator({ MyScene }, stackNavigatorConfig),
-}, {
-	// animationEnabled: false,
-	// tabBarPosition: 'bottom',
-	// swipeEnabled: false,
-	// backBehavior: 'none',
-	navigationOptions: ({ navigation }) => ({
-		tabBarIcon: ({ focused, tintColor }) => {
-			const { routeName } = navigation.state;
-			let img;
-			if (routeName === 'homeTab') {
-				img = focused ? require('../imgs/syax.png') : require('../imgs/sy.png');
-			} else if (routeName === 'orderTab') {
-				img = focused ? require('../imgs/ddax.png') : require('../imgs/dd.png');
-			} else if (routeName === 'msgTab') {
-				img = focused ? require('../imgs/xxax.png') : require('../imgs/xx.png');
-			} else {
-				img = focused ? require('../imgs/wdax.png') : require('../imgs/wd.png');
-			}
-			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
-		},
-		tabBarLabel: ({focused, route: { routeName }}) => {
-			/*
-			{
-				route: {
-					isTransitioning: false,
-					index: 0,
-					routes: [ { routeName: 'MyScene', key: 'id-1540893304900-3' } ],
-					key: 'myTab',
-					routeName: 'myTab',
-					params: undefined
-				},
-				focused: false,
-				tintColor: 'gray'
-			}
-			 */
-			if (routeName === 'homeTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>
-			} else if (routeName === 'orderTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>
-			} else if (routeName === 'msgTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>
-			} else {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>
-			}
-		},
-	}),
-});
+const StackNavigator = createStackNavigator({
+	main: TabNavigation,
+	MissionDetailScene,
+	AccountScene,
+}, stackNavigatorConfig);
 
-export default TabNavigation;
+export default StackNavigator;
 
 
 /*

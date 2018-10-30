@@ -7,10 +7,10 @@ import {
 	Text,
 	Image,
 	FlatList,
-	ImageBackground,
-	TouchableOpacity,
 } from 'react-native';
+import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { loadDataFromLocal } from '../../utils/storage';
 
 const ITEM_HEIGHT = toDips(180);
 
@@ -59,49 +59,9 @@ export default class Mission extends PureComponent {
 		};
 	}
 
-	onItemPress(missionId) {
-		const {navigate} = this.props.navigation;
-		navigate({
-			routeName: 'missionDetail',
-			params: {
-				missionId,
-			},
-		});
-	}
-
 	renderItem({item, index}) {
 		return (
-			<TouchableOpacity
-				activeOpacity={0.8}
-				onPress={() => {
-					this.onItemPress(item.key);
-				}}
-				style={styles.itemContainer}
-			>
-				<View style={styles.itemInfoContainer}>
-					<ImageBackground style={styles.itemStatusImgBg} source={require('../../imgs/huangk.png')}>
-						<Image style={styles.itemStatusImg} source={require('../../imgs/wwc.png')} />
-						<Text style={styles.itemStatusTxt}>
-							未完成
-						</Text>
-					</ImageBackground>
-					<View style={styles.itemInfoSubContainer}>
-						<Text style={styles.name}>
-							{ item.name }
-						</Text>
-						<Text style={styles.category}>
-							{ item.category }
-						</Text>
-						<View style={styles.itemDateRow}>
-							<Image style={styles.clockImg} source={require('../../imgs/clock.png')} />
-							<Text style={styles.date}>
-								{ item.time }
-							</Text>
-						</View>
-					</View>
-				</View>
-				<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
-			</TouchableOpacity>
+			<MissionItem item={item} navigation={this.props.navigation} />
 		);
 	}
 
@@ -111,6 +71,7 @@ export default class Mission extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
+				<Image style={styles.bangImg} source={require('../../imgs/main.png')} />
 				<View style={styles.infoContainer}>
 					<View style={styles.info}>
 						<Text style={styles.infoNum}>
@@ -155,13 +116,18 @@ const styles = StyleSheet.create({
 	container: {
 		// ...
 	},
+	bangImg: {
+		width: toDips(750),
+		height: toDips(167),
+		position: 'absolute',
+	},
 	infoContainer: {
 		width: toDips(675),
 		height: toDips(195),
 		backgroundColor: 'white',
 		borderRadius: toDips(23),
 		alignSelf: 'center',
-		marginTop: toDips(54),
+		marginTop: toDips(40),
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -199,70 +165,5 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		marginTop: toDips(33),
-	},
-	itemContainer: {
-		flex: 1,
-		width: toDips(750),
-		height: toDips(180),
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginTop: 1,
-		backgroundColor: 'white',
-	},
-	itemInfoContainer: {
-		alignItems: 'center',
-		flexDirection: 'row',
-	},
-	itemStatusImgBg: {
-		width: toDips(194),
-		height: toDips(151),
-		marginLeft: toDips(34),
-		alignItems: 'center',
-	},
-	itemStatusTxt: {
-		fontSize: getFontSize(26),
-		fontWeight: '500',
-		color: 'white',
-		marginTop: toDips(11),
-	},
-	itemStatusImg: {
-		width: toDips(48),
-		height: toDips(48),
-		marginTop: toDips(25),
-	},
-	itemInfoSubContainer: {
-		marginLeft: toDips(36),
-	},
-	name: {
-		color: '#2A2A2A',
-		fontSize: getFontSize(36),
-		fontWeight: '500',
-	},
-	category: {
-		color: '#9D9D9D',
-		fontSize: getFontSize(30),
-		fontWeight: '500',
-		marginTop: toDips(19),
-	},
-	itemDateRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginTop: toDips(19),
-	},
-	clockImg: {
-		width: toDips(27),
-		height: toDips(27),
-		marginRight: toDips(7),
-	},
-	date: {
-		color: '#969696',
-		fontSize: getFontSize(24),
-		fontWeight: '500',
-	},
-	arrowImg: {
-		width: toDips(18),
-		height: toDips(34),
-		marginRight: toDips(46),
 	},
 });

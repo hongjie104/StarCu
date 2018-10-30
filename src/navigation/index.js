@@ -1,7 +1,7 @@
 'use strict';
 
-import { Platform } from 'react-native'
-import { createBottomTabNavigator, StackNavigator } from 'react-navigation';
+import { Platform, YellowBox } from 'react-native'
+import { createBottomTabNavigator, createStackNavigator, StackNavigator } from 'react-navigation';
 
 // import TestScene1 from '../scene/test/TestScene1';
 // import TestScene2 from '../scene/test/TestScene2';
@@ -15,11 +15,49 @@ import LoginScene from '../scene/login';
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
 
+YellowBox.ignoreWarnings([
+	'Module CDVFileTransfer',
+	'Module ZipPlugin',
+	'Class CDVPlugin',
+]);
+
+const stackNavigatorConfig = {
+	// initialRouteName: 'test1',
+	// initialRouteName: 'main',
+	// mode: 'card',
+	// headerMode: 'none',
+	// headerTintColor: '#DD4124',
+	navigationOptions: {
+		headerStyle: {
+			backgroundColor: '#DD4124',
+			shadowOpacity: 0,
+			elevation: 0,
+			borderBottomWidth: 0,
+		},
+		headerTintColor: 'white',
+	},
+	transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
+		const { scenes } = transitionProps;
+		const { params } = scenes[scenes.length - 1].route;
+		if (params && params.mode === 'modal') {
+			return {
+				screenInterpolator: Platform.select({
+					ios: StackViewStyleInterpolator.forVertical,
+					android: StackViewStyleInterpolator.forFadeFromBottomAndroid,
+				}),
+			};
+		}
+		return {
+			screenInterpolator: StackViewStyleInterpolator.forHorizontal,
+		};
+	},
+};
+
 const TabNavigation = createBottomTabNavigator({
-	homeTab: { screen: MainScene },
-	orderTab: { screen: OrderScene },
-	msgTab: { screen: MsgScene },
-	myTab: { screen: MyScene },
+	homeTab: createStackNavigator({ MainScene }, stackNavigatorConfig),
+	orderTab: createStackNavigator({ OrderScene }, stackNavigatorConfig),
+	msgTab: createStackNavigator({ MsgScene }, stackNavigatorConfig),
+	myTab: createStackNavigator({ MyScene }, stackNavigatorConfig),
 }, {
 	// animationEnabled: false,
 	// tabBarPosition: 'bottom',
@@ -39,6 +77,12 @@ const TabNavigation = createBottomTabNavigator({
 		// 	// icon component from react-native-vector-icons
 		// 	return <Ionicons name={iconName} size={25} color={tintColor} />;
 		// },
+		headerStyle: {
+			backgroundColor: '#DD4124',
+			shadowOpacity: 0,
+			elevation: 0,
+		},
+		headerTintColor: 'white',
 	}),
 	tabBarOptions: {
 		activeTintColor: 'tomato',
@@ -46,37 +90,7 @@ const TabNavigation = createBottomTabNavigator({
 	},
 });
 
-export default StackNavigator({
-	main: {
-		screen: TabNavigation,
-	},
-	login: {
-		screen: LoginScene,
-	},
-	missionDetail: {
-		screen: MissionDetailScene,
-	},
-}, {
-	// initialRouteName: 'test1',
-	initialRouteName: 'main',
-	// mode: 'card',
-	// headerMode: 'none',
-	transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
-		const { scenes } = transitionProps;
-		const { params } = scenes[scenes.length - 1].route;
-		if (params && params.mode === 'modal') {
-			return {
-				screenInterpolator: Platform.select({
-					ios: StackViewStyleInterpolator.forVertical,
-					android: StackViewStyleInterpolator.forFadeFromBottomAndroid,
-				}),
-			};
-		}
-		return {
-			screenInterpolator: StackViewStyleInterpolator.forHorizontal,
-		};
-	},
-});
+export default TabNavigation;
 
 
 /*

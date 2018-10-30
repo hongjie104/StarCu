@@ -21,7 +21,7 @@ export default class MissionItem extends PureComponent {
 	onItemPress(missionId) {
 		const {navigate} = this.props.navigation;
 		navigate({
-			routeName: 'missionDetail',
+			routeName: 'MissionDetailScene',
 			params: {
 				missionId,
 			},

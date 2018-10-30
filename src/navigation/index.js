@@ -1,11 +1,10 @@
 'use strict';
 
-import { Platform, YellowBox } from 'react-native'
+import React from 'react';
+import { Platform, YellowBox, Image, Text } from 'react-native'
 import { createBottomTabNavigator, createStackNavigator, StackNavigator } from 'react-navigation';
+import { toDips, getFontSize } from '../utils/dimensions';
 
-// import TestScene1 from '../scene/test/TestScene1';
-// import TestScene2 from '../scene/test/TestScene2';
-// import TestScene3 from '../scene/test/TestScene3';
 import MainScene from '../scene/main';
 import MissionDetailScene from '../scene/main/MissionDetail';
 import OrderScene from '../scene/order';
@@ -22,7 +21,6 @@ YellowBox.ignoreWarnings([
 ]);
 
 const stackNavigatorConfig = {
-	// initialRouteName: 'test1',
 	// initialRouteName: 'main',
 	// mode: 'card',
 	// headerMode: 'none',
@@ -54,8 +52,14 @@ const stackNavigatorConfig = {
 };
 
 const TabNavigation = createBottomTabNavigator({
-	homeTab: createStackNavigator({ MainScene }, stackNavigatorConfig),
-	orderTab: createStackNavigator({ OrderScene }, stackNavigatorConfig),
+	homeTab: createStackNavigator({
+		MainScene,
+		MissionDetailScene,
+	}, stackNavigatorConfig),
+	orderTab: createStackNavigator({
+		OrderScene,
+		MissionDetailScene,
+	}, stackNavigatorConfig),
 	msgTab: createStackNavigator({ MsgScene }, stackNavigatorConfig),
 	myTab: createStackNavigator({ MyScene }, stackNavigatorConfig),
 }, {
@@ -64,30 +68,46 @@ const TabNavigation = createBottomTabNavigator({
 	// swipeEnabled: false,
 	// backBehavior: 'none',
 	navigationOptions: ({ navigation }) => ({
-		// tabBarIcon: ({ focused, tintColor }) => {
-		// 	const { routeName } = navigation.state;
-		// 	let iconName;
-		// 	if (routeName === 'Home') {
-		// 		iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-		// 	} else if (routeName === 'Settings') {
-		// 		iconName = `ios-options${focused ? '' : '-outline'}`;
-		// 	}
-
-		// 	// You can return any component that you like here! We usually use an
-		// 	// icon component from react-native-vector-icons
-		// 	return <Ionicons name={iconName} size={25} color={tintColor} />;
-		// },
-		headerStyle: {
-			backgroundColor: '#DD4124',
-			shadowOpacity: 0,
-			elevation: 0,
+		tabBarIcon: ({ focused, tintColor }) => {
+			const { routeName } = navigation.state;
+			let img;
+			if (routeName === 'homeTab') {
+				img = focused ? require('../imgs/syax.png') : require('../imgs/sy.png');
+			} else if (routeName === 'orderTab') {
+				img = focused ? require('../imgs/ddax.png') : require('../imgs/dd.png');
+			} else if (routeName === 'msgTab') {
+				img = focused ? require('../imgs/xxax.png') : require('../imgs/xx.png');
+			} else {
+				img = focused ? require('../imgs/wdax.png') : require('../imgs/wd.png');
+			}
+			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
 		},
-		headerTintColor: 'white',
+		tabBarLabel: ({focused, route: { routeName }}) => {
+			/*
+			{
+				route: {
+					isTransitioning: false,
+					index: 0,
+					routes: [ { routeName: 'MyScene', key: 'id-1540893304900-3' } ],
+					key: 'myTab',
+					routeName: 'myTab',
+					params: undefined
+				},
+				focused: false,
+				tintColor: 'gray'
+			}
+			 */
+			if (routeName === 'homeTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>
+			} else if (routeName === 'orderTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>
+			} else if (routeName === 'msgTab') {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>
+			} else {
+				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>
+			}
+		},
 	}),
-	tabBarOptions: {
-		activeTintColor: 'tomato',
-		inactiveTintColor: 'gray',
-	},
 });
 
 export default TabNavigation;

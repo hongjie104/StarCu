@@ -70,7 +70,6 @@ export default class MainScene extends PureComponent {
 		headerTitle: <HeaderTitle onTabChanged={index => {
 			self.onTabChanged(index);
 		}} />,
-		tabBarLabel: '任务',
 	};
 
 	constructor(props) {

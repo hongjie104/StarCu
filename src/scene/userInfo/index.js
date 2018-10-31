@@ -9,6 +9,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
 export default class UserInfoScene extends PureComponent {
@@ -23,6 +24,12 @@ export default class UserInfoScene extends PureComponent {
 			realName: '',
 			// 身份证号码
 			idNo: '',
+			// 身份证正面照
+			idImage1: '',
+			// 身份证反面照
+			idImage2: '',
+			userImage1: '',
+			userImage2: '',
 		};
 	}
 
@@ -38,10 +45,51 @@ export default class UserInfoScene extends PureComponent {
 		});
 	}
 
+	onPickImage(category, type) {
+		// category 1 是身份证照 2 是个人照片
+		// type 1 是正面照 2 是反面照
+		// type 1 是个人照1 2 是个人照2
+		ImagePicker.showImagePicker({
+			title: '挑选照片',
+			cancelButtonTitle: '取消',
+			takePhotoButtonTitle: '拍照',
+			chooseFromLibraryButtonTitle: '从相册选',
+			storageOptions: {
+				skipBackup: true,
+				path: 'images',
+			},
+		}, (response) => {
+			if (response.didCancel) {
+				console.log('User cancelled image picker');
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error);
+			} else if (response.customButton) {
+				console.log('User tapped custom button: ', response.customButton);
+			} else {
+				// You can also display the image using data:
+				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+				const source = { uri: response.uri };
+				if (category === 1) {
+					this.setState({
+						[`idImage${type}`]: response.uri,
+					});
+				} else {
+					this.setState({
+						[`userImage${type}`]: response.uri,
+					});
+				}
+			}
+		});
+	}
+
 	render() {
 		const {
 			realName,
 			idNo,
+			idImage1,
+			idImage2,
+			userImage1,
+			userImage2,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -86,10 +134,16 @@ export default class UserInfoScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(1, 1);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							idImage1 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: idImage1 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={styles.infoTxt}>
 						正面
@@ -97,10 +151,16 @@ export default class UserInfoScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(1, 2);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							idImage2 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: idImage2 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={styles.infoTxt}>
 						反面
@@ -114,10 +174,16 @@ export default class UserInfoScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(2, 1);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							userImage1 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: userImage1 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={styles.infoTxt}>
 						照片1
@@ -125,10 +191,16 @@ export default class UserInfoScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(2, 2);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							userImage2 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: userImage2 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={styles.infoTxt}>
 						照片2

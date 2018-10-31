@@ -7,6 +7,7 @@ import { toDips, getFontSize } from '../utils/dimensions';
 
 import MainScene from '../scene/main';
 import MissionDetailScene from '../scene/main/MissionDetail';
+import MissionIntroduceScene from '../scene/main/MissionIntroduce';
 import OrderScene from '../scene/order';
 import MsgScene from '../scene/msg';
 import MyScene from '../scene/my';
@@ -50,6 +51,7 @@ export default function createAppNavigation(isLogedIn) {
 		main: TabNavigation,
 		RegisterScene,
 		LoginScene,
+		MissionIntroduceScene,
 		MissionDetailScene,
 		AccountScene,
 		// 提现
@@ -60,7 +62,7 @@ export default function createAppNavigation(isLogedIn) {
 		BankCardScene,
 		UserInfoScene,
 	}, {
-		// initialRouteName: 'UserInfoScene',
+		// initialRouteName: 'MissionIntroduceScene',
 		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
 		// mode: 'card',
 		// headerMode: 'none',

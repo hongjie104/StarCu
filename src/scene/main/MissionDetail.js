@@ -10,6 +10,7 @@ import {
 	TouchableOpacity,
 	TextInput,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
 export default class MissionDetail extends PureComponent {
@@ -20,14 +21,54 @@ export default class MissionDetail extends PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			img1: '',
+			img2: '',
+			img3: '',
+			img4: '',
+		};
 	}
 
 	componentWillMount() {
-		const { params: { missionId } } = this.props.navigation.state;
+		// const { params: { missionId } } = this.props.navigation.state;
+	}
+
+	onPickImage(type) {
+		// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
+		ImagePicker.showImagePicker({
+			title: '挑选照片',
+			cancelButtonTitle: '取消',
+			takePhotoButtonTitle: '拍照',
+			chooseFromLibraryButtonTitle: '从相册选',
+			storageOptions: {
+				skipBackup: true,
+				path: 'images',
+			},
+		}, (response) => {
+			if (response.didCancel) {
+				console.log('User cancelled image picker');
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error);
+			} else if (response.customButton) {
+				console.log('User tapped custom button: ', response.customButton);
+			} else {
+				// You can also display the image using data:
+				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+				const source = { uri: response.uri };
+				this.setState({
+					[`img${type}`]: response.uri,
+				});
+			}
+		});
 	}
 
 	render() {
-		// const { navigate, goBack } = this.props.navigation;
+		const {
+			img1,
+			img2,
+			img3,
+			img4,
+		} = this.state;
 		return (
 			<View style={styles.container}>
 				<View style={styles.titleContainer}>
@@ -53,11 +94,17 @@ export default class MissionDetail extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(1);
 						}}
 						style={styles.addPhoneBtn}
 					>
-						<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+						{
+							img1 ? (
+								<Image style={styles.addPhoneImg} source={{ uri: img1 }} />
+							) : (
+								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+							)
+						}
 					</TouchableOpacity>
 				</View>
 				<View style={styles.phoneItemContainer}>
@@ -77,11 +124,17 @@ export default class MissionDetail extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(2);
 						}}
 						style={styles.addPhoneBtn}
 					>
-						<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+						{
+							img2 ? (
+								<Image style={styles.addPhoneImg} source={{ uri: img2 }} />
+							) : (
+								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+							)
+						}
 					</TouchableOpacity>
 				</View>
 				<View style={styles.phoneItemContainer}>
@@ -101,11 +154,17 @@ export default class MissionDetail extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(3);
 						}}
 						style={styles.addPhoneBtn}
 					>
-						<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+						{
+							img3 ? (
+								<Image style={styles.addPhoneImg} source={{ uri: img3 }} />
+							) : (
+								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+							)
+						}
 					</TouchableOpacity>
 				</View>
 				<View style={[styles.phoneItemContainer, styles.lastPhoneItemContainer]}>
@@ -125,11 +184,17 @@ export default class MissionDetail extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(4);
 						}}
 						style={styles.addPhoneBtn}
 					>
-						<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+						{
+							img4 ? (
+								<Image style={styles.addPhoneImg} source={{ uri: img4 }} />
+							) : (
+								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+							)
+						}
 					</TouchableOpacity>
 				</View>
 				{

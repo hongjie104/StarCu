@@ -98,7 +98,7 @@ android {
         release {
             keyAlias 'key0'
             keyPassword 'StarCu'
-            storeFile file('/Users/eddie104/Documents/hongjie/StarCu/android/keystores/key')
+            storeFile file('../keystores/key')
             storePassword 'StarCu'
         }
     }
@@ -145,6 +145,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-picker')
     compile project(':react-native-video')
     compile project(':react-native-picker')
     compile project(':react-native-linear-gradient')

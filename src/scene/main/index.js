@@ -120,9 +120,10 @@ const styles = StyleSheet.create({
 		borderWidth: toDips(2),
 		borderRadius: toDips(12),
 		flexDirection: 'row',
-		// marginTop: toDips(60),
-		// alignSelf: 'center',
-		marginLeft: toDips(197),
+		marginLeft: Platform.select({
+			ios: 0,
+			android: toDips(197),
+		}),
 		marginTop: Platform.select({
 			ios: 0,
 			android: toDips(45),

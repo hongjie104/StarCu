@@ -8,6 +8,7 @@ import {
 	Image,
 	TouchableOpacity,
 } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
 // 银行卡
@@ -21,11 +22,42 @@ export default class BankCard extends PureComponent {
 		super(props);
 		this.state = {
 			protocolChecked: true,
+			cardImage1: '',
+			cardImage2: '',
 		};
 	}
 
+	onPickImage(type) {
+		// type 1 是正面照 2 是反面照
+		ImagePicker.showImagePicker({
+			title: '挑选照片',
+			cancelButtonTitle: '取消',
+			takePhotoButtonTitle: '拍照',
+			chooseFromLibraryButtonTitle: '从相册选',
+			storageOptions: {
+				skipBackup: true,
+				path: 'images',
+			},
+		}, (response) => {
+			if (response.didCancel) {
+				console.log('User cancelled image picker');
+			} else if (response.error) {
+				console.log('ImagePicker Error: ', response.error);
+			} else if (response.customButton) {
+				console.log('User tapped custom button: ', response.customButton);
+			} else {
+				// You can also display the image using data:
+				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+				const source = { uri: response.uri };
+				this.setState({
+					[`cardImage${type}`]: response.uri,
+				});
+			}
+		});
+	}
+
 	render() {
-		const { protocolChecked } = this.state;
+		const { protocolChecked, cardImage1, cardImage2 } = this.state;
 		return (
 			<View style={styles.container}>
 				<View style={styles.itemContainer}>
@@ -70,10 +102,16 @@ export default class BankCard extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(1);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							cardImage1 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: cardImage1 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={[styles.valTxt, { marginLeft: toDips(15), marginRight: toDips(49) }]}>
 						正面
@@ -84,10 +122,16 @@ export default class BankCard extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onPickImage(2);
 						}}
 					>
-						<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+						{
+							cardImage2 ? (
+								<Image style={styles.phoneBgImg} source={{ uri: cardImage2 }} />
+							) : (
+								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+							)
+						}
 					</TouchableOpacity>
 					<Text style={[styles.valTxt, { marginLeft: toDips(15) }]}>
 						反面

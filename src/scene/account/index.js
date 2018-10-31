@@ -6,6 +6,7 @@ import {
 	View,
 	Image,
 	Text,
+	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
@@ -73,6 +74,53 @@ export default class AccountScene extends PureComponent {
 						</Text>
 					</View>
 				</View>
+				{
+					// 其他项目
+				}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={[styles.itemContainer, { marginTop: toDips(24), borderTopWidth: 1 }]}
+				>
+					<View style={styles.itemLeftContainer}>
+						<Image style={styles.itemImg} source={require('../../imgs/dzls.png')} />
+						<Text style={styles.itemTxt}>
+							对账流水
+						</Text>
+					</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+				</TouchableOpacity>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={styles.itemContainer}
+				>
+					<View style={styles.itemLeftContainer}>
+						<Image style={styles.itemImg} source={require('../../imgs/cjwt.png')} />
+						<Text style={styles.itemTxt}>
+							常见问题
+						</Text>
+					</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+				</TouchableOpacity>
+				{
+					// 提现按钮
+				}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+
+					}}
+					style={styles.submitBtn}
+				>
+					<Text style={styles.submitBtnTxt}>
+						提现
+					</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -137,5 +185,49 @@ const styles = StyleSheet.create({
 		width: toDips(29),
 		height: toDips(29),
 		marginLeft: toDips(16),
-	}
+	},
+	itemContainer: {
+		height: toDips(110),
+		backgroundColor: 'white',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		borderColor: '#E0E0E0',
+		borderBottomWidth: 1,
+	},
+	itemLeftContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	itemImg: {
+		width: toDips(60),
+		height: toDips(60),
+		marginLeft: toDips(29),
+	},
+	itemTxt: {
+		fontSize: getFontSize(30),
+		fontWeight: '500',
+		color: '#3E3E3E',
+		marginLeft: toDips(32),
+	},
+	arrowImg: {
+		width: toDips(18),
+		height: toDips(34),
+		marginRight: toDips(32),
+	},
+	submitBtn: {
+		alignSelf: 'center',
+		width: toDips(391),
+		height: toDips(82),
+		backgroundColor: '#DD4124',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: toDips(41),
+		marginTop: toDips(96),
+	},
+	submitBtnTxt: {
+		fontSize: getFontSize(32),
+		fontWeight: '500',
+		color: 'white',
+	},
 });

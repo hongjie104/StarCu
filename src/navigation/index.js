@@ -36,35 +36,7 @@ TabNavigation.navigationOptions = ({ navigation }) => {
 	} else {
 		options = component.navigationOptions;
 	}
-	if (!options) { options = {}; }
-	return {
-		...options,
-		tabBarLabel: ({focused, route: { routeName }}) => {
-			/*
-			{
-				route: {
-					isTransitioning: false,
-					index: 0,
-					routes: [ { routeName: 'MyScene', key: 'id-1540893304900-3' } ],
-					key: 'myTab',
-					routeName: 'myTab',
-					params: undefined
-				},
-				focused: false,
-				tintColor: 'gray'
-			}
-			 */
-			if (routeName === 'homeTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>
-			} else if (routeName === 'orderTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>
-			} else if (routeName === 'msgTab') {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>
-			} else {
-				return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>
-			}
-		},
-	};
+	return options || {};
 };
 
 const stackNavigatorConfig = {

@@ -11,6 +11,11 @@ import OrderScene from '../scene/order';
 import MsgScene from '../scene/msg';
 import MyScene from '../scene/my';
 import AccountScene from '../scene/account';
+import WithdrawScene from '../scene/withdraw';
+import AccountDetailScene from '../scene/accountDetail';
+import BankCardScene from '../scene/bankCard';
+import UserInfoScene from '../scene/userInfo';
+import RegisterScene from '../scene/register';
 import LoginScene from '../scene/login';
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
@@ -39,44 +44,56 @@ TabNavigation.navigationOptions = ({ navigation }) => {
 	return options || {};
 };
 
-const stackNavigatorConfig = {
-	initialRouteName: 'main',
-	// mode: 'card',
-	// headerMode: 'none',
-	// headerTintColor: '#DD4124',
-	navigationOptions: {
-		headerStyle: {
-			backgroundColor: '#DD4124',
-			shadowOpacity: 0,
-			elevation: 0,
-			borderBottomWidth: 0,
+// export default StackNavigator;
+export default function createAppNavigation(isLogedIn) {
+	return createStackNavigator({
+		main: TabNavigation,
+		RegisterScene,
+		LoginScene,
+		MissionDetailScene,
+		AccountScene,
+		// 提现
+		WithdrawScene,
+		// 对账流水
+		AccountDetailScene,
+		// 银行卡
+		BankCardScene,
+		UserInfoScene,
+	}, {
+		// initialRouteName: 'UserInfoScene',
+		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
+		// mode: 'card',
+		// headerMode: 'none',
+		// headerTintColor: '#DD4124',
+		navigationOptions: {
+			headerStyle: {
+				backgroundColor: '#DD4124',
+				shadowOpacity: 0,
+				elevation: 0,
+				borderBottomWidth: 0,
+			},
+			// headerTitleStyle: {
+			// 	alignSelf: 'center',
+			// },
+			headerTintColor: 'white',
 		},
-		headerTintColor: 'white',
-	},
-	transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
-		const { scenes } = transitionProps;
-		const { params } = scenes[scenes.length - 1].route;
-		if (params && params.mode === 'modal') {
+		transitionConfig: (transitionProps, prevTransitionProps, isModal) => {
+			const { scenes } = transitionProps;
+			const { params } = scenes[scenes.length - 1].route;
+			if (params && params.mode === 'modal') {
+				return {
+					screenInterpolator: Platform.select({
+						ios: StackViewStyleInterpolator.forVertical,
+						android: StackViewStyleInterpolator.forFadeFromBottomAndroid,
+					}),
+				};
+			}
 			return {
-				screenInterpolator: Platform.select({
-					ios: StackViewStyleInterpolator.forVertical,
-					android: StackViewStyleInterpolator.forFadeFromBottomAndroid,
-				}),
+				screenInterpolator: StackViewStyleInterpolator.forHorizontal,
 			};
-		}
-		return {
-			screenInterpolator: StackViewStyleInterpolator.forHorizontal,
-		};
-	},
+		},
+	});
 };
-
-const StackNavigator = createStackNavigator({
-	main: TabNavigation,
-	MissionDetailScene,
-	AccountScene,
-}, stackNavigatorConfig);
-
-export default StackNavigator;
 
 
 /*

@@ -9,6 +9,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import navigationUtil from '../../utils/navigation';
 
 export default class MyScene extends PureComponent {
 	
@@ -19,12 +20,16 @@ export default class MyScene extends PureComponent {
 			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
 		},
 		tabBarLabel: ({ focused }) => {
-			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>;
+			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>;
 		},
 	};
 
 	constructor(props) {
 		super(props);
+	}
+
+	onLogout() {
+		navigationUtil.reset(this.props.navigation, 'LoginScene');
 	}
 
 	render() {
@@ -33,7 +38,7 @@ export default class MyScene extends PureComponent {
 			<View style={styles.container}>
 				<View style={styles.topContainer}>
 					<Image style={styles.header} source={require('../../imgs/tx.png')} />
-					<Text style={styles.name}>
+					<Text style={styles.myName}>
 						16211242102
 					</Text>
 				</View>
@@ -41,6 +46,9 @@ export default class MyScene extends PureComponent {
 					// 数据统计
 				}
 				<View style={styles.middleContainer}>
+					{
+						// 账户总额
+					}
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
@@ -61,7 +69,18 @@ export default class MyScene extends PureComponent {
 						</View>
 					</TouchableOpacity>
 					<View style={styles.infoLine} />
-					<View style={styles.infoContainer}>
+					{
+						// 银行卡
+					}
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							navigate({
+								routeName: 'BankCardScene',
+							});
+						}}
+						style={styles.infoContainer}
+					>
 						<Image style={styles.imgInfo} source={require('../../imgs/thk.png')} />
 						<View style={styles.infoKeyVal}>
 							<Text style={styles.infoKey}>
@@ -71,7 +90,7 @@ export default class MyScene extends PureComponent {
 								未绑定
 							</Text>
 						</View>
-					</View>
+					</TouchableOpacity>
 				</View>
 				{
 					// N个按钮
@@ -79,7 +98,9 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						navigate({
+							routeName: 'UserInfoScene',
+						});
 					}}
 					style={[styles.itemContainer, styles.firstItemContainer]}
 				>
@@ -127,7 +148,7 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onLogout();
 					}}
 					style={styles.logoutBtn}
 				>
@@ -159,9 +180,9 @@ const styles = StyleSheet.create({
 		borderRadius: toDips(55),
 		marginTop: toDips(18),
 	},
-	name: {
+	myName: {
 		fontSize: toDips(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 		marginTop: toDips(24),
 	},
@@ -188,12 +209,12 @@ const styles = StyleSheet.create({
 	},
 	infoKey: {
 		fontSize: toDips(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333333',
 	},
 	infoVal: {
 		fontSize: toDips(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#DD4124',
 		marginTop: toDips(12),
 	},
@@ -228,7 +249,7 @@ const styles = StyleSheet.create({
 	itemName: {
 		fontSize: getFontSize(30),
 		color: '#3E3E3E',
-		fontWeight: '500',
+		// fontWeight: '500',
 		marginLeft: toDips(32),
 	},
 	arrowImg: {
@@ -250,7 +271,7 @@ const styles = StyleSheet.create({
 	},
 	logoutBtnTxt: {
 		fontSize: getFontSize(32),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#DD4124',
 	},
 });

@@ -9,7 +9,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import IncomeIntroduce from './IntroduceModal';
-import PutForwardIntroduce from './IntroduceModal';
+import WithdrawIntroduce from './IntroduceModal';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
 // 账户页面
@@ -24,7 +24,7 @@ export default class AccountScene extends PureComponent {
 	}
 
 	render() {
-		// const { navigate, goBack } = this.props.navigation;
+		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
 				<View style={styles.topContainer}>
@@ -53,7 +53,7 @@ export default class AccountScene extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this._putForwardIntroduce.show();
+									this._withdrawIntroduce.show();
 								}}
 							>
 								<Image style={styles.questionImg} source={require('../../imgs/wh.png')} />
@@ -96,7 +96,9 @@ export default class AccountScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						navigate({
+							routeName: 'AccountDetailScene',
+						});
 					}}
 					style={[styles.itemContainer, { marginTop: toDips(24), borderTopWidth: 1 }]}
 				>
@@ -129,7 +131,9 @@ export default class AccountScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						navigate({
+							routeName: 'WithdrawScene',
+						});
 					}}
 					style={styles.submitBtn}
 				>
@@ -142,8 +146,8 @@ export default class AccountScene extends PureComponent {
 					title='待入账金额'
 					content='任务完成后，钱款自动转入待入账金额。完成的任务通过发布方审核通过后，待入账金额即转为可提现金额，可立即提现到银行卡。'
 				/>
-				<PutForwardIntroduce
-					ref={c => this._putForwardIntroduce = c}
+				<WithdrawIntroduce
+					ref={c => this._withdrawIntroduce = c}
 					title='可提现金额'
 					content='钱包账户中实际可提现的金额'
 				/>
@@ -169,14 +173,14 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: getFontSize(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 		opacity: 0.8,
 		marginTop: toDips(28),
 	},
 	numMoneyTxt: {
 		fontSize: getFontSize(48),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 		marginTop: toDips(22),
 	},
@@ -195,15 +199,16 @@ const styles = StyleSheet.create({
 	},
 	infoKeyRow: {
 		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	infoKey: {
 		fontSize: getFontSize(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333',
 	},
 	infoVal: {
 		fontSize: getFontSize(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#DD4124',
 		marginTop: toDips(18),
 	},
@@ -232,7 +237,7 @@ const styles = StyleSheet.create({
 	},
 	itemTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#3E3E3E',
 		marginLeft: toDips(32),
 	},
@@ -253,7 +258,7 @@ const styles = StyleSheet.create({
 	},
 	submitBtnTxt: {
 		fontSize: getFontSize(32),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 	},
 });

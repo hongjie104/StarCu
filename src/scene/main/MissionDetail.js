@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
 	},
 	titleTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#3A3A3A',
 		marginLeft: toDips(12),
 	},
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
 	},
 	phoneItemIndexTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#60C766',
 		textAlign: 'center',
 		includeFontPadding: false,
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
 	},
 	phoneItemTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#3A3A3A',
 		marginLeft: toDips(22),
 	},
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
 	},
 	dataTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333',
 		marginLeft: toDips(37),
 	},
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
 	},
 	submitBtnTxt: {
 		fontSize: getFontSize(32),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 	},
 });

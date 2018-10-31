@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
 	},
 	titleTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'black',
 		marginTop: toDips(26),
 	},
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
 	content: {
 		width: toDips(456),
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'black',
 		marginTop: toDips(37),
 		lineHeight: toDips(40),
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 	},
 	okBtnTxt: {
 		fontSize: getFontSize(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 	},
 });

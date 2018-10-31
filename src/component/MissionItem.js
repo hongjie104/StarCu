@@ -46,7 +46,7 @@ export default class MissionItem extends PureComponent {
 						</Text>
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>
-						<Text style={styles.name}>
+						<Text style={styles.itemName}>
 							{ item.name }
 						</Text>
 						<Text style={styles.category}>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 	},
 	itemStatusTxt: {
 		fontSize: getFontSize(26),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: 'white',
 		marginTop: toDips(11),
 	},
@@ -101,15 +101,15 @@ const styles = StyleSheet.create({
 	itemInfoSubContainer: {
 		marginLeft: toDips(36),
 	},
-	name: {
+	itemName: {
 		color: '#2A2A2A',
 		fontSize: getFontSize(36),
-		fontWeight: '500',
+		// fontWeight: '500',
 	},
 	category: {
 		color: '#9D9D9D',
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		marginTop: toDips(19),
 	},
 	itemDateRow: {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 	date: {
 		color: '#969696',
 		fontSize: getFontSize(24),
-		fontWeight: '500',
+		// fontWeight: '500',
 	},
 	arrowImg: {
 		width: toDips(18),

@@ -2,24 +2,41 @@
 
 import React, { PureComponent } from 'react';
 import {
-    BackHandler
+	BackHandler,
+	View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import AppNavigation from './src/navigation';
+import createAppNavigation from './src/navigation';
 import toast from './src/utils/toast';
 import * as deviceInfo from './src/utils/deviceInfo';
+import { loadDataFromLocal } from './src/utils/storage';
+
+let AppNavigation = null;
 
 export default class App extends PureComponent {
-    
-    constructor(props) {
-        super(props);
+	
+	constructor(props) {
+		super(props);
 
-        // 上一次按下android返回键的时间
-        this._lastPressBackTime = 0;
-    }
+		this.state = {
+			checkingLocalData: true,
+		};
+		// 上一次按下android返回键的时间
+		this._lastPressBackTime = 0;
+	}
 
-    componentDidMount() {
-        if (!deviceInfo.isIOS()) {
+	componentDidMount() {
+		// 读取本地信息，判断是否已登录
+		loadDataFromLocal('userInfo', data => {
+			this.checkingLocalDataDone();
+		}, err => {
+			this.checkingLocalDataDone();
+		});
+	}
+
+	checkingLocalDataDone() {
+		AppNavigation = createAppNavigation(false);
+		if (!deviceInfo.isIOS()) {
             const defaultStateAction = AppNavigation.router.getStateForAction;
             AppNavigation.router.getStateForAction = (action, state) => {
                 if(state && action.type === NavigationActions.BACK && state.routes.length === 1) {
@@ -37,11 +54,17 @@ export default class App extends PureComponent {
                 return defaultStateAction(action, state);
             };
         }
-    }
+		this.setState({
+			checkingLocalData: false,
+		});
+	}
 
-    render() {
-        return (
-            <AppNavigation ref={c => this._navigation = c} />
-        );
-    }
+	render() {
+		if (this.state.checkingLocalData){
+			return <View style={{flex: 1}}></View>
+		}
+		return (
+			<AppNavigation ref={c => this._navigation = c} />
+		);
+	}
 }

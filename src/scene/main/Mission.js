@@ -114,7 +114,7 @@ export default class Mission extends PureComponent {
 
 const styles = StyleSheet.create({
 	container: {
-		// ...
+		flex: 1,
 	},
 	bangImg: {
 		width: toDips(750),
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
 	},
 	iconTxt: {
 		fontSize: getFontSize(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333333',
 	},
 	infoLine: {
@@ -165,5 +165,6 @@ const styles = StyleSheet.create({
 	},
 	list: {
 		marginTop: toDips(33),
+		flex: 1,
 	},
 });

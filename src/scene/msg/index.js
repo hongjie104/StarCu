@@ -22,7 +22,7 @@ export default class MsgScene extends PureComponent {
 			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
 		},
 		tabBarLabel: ({ focused }) => {
-			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>;
+			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>;
 		},
 	};
 
@@ -33,13 +33,11 @@ export default class MsgScene extends PureComponent {
 	render() {
 		return (
 			<View style={styles.container}>
-				
 				<ScrollableTabView
 					tabBarActiveTextColor='#DD4124'
 					tabBarInactiveTextColor='#333333'
 					tabBarTextStyle={{
 						fontSize: toDips(32),
-						fontWeight: '500',
 						marginTop: toDips(32),
 					}}
 					tabBarUnderlineStyle={{

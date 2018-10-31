@@ -74,7 +74,7 @@ export default class OrderMsgList extends PureComponent {
 				<Image style={styles.itemIcon} source={this.getItemImg()} />
 				<View style={styles.itemInfo}>
 					<View style={styles.nameContainer}>
-						<Text style={styles.name}>
+						<Text style={styles.orderName}>
 							{ item.name }
 						</Text>
 						<Text style={styles.status}>
@@ -145,25 +145,25 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
-	name: {
+	orderName: {
 		fontSize: toDips(32),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333333',
 	},
 	status: {
 		fontSize: toDips(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#DD4124',
 	},
 	time: {
 		fontSize: getFontSize(24),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#999999',
 		marginTop: toDips(14),
 	},
 	des: {
 		fontSize: toDips(28),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333333',
 		width: toDips(569),
 		marginTop: toDips(22),

@@ -70,7 +70,8 @@ export function getPixelRatio() {
  */
 export function getFontSize(px) {
 	// return toDips(px) * PixelRatio.get() / 3;
-	return toDips(px) + (Platform.OS === 'ios' ? 2 : 4);
+	// return toDips(px) + (Platform.OS === 'ios' ? 2 : 4);
+	return toDips(px);
 	
 	// px = Math.round((px * scale + 0.5) * PixelRatio.get() / PixelRatio.getFontScale());
 	// return px / defaultPixel;

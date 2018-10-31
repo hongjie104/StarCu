@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	Text,
 	Image,
+	Platform,
 } from 'react-native';
 import picker from 'react-native-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
@@ -169,6 +170,9 @@ export default class Calendar extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
+				{
+					Platform.OS !== 'ios' && (<View style={styles.androidPatch} />)
+				}
 				<View style={styles.calendarContainer}>
 					{
 						// 年月选择容器
@@ -317,6 +321,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	androidPatch: {
+		height: toDips(36),
+		backgroundColor: '#DD4124',
+	},
 	calendarContainer: {
 		width: toDips(706),
 		borderColor: '#D1D1D1',
@@ -342,7 +350,7 @@ const styles = StyleSheet.create({
 	},
 	selectorTxt: {
 		fontSize: getFontSize(26),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333',
 	},
 	arrowDownImg: {
@@ -367,7 +375,7 @@ const styles = StyleSheet.create({
 	},
 	lookUpBtnTxt: {
 		fontSize: getFontSize(26),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#FFF',
 	},
 	calendarContentContainer: {
@@ -438,7 +446,7 @@ const styles = StyleSheet.create({
 	},
 	infoTxt: {
 		fontSize: getFontSize(22),
-		fontWeight: '500',
+		// fontWeight: '500',
 		color: '#333',
 		marginLeft: toDips(18),
 	},

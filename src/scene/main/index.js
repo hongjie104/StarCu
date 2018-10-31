@@ -7,11 +7,11 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
+	Platform,
 } from 'react-native';
 import Mission from './Mission';
 import Calendar from './Calendar';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { loadDataFromLocal } from '../../utils/storage';
 
 let self = null;
 
@@ -75,7 +75,7 @@ export default class MainScene extends PureComponent {
 			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
 		},
 		tabBarLabel: ({ focused }) => {
-			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>;
+			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>任务</Text>;
 		},
 	};
 
@@ -94,15 +94,9 @@ export default class MainScene extends PureComponent {
 	}
 
 	render() {
-		// const { navigate, goBack } = this.props.navigation;
 		const { curTabIndex } = this.state;
 		return (
 			<View style={styles.container}>
-				{
-					// tab bar
-					/*
-					 */
-				}
 				{
 					curTabIndex === 0 && <Mission navigation={this.props.navigation} />
 				}
@@ -127,7 +121,12 @@ const styles = StyleSheet.create({
 		borderRadius: toDips(12),
 		flexDirection: 'row',
 		// marginTop: toDips(60),
-		alignSelf: 'center',
+		// alignSelf: 'center',
+		marginLeft: toDips(197),
+		marginTop: Platform.select({
+			ios: 0,
+			android: toDips(45),
+		}),
 	},
 	tabBar: {
 		flex: 1,
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
 	},
 	tabBarTxt: {
 		fontSize: toDips(30),
-		fontWeight: '500',
+		// fontWeight: '500',
 	},
 	tabBarTxtSelected: {
 		color: '#DD4124',

@@ -7,6 +7,7 @@ import {
 	Text,
 	ImageBackground,
 	Image,
+	ScrollView,
 } from 'react-native';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
@@ -20,7 +21,7 @@ export default class MsgScene extends PureComponent {
 			return <Image style={{ width: toDips(50), height: toDips(50), }} source={img} />;
 		},
 		tabBarLabel: ({ focused }) => {
-			return <Text style={[{ fontSize: getFontSize(26), fontWeight: '500' }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>;
+			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>订单</Text>;
 		},
 	};
 
@@ -63,6 +64,20 @@ export default class MsgScene extends PureComponent {
 					time: '2016.12.12-2017.01.12',
 					status: 1,
 				},
+				{
+					key: '6',
+					name: '清风理货活动',
+					category: '项目类型',
+					time: '2016.12.12-2017.01.12',
+					status: 1,
+				},
+				{
+					key: '7',
+					name: '清风理货活动',
+					category: '项目类型',
+					time: '2016.12.12-2017.01.12',
+					status: 1,
+				},
 			],
 		};
 	}
@@ -71,11 +86,13 @@ export default class MsgScene extends PureComponent {
 		const { missionList } = this.state;
 		return (
 			<View style={styles.container}>
-				{
-					missionList.map((mission, index) => (
-						<MissionItem key={mission.key} item={mission} navigation={this.props.navigation} />
-					))
-				}
+				<ScrollView style={styles.container}>
+					{
+						missionList.map((mission, index) => (
+							<MissionItem key={mission.key} item={mission} navigation={this.props.navigation} />
+						))
+					}
+				</ScrollView>
 			</View>
 		);
 	}

@@ -8,6 +8,14 @@ import { get, post } from './utils/net';
 // 	});
 // }
 
-export function getTopSeries() {
-	return get(`${SERVER_HOST}/api/app/top_series`);
+// export function getTopSeries() {
+// 	return get(`${SERVER_HOST}/api/app/top_series`);
+// }
+
+export function resiger(phoneNo, code, invitationCode) {
+	return post(`${SERVER_HOST}/ShareWork/app/register/save`, {
+		phoneNo,
+		code,
+		invitationCode,
+	});
 }

@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
+import toast from './src/utils/toast';
+import { resiger } from '../../service';
 
 export default class RegisterScene extends PureComponent {
 	
@@ -24,7 +26,7 @@ export default class RegisterScene extends PureComponent {
 			phone: '',
 			code: '',
 			// 邀请码
-			inviteCode: '',
+			invitationCode: '',
 			protocolChecked: true,
 		};
 	}
@@ -41,21 +43,26 @@ export default class RegisterScene extends PureComponent {
 		});
 	}
 
-	onInviteCodeChange(inviteCode) {
+	onInvitationCodeChange(invitationCode) {
 		this.setState({
-			inviteCode,
+			invitationCode,
 		});
 	}
 
 	onRegister() {
-		navigationUtil.reset(this.props.navigation, 'main');
+		const { phone, code, invitationCode, protocolChecked } = this.state;
+		resiger(phone, code, invitationCode).then(result => {
+			navigationUtil.reset(this.props.navigation, 'main');
+		}).catch(err => {
+			toast(err);
+		});
 	}
 
 	render() {
 		const {
 			phone,
 			code,
-			inviteCode,
+			invitationCode,
 			protocolChecked,
 		} = this.state;
 		return (
@@ -107,16 +114,16 @@ export default class RegisterScene extends PureComponent {
 						</TouchableOpacity>
 					</View>
 				</View>
-				<View style={[styles.inputContainer, styles.inputInviteCodeContainer]}>
+				<View style={[styles.inputContainer, styles.inputInvitationCodeContainer]}>
 					<Image style={styles.icon} source={require('../../imgs/yqm.png')} />
 					<Text style={styles.keyTxt}>
 						邀请码：
 					</Text>
 					<TextInput
-						onChangeText={inviteCode => {
-							this.onInviteCodeChange(inviteCode);
+						onChangeText={invitationCode => {
+							this.onInvitationCodeChange(invitationCode);
 						}}
-						value={inviteCode}
+						value={invitationCode}
 						placeholder='请输入邀请码'
 						placeholderTextColor='#999999'
 						style={styles.input}
@@ -225,7 +232,7 @@ const styles = StyleSheet.create({
 		// fontWeight: '500',
 		color: '#60C766',
 	},
-	inputInviteCodeContainer: {
+	inputInvitationCodeContainer: {
 		marginTop: 0,
 	},
 	protocolContainer: {

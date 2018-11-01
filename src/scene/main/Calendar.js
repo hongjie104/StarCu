@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
 	},
 	// 不是当前月的日期
 	calendarDateTxtNotThisMonth: {
-		opacity: 0.7,
+		color: 'rgba(0,0,0,0.7)',
 	},
 	calendarLine: {
 		width: toDips(633),

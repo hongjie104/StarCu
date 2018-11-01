@@ -9,8 +9,10 @@ import {
 	Platform,
 	TouchableOpacity,
 	TextInput,
+	findNodeHandle,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toDips, getFontSize } from '../../utils/dimensions';
 
 export default class MissionDetail extends PureComponent {
@@ -62,6 +64,10 @@ export default class MissionDetail extends PureComponent {
 		});
 	}
 
+	scrollToInput(reactNode) {
+		this.scroll.props.scrollToFocusedInput(reactNode);
+	}
+
 	render() {
 		const {
 			img1,
@@ -71,6 +77,7 @@ export default class MissionDetail extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
+				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid>
 				<View style={styles.titleContainer}>
 					<View style={styles.titleIcon} />
 					<Text style={styles.titleTxt}>
@@ -200,6 +207,7 @@ export default class MissionDetail extends PureComponent {
 				{
 					// 补货数据汇报
 				}
+
 				<View style={styles.titleContainer}>
 					<View style={styles.titleIcon} />
 					<Text style={styles.titleTxt}>
@@ -217,6 +225,10 @@ export default class MissionDetail extends PureComponent {
 							placeholder='请输入补货量'
 							placeholderTextColor='#999'
 							style={styles.input}
+							onFocus={(event: Event) => {
+								// `bind` the function if you're using ES6 classes
+								this.scrollToInput(findNodeHandle(event.target));
+							}}
 						/>
 					</View>
 				</View>
@@ -234,6 +246,7 @@ export default class MissionDetail extends PureComponent {
 						/>
 					</View>
 				</View>
+
 				{
 					// 提交按钮
 				}
@@ -248,6 +261,7 @@ export default class MissionDetail extends PureComponent {
 						提交		
 					</Text>	
 				</TouchableOpacity>
+				</KeyboardAwareScrollView>
 			</View>
 		);
 	}
@@ -364,6 +378,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#DD4124',
 		borderRadius: toDips(41),
 		marginTop: toDips(77),
+		marginBottom: toDips(126),
 	},
 	submitBtnTxt: {
 		fontSize: getFontSize(32),

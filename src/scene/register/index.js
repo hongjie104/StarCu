@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
-import toast from './src/utils/toast';
+import toast from '../../utils/toast';
 import { resiger } from '../../service';
 
 export default class RegisterScene extends PureComponent {

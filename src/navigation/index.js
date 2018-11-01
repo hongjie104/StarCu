@@ -74,9 +74,23 @@ export default function createAppNavigation(isLogedIn) {
 				elevation: 0,
 				borderBottomWidth: 0,
 			},
-			// headerTitleStyle: {
-			// 	alignSelf: 'center',
-			// },
+			headerTitleStyle: Platform.select({
+				ios: null,
+				android: {
+					alignSelf: 'center',
+					flex: 1,
+					textAlign: 'center',
+					borderColor: 'blue',
+					borderWidth: 1,
+				},
+			}),
+			headerTitleContainerStyle: Platform.select({
+				ios: null,
+				android: {
+					left: 56,
+					right: 56,
+				},
+			}),
 			headerTintColor: 'white',
 		},
 		transitionConfig: (transitionProps, prevTransitionProps, isModal) => {

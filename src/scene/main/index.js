@@ -122,7 +122,18 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginLeft: Platform.select({
 			ios: 0,
-			android: toDips(197),
+			// android上的左右都留了56的空间，所以这里减去56
+			// 见navigation/index.js
+			/*
+				headerTitleContainerStyle: Platform.select({
+					ios: null,
+					android: {
+						left: 56,
+						right: 56,
+					},
+				}),
+			 */
+			android: toDips(197) - 56,
 		}),
 		marginTop: Platform.select({
 			ios: 0,

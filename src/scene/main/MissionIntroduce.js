@@ -85,21 +85,21 @@ export default class MissionIntroduce extends PureComponent {
 						</View>
 						<Image style={styles.img} source={{ uri: 'http://g.hiphotos.baidu.com/image/pic/item/21a4462309f790524ec4285a01f3d7ca7acbd5ff.jpg' }} />
 					</View>
-					{
-						// 按钮
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onSubmit();
-						}}
-						style={styles.submitBtn}
-					>
-						<Text style={styles.submitBtnTxt}>
-							接单
-						</Text>
-					</TouchableOpacity>
 				</ScrollView>
+				{
+					// 按钮
+				}
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+						this.onSubmit();
+					}}
+					style={styles.submitBtn}
+				>
+					<Text style={styles.submitBtnTxt}>
+						接单
+					</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'center',
 		marginTop: toDips(56),
+		marginBottom: toDips(60),
 	},
 	submitBtnTxt: {
 		fontSize: getFontSize(32),

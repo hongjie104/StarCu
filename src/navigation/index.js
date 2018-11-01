@@ -77,11 +77,9 @@ export default function createAppNavigation(isLogedIn) {
 			headerTitleStyle: Platform.select({
 				ios: null,
 				android: {
+					textAlign: 'center',
 					alignSelf: 'center',
 					flex: 1,
-					textAlign: 'center',
-					borderColor: 'blue',
-					borderWidth: 1,
 				},
 			}),
 			headerTitleContainerStyle: Platform.select({

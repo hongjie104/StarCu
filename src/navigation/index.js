@@ -62,7 +62,7 @@ export default function createAppNavigation(isLogedIn) {
 		BankCardScene,
 		UserInfoScene,
 	}, {
-		// initialRouteName: 'MissionIntroduceScene',
+		// initialRouteName: 'RegisterScene',
 		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
 		// mode: 'card',
 		// headerMode: 'none',

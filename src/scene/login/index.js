@@ -11,11 +11,12 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
+import toast from '../../utils/toast';
 
 export default class LoginScene extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: '登录',
+		header: null,
 	});
 
 	constructor(props) {
@@ -26,31 +27,52 @@ export default class LoginScene extends PureComponent {
 		};
 	}
 
-	onPhoneChanged(phone) {
-		this.setState({ phone });
+	onPhoneChange(phone) {
+		this.setState({
+			phone,
+		});
 	}
 
-	onCodeChanged(code) {
-		this.setState({ code });
+	onCodeChange(code) {
+		this.setState({
+			code,
+		});
 	}
 
 	onLogin() {
 		navigationUtil.reset(this.props.navigation, 'main');
 	}
 
+	onNavigateToRegister() {
+		const {navigate} = this.props.navigation;
+		navigate({
+			routeName: 'RegisterScene',
+		});
+	}
+
 	render() {
 		const {
 			phone,
 			code,
+			invitationCode,
+			protocolChecked,
 		} = this.state;
-		const {navigate} = this.props.navigation;
 		return (
 			<View style={styles.container}>
-				<View style={styles.inputContainer}>
-					<Image style={styles.icon} source={require('../../imgs/sj.png')} />
+				<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
+				<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
+					<Image
+						style={{
+							width: toDips(29),
+							height: toDips(46),
+							marginLeft: toDips(80),
+							marginRight: toDips(22),
+						}}
+						source={require('../../imgs/icon61.png')}
+					/>
 					<TextInput
 						onChangeText={phone => {
-							this.onPhoneChanged(phone);
+							this.onPhoneChange(phone);
 						}}
 						value={phone}
 						placeholder='请输入手机号'
@@ -60,12 +82,27 @@ export default class LoginScene extends PureComponent {
 						keyboardType='numeric'
 					/>
 				</View>
-				<View style={[styles.inputContainer, styles.inputCodeContainer]}>
-					<View style={styles.inputCodeLeftContainer}>
-						<Image style={styles.icon} source={require('../../imgs/yzm.png')} />
+				<View style={styles.line} />
+				<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
+					<View
+						style={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							flex: 1,
+						}}
+					>
+						<Image
+							style={{
+								width: toDips(39),
+								height: toDips(47),
+								marginLeft: toDips(75),
+								marginRight: toDips(16),
+							}}
+							source={require('../../imgs/icon63.png')}
+						/>
 						<TextInput
 							onChangeText={code => {
-								this.onCodeChanged(code);
+								this.onCodeChange(code);
 							}}
 							value={code}
 							placeholder='请输入验证码'
@@ -75,21 +112,11 @@ export default class LoginScene extends PureComponent {
 							keyboardType='numeric'
 						/>
 					</View>
-					<View style={styles.inputCodeRightContainer}>
-						<View style={styles.inputCodeLine} />
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-
-							}}
-							style={styles.codeBtn}
-						>
-							<Text style={styles.codeBtnTxt}>
-								发送验证码
-							</Text>
-						</TouchableOpacity>
-					</View>
+					<Text style={styles.codeBtnTxt}>
+						发送验证码
+					</Text>	
 				</View>
+				<View style={styles.line} />
 				{
 					// 登录按钮
 				}
@@ -104,25 +131,18 @@ export default class LoginScene extends PureComponent {
 						登录
 					</Text>
 				</TouchableOpacity>
-				{
-					// 忘记密码和注册
-				}
-				<View style={styles.functionsContainer}>
-					<Text style={styles.functionTxt}>
-						忘记密码
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+						this.onNavigateToRegister();
+					}}
+					style={styles.registerBtbContainer}
+				>
+					<Text style={styles.registerBtn}>
+						去注册
 					</Text>
-					<View style={styles.functionLine} />
-					<Text
-						style={styles.functionTxt}
-						onPress={() => {
-							navigate({
-								routeName: 'RegisterScene',
-							});
-						}}
-					>
-						马上注册
-					</Text>
-				</View>
+					<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
+				</TouchableOpacity>
 			</View>
 		);
 	}
@@ -133,53 +153,32 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#FBFBFB',
 	},
+	bigIcon: {
+		width: toDips(164),
+		height: toDips(164),
+		alignSelf: 'center',
+		marginTop: toDips(208),
+	},
 	inputContainer: {
-		width: toDips(750),
-		height: toDips(117),
-		backgroundColor: 'white',
-		borderColor: '#E9E9E9',
-		borderTopWidth: toDips(1),
-		borderBottomWidth: toDips(1),
-		marginTop: toDips(85),
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	icon: {
-		width: toDips(48),
-		height: toDips(48),
-		marginLeft: toDips(20),
 	},
 	input: {
-		marginLeft: toDips(10),
-		width: toDips(360),
 		fontSize: getFontSize(32),
+		color: '#666',
+		width: toDips(360),
 	},
-	inputCodeContainer: {
-		marginTop: 0,
-		borderTopWidth: 0,
-		justifyContent: 'space-between',
-	},
-	inputCodeLeftContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	inputCodeRightContainer: {
-		flexDirection: 'row',
-	},
-	inputCodeLine: {
-		width: toDips(2),
-		height: toDips(61),
-		backgroundColor: '#60C766',
-	},
-	codeBtn: {
-		width: toDips(256),
-		justifyContent: 'center',
-		alignItems: 'center',
+	line: {
+		width: toDips(600),
+		height: toDips(2),
+		alignSelf: 'center',
+		marginTop: toDips(26),
+		backgroundColor: '#DFDFDF',
 	},
 	codeBtnTxt: {
 		fontSize: getFontSize(32),
-		// fontWeight: '500',
-		color: '#60C766',
+		color: '#DD4124',
+		marginRight: toDips(75),
 	},
 	loginBtn: {
 		width: toDips(391),
@@ -189,30 +188,28 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		alignSelf: 'center',
-		marginTop: toDips(115),
+		marginTop: toDips(84),
 	},
 	loginBtnTxt: {
 		fontSize: getFontSize(32),
 		// fontWeight: '500',
 		color: 'white',
 	},
-	functionsContainer: {
+	registerBtbContainer: {
 		flexDirection: 'row',
+		justifyContent: 'flex-end',
 		alignItems: 'center',
-		justifyContent: 'center',
-		alignSelf: 'center',
-		marginTop: toDips(56),
+		marginTop: toDips(218),
 	},
-	functionTxt: {
+	registerBtn: {
 		fontSize: getFontSize(30),
-		// fontWeight: '500',
-		color: '#A6A6A6',
+		color: '#999',
+		textDecorationLine: 'underline',
 	},
-	functionLine: {
-		width: toDips(2),
-		height: toDips(28),
-		backgroundColor: '#BEBEBE',
-		marginLeft: toDips(24),
-		marginRight: toDips(24),
+	arrowImg: {
+		width: toDips(13),
+		height: toDips(23),
+		marginLeft: toDips(6),
+		marginRight: toDips(82),
 	},
 });

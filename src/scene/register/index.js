@@ -17,7 +17,7 @@ import { resiger } from '../../service';
 export default class RegisterScene extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: '注册',
+		header: null,
 	});
 
 	constructor(props) {
@@ -67,8 +67,17 @@ export default class RegisterScene extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
-				<View style={styles.inputContainer}>
-					<Image style={styles.icon} source={require('../../imgs/sj.png')} />
+				<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
+				<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
+					<Image
+						style={{
+							width: toDips(29),
+							height: toDips(46),
+							marginLeft: toDips(80),
+							marginRight: toDips(22),
+						}}
+						source={require('../../imgs/icon61.png')}
+					/>
 					<Text style={styles.keyTxt}>
 						手机号码：
 					</Text>
@@ -84,9 +93,24 @@ export default class RegisterScene extends PureComponent {
 						keyboardType='numeric'
 					/>
 				</View>
-				<View style={[styles.inputContainer, styles.inputCodeContainer]}>
-					<View style={styles.inputCodeLeftContainer}>
-						<Image style={styles.icon} source={require('../../imgs/yzm.png')} />
+				<View style={styles.line} />
+				<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
+					<View
+						style={{
+							flexDirection: 'row',
+							alignItems: 'center',
+							flex: 1,
+						}}
+					>
+						<Image
+							style={{
+								width: toDips(39),
+								height: toDips(47),
+								marginLeft: toDips(75),
+								marginRight: toDips(16),
+							}}
+							source={require('../../imgs/icon63.png')}
+						/>
 						<TextInput
 							onChangeText={code => {
 								this.onCodeChange(code);
@@ -99,23 +123,21 @@ export default class RegisterScene extends PureComponent {
 							keyboardType='numeric'
 						/>
 					</View>
-					<View style={styles.inputCodeRightContainer}>
-						<View style={styles.inputCodeLine} />
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-
-							}}
-							style={styles.codeBtn}
-						>
-							<Text style={styles.codeBtnTxt}>
-								发送验证码
-							</Text>
-						</TouchableOpacity>
-					</View>
+					<Text style={styles.codeBtnTxt}>
+						获取验证码
+					</Text>	
 				</View>
-				<View style={[styles.inputContainer, styles.inputInvitationCodeContainer]}>
-					<Image style={styles.icon} source={require('../../imgs/yqm.png')} />
+				<View style={styles.line} />
+				<View style={[styles.inputContainer, { marginTop: toDips(47) }]}>
+					<Image
+						style={{
+							width: toDips(41),
+							height: toDips(38),
+							marginLeft: toDips(74),
+							marginRight: toDips(16),
+						}}
+						source={require('../../imgs/icon64.png')}
+					/>
 					<Text style={styles.keyTxt}>
 						邀请码：
 					</Text>
@@ -131,6 +153,7 @@ export default class RegisterScene extends PureComponent {
 						keyboardType='numeric'
 					/>
 				</View>
+				<View style={styles.line} />
 				{
 					// 协议
 				}
@@ -178,62 +201,36 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#FBFBFB',
 	},
+	bigIcon: {
+		width: toDips(164),
+		height: toDips(164),
+		alignSelf: 'center',
+		marginTop: toDips(208),
+	},
 	inputContainer: {
-		width: toDips(750),
-		height: toDips(117),
-		backgroundColor: 'white',
-		borderColor: '#E9E9E9',
-		borderTopWidth: toDips(1),
-		borderBottomWidth: toDips(1),
-		marginTop: toDips(85),
 		flexDirection: 'row',
 		alignItems: 'center',
-	},
-	icon: {
-		width: toDips(48),
-		height: toDips(48),
-		marginLeft: toDips(20),
 	},
 	keyTxt: {
 		fontSize: getFontSize(32),
-		// fontWeight: '500',
-		color: '#333',
-		marginLeft: toDips(23),
+		color: '#666',
 	},
 	input: {
-		marginLeft: toDips(23),
-		width: toDips(360),
 		fontSize: getFontSize(32),
+		color: '#666',
+		width: toDips(360),
 	},
-	inputCodeContainer: {
-		marginTop: 0,
-		borderTopWidth: 0,
-		justifyContent: 'space-between',
-	},
-	inputCodeLeftContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	inputCodeRightContainer: {
-		flexDirection: 'row',
-	},
-	inputCodeLine: {
-		width: toDips(2),
-		height: toDips(61),
-		backgroundColor: '#60C766',
-	},
-	codeBtn: {
-		width: toDips(256),
-		justifyContent: 'center',
-		alignItems: 'center',
+	line: {
+		width: toDips(600),
+		height: toDips(2),
+		alignSelf: 'center',
+		marginTop: toDips(26),
+		backgroundColor: '#DFDFDF',
 	},
 	codeBtnTxt: {
 		fontSize: getFontSize(32),
-		// fontWeight: '500',
-		color: '#60C766',
-	},
-	inputInvitationCodeContainer: {
-		marginTop: 0,
+		color: '#DD4124',
+		marginRight: toDips(75),
 	},
 	protocolContainer: {
 		flexDirection: 'row',

@@ -1,6 +1,7 @@
 import { NetInfo } from 'react-native';
-
+import qs from 'qs';
 // import * as utils from './utils';
+import { __TEST__ } from '../config';
 
 const TIME_OUT = 12000;
 
@@ -29,12 +30,17 @@ function timeout(promise, ms) {
  * @param  {[json]} data                数据
  */
 export function post(url, data) {
+	if (__TEST__) {
+		return get(`${url}?${qs.stringify(data || {})}`);
+	}
 	return new Promise((resolve, reject) => {
 		if (!isConnected) {
 			// utils.toast('网络链接已断开');
 			reject('net is not Connected');
 			return;
 		}
+		console.log('[post] url => ' + url);
+		console.log('[post] data => ', data);
 		timeout(fetch(url, {
 			method: 'POST',
 			headers: {
@@ -45,9 +51,14 @@ export function post(url, data) {
 		}), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
-				resolve(JSON.parse(responseText));
+				const jsonData = JSON.parse(responseText);
+				if (jsonData.errorCode === '0') {
+					resolve(jsonData.body);
+				} else {
+					reject(jsonData.errorMsg);
+				}
 			})
-			.catch(e => reject(e));
+			.catch(e => reject(e.toString()));
 	});
 }
 
@@ -62,12 +73,17 @@ export function get(url) {
 			reject('net is not Connected');
 			return;
 		}
+		console.log('[get] url => ' + url);
 		timeout(fetch(url), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
-				// on success
-				resolve(JSON.parse(responseText));
+				const jsonData = JSON.parse(responseText);
+				if (jsonData.errorCode === '0') {
+					resolve(jsonData.body);
+				} else {
+					reject(jsonData.errorMsg);
+				}
 			})
-			.catch(e => reject(e));
+			.catch(e => reject(e.toString()));
 	});
 }

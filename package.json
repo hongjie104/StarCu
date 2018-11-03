@@ -11,6 +11,7 @@
     "@remobile/react-native-file-transfer": "^1.0.8",
     "@remobile/react-native-toast": "^1.0.7",
     "@remobile/react-native-zip": "^1.0.5",
+    "qs": "^6.5.2",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
     "react-native-device-info": "^0.24.3",

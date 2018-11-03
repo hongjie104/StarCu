@@ -12,6 +12,8 @@ import {
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
+import { getLoginCode, login } from '../../service';
+import { isPhone } from '../../utils/reg';
 
 export default class LoginScene extends PureComponent {
 	
@@ -36,6 +38,19 @@ export default class LoginScene extends PureComponent {
 	onCodeChange(code) {
 		this.setState({
 			code,
+		});
+	}
+
+	onGetLoginCode() {
+		const { phone } = this.state;
+		if (!isPhone(phone)) {
+			toast('请输入正确的手机号码');
+			return;
+		}
+		getLoginCode(phone).then(result => {
+			console.warn(result);
+		}).catch(e => {
+			toast(e);
 		});
 	}
 
@@ -112,7 +127,7 @@ export default class LoginScene extends PureComponent {
 							keyboardType='numeric'
 						/>
 					</View>
-					<Text style={styles.codeBtnTxt}>
+					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetLoginCode(); }}>
 						发送验证码
 					</Text>	
 				</View>

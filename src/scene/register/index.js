@@ -12,7 +12,9 @@ import {
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
-import { resiger } from '../../service';
+import { isPhone } from '../../utils/reg';
+import { resiger, getReigsterCode } from '../../service';
+import { __TEST__ } from '../../config';
 
 export default class RegisterScene extends PureComponent {
 	
@@ -49,9 +51,43 @@ export default class RegisterScene extends PureComponent {
 		});
 	}
 
+	onGetRegisterCode() {
+		const { phone } = this.state;
+		if (!isPhone(phone)) {
+			toast('请输入正确的手机号码');
+			return;
+		}
+		getReigsterCode(phone, '1234').then(result => {
+			if (__TEST__) {
+				this.setState({
+					code: result.datas.code,
+				});
+				toast('测试环境，验证码已自动填上');
+			} else {
+				toast('验证码已发送');
+			}
+		}).catch(err => {
+			console.warn(err);
+			toast(err);
+		});
+	}
+
 	onRegister() {
 		const { phone, code, invitationCode, protocolChecked } = this.state;
+		if (!protocolChecked) {
+			toast('请阅读并同意星促伙伴服务条款协议');
+			return;
+		}
+		if (!isPhone(phone)) {
+			toast('请输入正确的手机号码');
+			return;
+		}
+		if (!/\d{4}/.test(code)) {
+			toast('请输入正确的验证码');
+			return;
+		}
 		resiger(phone, code, invitationCode).then(result => {
+			console.warn(result);
 			navigationUtil.reset(this.props.navigation, 'main');
 		}).catch(err => {
 			toast(err);
@@ -123,7 +159,7 @@ export default class RegisterScene extends PureComponent {
 							keyboardType='numeric'
 						/>
 					</View>
-					<Text style={styles.codeBtnTxt}>
+					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetRegisterCode(); }}>
 						获取验证码
 					</Text>	
 				</View>

@@ -1,0 +1,121 @@
+2018-11-05 09:40:00,010 INFO 31927 [-/127.0.0.1/-/0ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] ======== run spider =========
+2018-11-05 09:40:00,017 INFO 31927 [-/127.0.0.1/-/7ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] ======== running spider =========
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: Traceback (most recent call last):
+
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:   File "/home/Hope3-spider/spider.py", line 24, in <module>
+
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:     
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: import goat
+
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:   File "
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: /home/Hope3-spider/goat.py
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: ", line 
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: 214
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: 
+
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:     
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: 'Hyperdunk,
+
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:     
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,150 INFO 31927 [-/127.0.0.1/-/140ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr:  
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: ^
+
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: SyntaxError
+2018-11-05 09:40:00,151 INFO 31927 [-/127.0.0.1/-/141ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: : 
+2018-11-05 09:40:00,155 INFO 31927 [-/127.0.0.1/-/145ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] stderr: EOL while scanning string literal
+
+2018-11-05 09:40:00,687 INFO 31927 [-/127.0.0.1/-/677ms SCHEDULE /__schedule?path=/home/Hope3-server/app/schedule/spider.js&cron=0%2040%209%20*%20*%20*&cronOptions=&type=worker&immediate=false&disable=false] child process exited with code 1
+2018-11-05 10:23:19,889 INFO 31927 [-/180.162.94.51/-/29ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5adac8a4d4d146356a2dda00 goodsTypeArr = 5ad343a07481447cd799bc65,5adac8a4d4d146356a2dda00
+2018-11-05 10:23:27,831 INFO 31927 [-/180.162.94.51/-/28ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5b27800daf99ea7cbec8259a goodsTypeArr = 5ba49728a0af7a5a45dc46e7,5b27800daf99ea7cbec8259a
+2018-11-05 10:23:46,105 INFO 31927 [-/180.162.94.51/-/21ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba396e5a0af7a5a45dc0e26 goodsTypeArr = 5ba396e5a0af7a5a45dc0e26,5b7a8d74d7050f0551d6b9bf
+2018-11-05 11:24:48,044 INFO 31927 [-/180.162.94.51/-/130ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad346d77481447cd799bdd7 goodsTypeArr = 5ba3a5d9a0af7a5a45dc12d3,5ad35b467481447cd799e24d,5ad353607481447cd799d735,5ad3525e7481447cd799d61e,5ad346d77481447cd799bdd7,5b5c47f7b3db8a711ad387e8
+2018-11-05 11:40:08,775 INFO 31927 [-/180.162.94.51/-/27ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba4405ea0af7a5a45dc1728 goodsTypeArr = 5ba4405ea0af7a5a45dc1728,5ba78f9ba0af7a5a45dc91eb
+2018-11-05 11:52:43,476 INFO 31927 [-/180.162.94.51/-/23ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5b7e16d2d7050f0551d6c68a goodsTypeArr = 5b7e824ed7050f0551d6db30,5b7e16d2d7050f0551d6c68a
+2018-11-05 11:54:40,779 INFO 31927 [-/180.162.94.51/-/20ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad352687481447cd799d629 goodsTypeArr = 5ad35be77481447cd799e290,5ad352687481447cd799d629
+2018-11-05 11:57:36,582 INFO 31927 [-/180.162.94.51/-/19ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba449dba0af7a5a45dc1e17 goodsTypeArr = 5ba449dba0af7a5a45dc1e17,5ba449eda0af7a5a45dc1e42
+2018-11-05 12:07:54,922 INFO 31927 [-/180.162.94.51/-/72ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad344307481447cd799bcbd goodsTypeArr = 5ad344307481447cd799bcbd,5ad357ba7481447cd799d8ae,5ad357ab7481447cd799d8a1
+2018-11-05 12:08:13,856 INFO 31927 [-/180.162.94.51/-/56ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad345c17481447cd799bd46 goodsTypeArr = 5ad345c17481447cd799bd46,5ad366757481447cd799e92f,5ad368057481447cd799ea08,5ad358857481447cd799d92b
+2018-11-05 12:11:56,697 INFO 31927 [-/180.162.94.51/-/124ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad35aa87481447cd799e21a goodsTypeArr = 5ad35aa87481447cd799e21a,5ae819f07e5cce53d58fa527
+2018-11-05 12:13:16,098 INFO 31927 [-/180.162.94.51/-/20ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad345b77481447cd799bd40 goodsTypeArr = 5ad345b77481447cd799bd40,5ad350867481447cd799d52a
+2018-11-05 15:08:30,175 INFO 31927 [-/180.162.94.51/-/21ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba79dc4a0af7a5a45dc97b3 goodsTypeArr = 5ad3500d7481447cd799d4a6,5ba79dc4a0af7a5a45dc97b3
+2018-11-05 15:46:34,992 INFO 31927 [-/180.162.94.51/-/69ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad343c67481447cd799bc82 goodsTypeArr = 5ba4507ea0af7a5a45dc234e,5ba450efa0af7a5a45dc2413,5ad343c67481447cd799bc82,5ad346e07481447cd799bde2,5ad357017481447cd799d81e,5b7e6214d7050f0551d6cf25
+2018-11-05 15:46:54,567 INFO 31927 [-/180.162.94.51/-/19ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad343c67481447cd799bc82 goodsTypeArr = 5ad362337481447cd799e50f,5ad343c67481447cd799bc82
+2018-11-05 15:55:47,465 INFO 31927 [-/180.162.94.51/-/24ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad344307481447cd799bcbd goodsTypeArr = 5ad344307481447cd799bcbd,5ad344647481447cd799bce7
+2018-11-05 15:56:45,748 INFO 31927 [-/180.162.94.51/-/40ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad3589f7481447cd799d93c goodsTypeArr = 5ad358e87481447cd799d94b,5ad3589f7481447cd799d93c
+2018-11-05 15:58:38,034 INFO 31927 [-/180.162.94.51/-/18ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad345c17481447cd799bd46 goodsTypeArr = 5ba45c77a0af7a5a45dc2eb3,5ad345c17481447cd799bd46
+2018-11-05 16:02:30,040 INFO 31927 [-/180.162.94.51/-/18ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5adbf51093e4be36d6a0584a goodsTypeArr = 5ba47607a0af7a5a45dc4301,5adbf51093e4be36d6a0584a
+2018-11-05 16:12:36,192 INFO 31927 [-/180.162.94.51/-/20ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5b5426f52769bd65f7d659a2 goodsTypeArr = 5ba4a6fca0af7a5a45dc53c8,5b5426f52769bd65f7d659a2
+2018-11-05 16:26:10,737 INFO 31927 [-/180.162.94.51/-/39ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad351fc7481447cd799d5f5 goodsTypeArr = 5ba4c282a0af7a5a45dc6e30,5ba4c2b2a0af7a5a45dc6e6f,5ba4c2bba0af7a5a45dc6e7e,5ad351fc7481447cd799d5f5
+2018-11-05 16:54:12,615 INFO 31927 [-/180.162.94.51/-/54ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5b5303a2af53340c390fc6f4 goodsTypeArr = 5b7d2049d7050f0551d6c4ee,5b3a35274f09b2791cc59965,5b5303a2af53340c390fc6f4
+2018-11-05 16:57:48,132 INFO 31927 [-/180.162.94.51/-/95ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad358f37481447cd799d953 goodsTypeArr = 5ba4a09ba0af7a5a45dc4c40,5ba4a0aba0af7a5a45dc4c56,5ad358f37481447cd799d953,5ad35ffc7481447cd799e436,5ad358637481447cd799d918,5ad369697481447cd799eaff,5ad360137481447cd799e43a,5ad367987481447cd799e9d6
+2018-11-05 16:59:03,919 INFO 31927 [-/180.162.94.51/-/25ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba497c4a0af7a5a45dc4769 goodsTypeArr = 5ba4979fa0af7a5a45dc473c,5ba497c4a0af7a5a45dc4769
+2018-11-05 16:59:26,468 INFO 31927 [-/180.162.94.51/-/21ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad358f37481447cd799d953 goodsTypeArr = 5ba4a067a0af7a5a45dc4bd5,5ad358f37481447cd799d953
+2018-11-05 16:59:39,256 INFO 31927 [-/180.162.94.51/-/57ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad35e0c7481447cd799e3c4 goodsTypeArr = 5ad35e0c7481447cd799e3c4,5ad35fab7481447cd799e421,5ad367827481447cd799e9ce,5ad35fb77481447cd799e425,5ad367a87481447cd799e9e0
+2018-11-05 17:01:17,847 INFO 31927 [-/180.162.94.51/-/201ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad346907481447cd799bdae goodsTypeArr = 5ba4a2a4a0af7a5a45dc4e99,5ba4a2b4a0af7a5a45dc4eaf,5ba4a2cca0af7a5a45dc4eef,5ba4a2e4a0af7a5a45dc4f05,5ad357317481447cd799d83f,5ad3661a7481447cd799e916,5ad357877481447cd799d882,5ad3575a7481447cd799d85c,5ad3538b7481447cd799d770,5ad346907481447cd799bdae,5ad363f67481447cd799e641,5b7d0b13d7050f0551d6bfa5
+2018-11-05 17:06:40,661 INFO 31927 [-/180.162.94.51/-/21ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ba4a1cca0af7a5a45dc4dac goodsTypeArr = 5ba4a17aa0af7a5a45dc4d5e,5ba4a1cca0af7a5a45dc4dac
+2018-11-05 17:07:16,844 INFO 31927 [-/180.162.94.51/-/62ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad346907481447cd799bdae goodsTypeArr = 5ba4a227a0af7a5a45dc4e1a,5ba4a249a0af7a5a45dc4e45,5ba4a267a0af7a5a45dc4e70,5ad346907481447cd799bdae
+2018-11-05 17:09:16,577 INFO 31927 [-/180.162.94.51/-/38ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad346907481447cd799bdae goodsTypeArr = 5ba4a12da0af7a5a45dc4d10,5ba4a2f5a0af7a5a45dc4f1b,5ad346907481447cd799bdae
+2018-11-05 17:10:06,887 INFO 31927 [-/180.162.94.51/-/85ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad346907481447cd799bdae goodsTypeArr = 5ba4a110a0af7a5a45dc4cfa,5ad346907481447cd799bdae,5ad351e47481447cd799d5e2,5ba79286a0af7a5a45dc9312,5ba79292a0af7a5a45dc9321
+2018-11-05 17:10:43,442 INFO 31927 [-/180.162.94.51/-/25ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad366267481447cd799e91a goodsTypeArr = 5ba49ffea0af7a5a45dc4aee,5ad366267481447cd799e91a
+2018-11-05 17:20:57,354 INFO 31927 [-/180.162.94.51/-/21ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad35dc97481447cd799e3a0 goodsTypeArr = 5ad35dc97481447cd799e3a0,5ad367717481447cd799e9c9
+2018-11-05 17:21:04,995 INFO 31927 [-/180.162.94.51/-/22ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad35d057481447cd799e331 goodsTypeArr = 5ad35d057481447cd799e331,5ad368197481447cd799ea1e
+2018-11-05 17:35:48,118 INFO 31927 [-/180.162.94.51/-/90ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5ad347167481447cd799be18 goodsTypeArr = 5ba4b0dca0af7a5a45dc5ee7,5ba4b10aa0af7a5a45dc5f51,5ad347167481447cd799be18,5ad3472a7481447cd799be2c,5ad367fb7481447cd799e9fe,5ad357e87481447cd799d8d4,5ba7a34aa0af7a5a45dc9a79
+2018-11-05 17:54:41,281 INFO 31927 [-/180.162.94.51/-/120ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5b418283af53340c390fb8a8 goodsTypeArr = 5ba372b7a0af7a5a45dc0a3f,5ba372cea0af7a5a45dc0a55,5ad367137481447cd799e9a5,5ad362d97481447cd799e572,5b418283af53340c390fb8a8
+2018-11-05 18:17:04,331 WARN 31927 [-/180.162.94.51/-/16ms POST /api/admin/merge_goods_color] nodejs.invalid_token: Invalid token: access token has expired
+    at new InvalidTokenError (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/errors/invalid-token-error.js:25:14)
+    at AuthenticateHandler.validateAccessToken (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/handlers/authenticate-handler.js:224:11)
+    at AuthenticateHandler.<anonymous> (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/handlers/authenticate-handler.js:74:19)
+    at PassThroughHandlerContext.finallyHandler (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/finally.js:57:23)
+    at PassThroughHandlerContext.tryCatcher (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:512:31)
+    at Promise._settlePromise (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:569:18)
+    at Promise._settlePromise0 (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:614:10)
+    at Promise._settlePromises (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:693:18)
+    at Async._drainQueue (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:133:16)
+    at Async._drainQueues (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:143:10)
+    at Immediate.Async.drainQueues (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:17:14)
+    at runCallback (timers.js:810:20)
+    at tryOnImmediate (timers.js:768:5)
+    at processImmediate [as _immediateCallback] (timers.js:745:5)
+statusCode: 401
+status: 401
+code: 401
+message: "Invalid token: access token has expired"
+name: "invalid_token"
+pid: 31927
+hostname: timetown-dev
+
+2018-11-05 18:17:10,158 WARN 31927 [-/180.162.94.51/-/9ms POST /api/admin/find_goods_type] nodejs.invalid_token: Invalid token: access token has expired
+    at new InvalidTokenError (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/errors/invalid-token-error.js:25:14)
+    at AuthenticateHandler.validateAccessToken (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/handlers/authenticate-handler.js:224:11)
+    at AuthenticateHandler.<anonymous> (/home/Hope3-server/node_modules/_oauth2-server@3.0.1@oauth2-server/lib/handlers/authenticate-handler.js:74:19)
+    at PassThroughHandlerContext.finallyHandler (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/finally.js:57:23)
+    at PassThroughHandlerContext.tryCatcher (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/util.js:16:23)
+    at Promise._settlePromiseFromHandler (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:512:31)
+    at Promise._settlePromise (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:569:18)
+    at Promise._settlePromise0 (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:614:10)
+    at Promise._settlePromises (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/promise.js:693:18)
+    at Async._drainQueue (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:133:16)
+    at Async._drainQueues (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:143:10)
+    at Immediate.Async.drainQueues (/home/Hope3-server/node_modules/_bluebird@3.5.1@bluebird/js/release/async.js:17:14)
+    at runCallback (timers.js:810:20)
+    at tryOnImmediate (timers.js:768:5)
+    at processImmediate [as _immediateCallback] (timers.js:745:5)
+statusCode: 401
+status: 401
+code: 401
+message: "Invalid token: access token has expired"
+name: "invalid_token"
+pid: 31927
+hostname: timetown-dev
+
+2018-11-05 18:24:14,234 INFO 31927 [-/180.162.94.51/-/18ms POST /api/admin/merge_goods_type] [merge] => mergeTargetGoodsType = 5adbf51093e4be36d6a0584a goodsTypeArr = 5adbf51093e4be36d6a0584a,5be0029815c6cf7cb7f524a8

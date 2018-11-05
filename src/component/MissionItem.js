@@ -67,7 +67,7 @@ export default class MissionItem extends PureComponent {
 							{ item.orderTitle }
 						</Text>
 						<Text style={styles.category}>
-							{ item.orderType }
+							{ item.orderType || item.orderContent }
 						</Text>
 						<View style={styles.itemDateRow}>
 							<Image style={styles.clockImg} source={require('../imgs/clock.png')} />

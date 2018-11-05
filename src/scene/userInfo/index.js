@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import cityPicker from '../../component/cityPicker';
 
 export default class UserInfoScene extends PureComponent {
 	
@@ -31,6 +32,16 @@ export default class UserInfoScene extends PureComponent {
 			userImage1: '',
 			userImage2: '',
 		};
+	}
+
+	componentWillUnmount() {
+		cityPicker.hide();
+	}
+
+	onShowCityPicker() {
+		if (!cityPicker.isPickerShow()) {
+			cityPicker.show();
+		}
 	}
 
 	onRealNameChange(realName) {
@@ -206,7 +217,13 @@ export default class UserInfoScene extends PureComponent {
 						照片2
 					</Text>
 				</View>
-				<View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+						this.onShowCityPicker();
+					}}
+					style={[styles.itemContainer, { justifyContent: 'space-between' }]}
+				>
 					<View style={styles.itemLeftContainer}>
 						<Image style={styles.icon} source={require('../../imgs/cs.png')} />
 						<Text style={styles.contentTxt}>
@@ -217,7 +234,7 @@ export default class UserInfoScene extends PureComponent {
 						</Text>
 					</View>
 					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
-				</View>
+				</TouchableOpacity>
 				<View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
 					<View style={styles.itemLeftContainer}>
 						<Image style={styles.icon} source={require('../../imgs/md.png')} />

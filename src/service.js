@@ -87,6 +87,13 @@ export function getSystemMsg(page, pageSize) {
 	});
 }
 
+// 我的
+export function getMine() {
+	return post(`${SERVER_HOST}/ShareWork/app/mine`, {
+		token: global.token,
+	});
+}
+
 // 获取账户信息
 export function getAccountInfo() {
 	return post(`${SERVER_HOST}/ShareWork/app/account/info`, {

@@ -30,7 +30,15 @@ export default class RegisterScene extends PureComponent {
 			// 邀请码
 			invitationCode: '',
 			protocolChecked: true,
+			cd: 0,
 		};
+	}
+
+	componentWillUnmount() {
+		if (this._interval) {
+			clearInterval(this._interval);
+			this._interval = null;
+		}
 	}
 
 	onPhoneChange(phone) {
@@ -52,23 +60,46 @@ export default class RegisterScene extends PureComponent {
 	}
 
 	onGetRegisterCode() {
-		const { phone } = this.state;
+		const { phone, cd, invitationCode } = this.state;
+		if (cd > 0) {
+			toast('验证码已发送,请稍候');
+			return;
+		}
 		if (!isPhone(phone)) {
 			toast('请输入正确的手机号码');
 			return;
 		}
-		getReigsterCode(phone, '1234').then(result => {
-			if (__TEST__) {
+		if (invitationCode === '') {
+			toast('请输入邀请码');
+			return;	
+		}
+		this.setState({
+			cd: 59,
+		}, () => {
+			this._interval = setInterval(() => {
+				if (this.state.cd === 1) {
+					if (this._interval) {
+						clearInterval(this._interval);
+						this._interval = null;
+					}
+				}
 				this.setState({
-					code: result.datas.code,
+					cd: this.state.cd - 1,
 				});
-				toast('测试环境，验证码已自动填上');
-			} else {
-				toast('验证码已发送');
-			}
-		}).catch(err => {
-			console.warn(err);
-			toast(err);
+			}, 1000);
+			getReigsterCode(phone, invitationCode).then(result => {
+				if (__TEST__) {
+					this.setState({
+						code: result.datas.code,
+					});
+					toast('测试环境，验证码已自动填上');
+				} else {
+					toast('验证码已发送');
+				}
+			}).catch(err => {
+				console.warn(err);
+				toast(err);
+			});
 		});
 	}
 
@@ -100,6 +131,7 @@ export default class RegisterScene extends PureComponent {
 			code,
 			invitationCode,
 			protocolChecked,
+			cd,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -160,7 +192,7 @@ export default class RegisterScene extends PureComponent {
 						/>
 					</View>
 					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetRegisterCode(); }}>
-						获取验证码
+						{ cd > 0 ? `${cd}s` : '获取验证码' }
 					</Text>	
 				</View>
 				<View style={styles.line} />

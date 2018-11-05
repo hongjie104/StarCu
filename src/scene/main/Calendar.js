@@ -11,7 +11,9 @@ import {
 } from 'react-native';
 import picker from 'react-native-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { loadDataFromLocal } from '../../utils/storage';
+import toast from '../../utils/toast';
+import { getMissionCalendar } from '../../service';
+import { formatDateTime } from '../../utils/datetime';
 
 export default class Calendar extends PureComponent {
 
@@ -26,14 +28,7 @@ export default class Calendar extends PureComponent {
 			nowDate: 30,
 			// 日期数组，是个二维的
 			dateArr: [],
-			misssionArr: [
-				{ year: 2018, month: 8, date: 24 },
-				{ year: 2018, month: 9, date: 16 },
-				{ year: 2018, month: 10, date: 29 },
-				{ year: 2018, month: 10, date: 30 },
-				{ year: 2018, month: 10, date: 31 },
-				{ year: 2018, month: 11, date: 24 },
-			],
+			misssionArr: [],
 		};
 	}
 
@@ -96,59 +91,75 @@ export default class Calendar extends PureComponent {
 		tmpDate.setDate(0);
 		const days = tmpDate.getDate();
 
-		const dateArr = [];
-		let dateRow = [];
-		let dayCounter = 1;
-		// 第一周
-		for (let i = 0; i < 7; i++) {
-			if (i < weekFirstDate) {
-				// 上个月的日期
-				tmpDate = new Date(curYear, curMonth - 1, i - weekFirstDate + 1);
-				dateRow[i] = {
-					date: tmpDate.getDate(),
-					month: tmpDate.getMonth() + 1,
-					year: tmpDate.getFullYear(),
-					misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate()),
+		// 获取数据
+		getMissionCalendar(formatDateTime(new Date(firstDateTime), 'yyyy-MM-dd'), formatDateTime(tmpDate, 'yyyy-MM-dd')).then(result => {
+			const { taskCalendar } = result.datas;
+			const misssionArr = taskCalendar.map(missionData => {
+				const dateArr = missionData.date.split('-');
+				return {
+					year: parseInt(dateArr[0]),
+					month: parseInt(dateArr[1]),
+					date: parseInt(dateArr[2]),
+					// status 状态（0：无任务  1：已完成  2：未完成)
+					missionArr: missionData.taskList,
 				};
-			} else {
-				dateRow[i] = {
-					date: dayCounter,
-					month: curMonth,
-					year: curYear,
-					misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
-				};
-			}
-		}
-		dateArr[0] = dateRow;
-		// 第N周（N > 1）
-		while (dayCounter <= days) {
-			dateRow = [];
+			});
+			const dateArr = [];
+			let dateRow = [];
+			let dayCounter = 1;
+			// 第一周
 			for (let i = 0; i < 7; i++) {
-				if (dayCounter <= days) {
-					dateRow[i] = {
-						date: dayCounter,
-						month: curMonth,
-						year: curYear,
-						misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
-					};
-				} else {
-					// 下个月的日期
-					tmpDate = new Date(curYear, curMonth - 1, dayCounter++);
+				if (i < weekFirstDate) {
+					// 上个月的日期
+					tmpDate = new Date(curYear, curMonth - 1, i - weekFirstDate + 1);
 					dateRow[i] = {
 						date: tmpDate.getDate(),
 						month: tmpDate.getMonth() + 1,
 						year: tmpDate.getFullYear(),
 						misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate()),
 					};
+				} else {
+					dateRow[i] = {
+						date: dayCounter,
+						month: curMonth,
+						year: curYear,
+						misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
+					};
 				}
 			}
-			dateArr.push(dateRow);   
-		}
-		this.setState({
-			curYear,
-			curMonth,
-			curDate,
-			dateArr,
+			dateArr[0] = dateRow;
+			// 第N周（N > 1）
+			while (dayCounter <= days) {
+				dateRow = [];
+				for (let i = 0; i < 7; i++) {
+					if (dayCounter <= days) {
+						dateRow[i] = {
+							date: dayCounter,
+							month: curMonth,
+							year: curYear,
+							misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
+						};
+					} else {
+						// 下个月的日期
+						tmpDate = new Date(curYear, curMonth - 1, dayCounter++);
+						dateRow[i] = {
+							date: tmpDate.getDate(),
+							month: tmpDate.getMonth() + 1,
+							year: tmpDate.getFullYear(),
+							misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate()),
+						};
+					}
+				}
+				dateArr.push(dateRow);   
+			}
+			this.setState({
+				curYear,
+				curMonth,
+				curDate,
+				dateArr,
+			});
+		}).catch(e => {
+			toast(e);
 		});
 	}
 

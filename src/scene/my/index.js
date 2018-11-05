@@ -33,7 +33,7 @@ export default class MyScene extends PureComponent {
 	}
 
 	render() {
-		const { navigate, goBack } = this.props.navigation;
+		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
 				<View style={styles.topContainer}>

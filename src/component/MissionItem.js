@@ -29,17 +29,34 @@ export default class MissionItem extends PureComponent {
 	}
 
 	render() {
+		/*
+			proType  任务类型
+			statusDesc  任务状态描述
+			endDate  订单结束日期
+			proId  订单ID
+			orderType  订单类型描述
+			orderEndDate  订单结束日期
+			orderId  订单ID
+			orderStartDate  订单开始日期
+			orderTypeId  订单类型ID
+			orderTitle  订单标题
+			taskId  任务ID
+			status  任务状态
+		 */
 		const { item } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={() => {
-					this.onItemPress(item.key);
+					this.onItemPress(item.taskId);
 				}}
 				style={styles.itemContainer}
 			>
 				<View style={styles.itemInfoContainer}>
-					<ImageBackground style={styles.itemStatusImgBg} source={require('../imgs/huangk.png')}>
+					<ImageBackground
+						style={styles.itemStatusImgBg}
+						source={item.received === 1 ? require('../imgs/lvk.png') : (item.received === 0 ? require('../imgs/hongk.png') : require('../imgs/huangk.png'))}
+					>
 						<Image style={styles.itemStatusImg} source={require('../imgs/wwc.png')} />
 						<Text style={styles.itemStatusTxt}>
 							未完成
@@ -47,15 +64,15 @@ export default class MissionItem extends PureComponent {
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>
 						<Text style={styles.itemName}>
-							{ item.name }
+							{ item.orderTitle }
 						</Text>
 						<Text style={styles.category}>
-							{ item.category }
+							{ item.orderType }
 						</Text>
 						<View style={styles.itemDateRow}>
 							<Image style={styles.clockImg} source={require('../imgs/clock.png')} />
 							<Text style={styles.date}>
-								{ item.time }
+								{ item.orderStartDate } - { item.orderEndDate }
 							</Text>
 						</View>
 					</View>

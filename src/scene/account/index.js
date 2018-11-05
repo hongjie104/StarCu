@@ -11,6 +11,8 @@ import {
 import IncomeIntroduce from './IntroduceModal';
 import WithdrawIntroduce from './IntroduceModal';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { getAccountInfo } from '../../service';
+import toast from '../../utils/toast';
 
 // 账户页面
 export default class AccountScene extends PureComponent {
@@ -21,9 +23,39 @@ export default class AccountScene extends PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			// 可提现金额
+			withdrawableAmount: '0.00',
+			// 总收入
+			totalAmount: '0.00',
+			// 扣款金额
+			deductionAmount: '0.00',
+			// 待入账金额
+			toBeCreditedAmount: '0.00',
+		};
+	}
+
+	componentWillMount() {
+		getAccountInfo().then(result => {
+			this.setState({
+				...result.datas,
+			});
+		}).catch(e => {
+			toast(e);
+		});
 	}
 
 	render() {
+		const {
+			// 可提现金额
+			withdrawableAmount,
+			// 总收入
+			totalAmount,
+			// 扣款金额
+			deductionAmount,
+			// 待入账金额
+			toBeCreditedAmount,
+		} = this.state;
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
@@ -42,7 +74,7 @@ export default class AccountScene extends PureComponent {
 							累计收入
 						</Text>
 						<Text style={styles.infoVal}>
-							¥3000.00
+							¥{ totalAmount }
 						</Text>
 					</View>
 					<View style={styles.infoCell}>
@@ -60,7 +92,7 @@ export default class AccountScene extends PureComponent {
 							</TouchableOpacity>
 						</View>
 						<Text style={styles.infoVal}>
-							¥3000.00
+							¥{ withdrawableAmount }
 						</Text>
 					</View>
 					<View style={styles.infoCell}>
@@ -68,7 +100,7 @@ export default class AccountScene extends PureComponent {
 							累计扣款
 						</Text>
 						<Text style={styles.infoVal}>
-							¥3000.00
+							¥{ deductionAmount }
 						</Text>
 					</View>
 					<View style={styles.infoCell}>
@@ -86,7 +118,7 @@ export default class AccountScene extends PureComponent {
 							</TouchableOpacity>
 						</View>
 						<Text style={styles.infoVal}>
-							¥3000.00
+							¥{ toBeCreditedAmount }
 						</Text>
 					</View>
 				</View>

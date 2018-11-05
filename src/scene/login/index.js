@@ -14,6 +14,8 @@ import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
 import { getLoginCode, login } from '../../service';
 import { isPhone } from '../../utils/reg';
+import { __TEST__ } from '../../config';
+import { saveDataToLocal } from '../../utils/storage';
 
 export default class LoginScene extends PureComponent {
 	
@@ -26,7 +28,15 @@ export default class LoginScene extends PureComponent {
 		this.state = {
 			phone: '',
 			code: '',
+			cd: 0,
 		};
+	}
+
+	componentWillUnmount() {
+		if (this._interval) {
+			clearInterval(this._interval);
+			this._interval = null;
+		}
 	}
 
 	onPhoneChange(phone) {
@@ -42,20 +52,63 @@ export default class LoginScene extends PureComponent {
 	}
 
 	onGetLoginCode() {
-		const { phone } = this.state;
+		const { phone, cd } = this.state;
+		if (cd > 0) {
+			toast('验证码已发送,请稍候');
+			return;
+		}
 		if (!isPhone(phone)) {
 			toast('请输入正确的手机号码');
 			return;
 		}
-		getLoginCode(phone).then(result => {
-			console.warn(result);
-		}).catch(e => {
-			toast(e);
+		this.setState({
+			cd: 59,
+		}, () => {
+			this._interval = setInterval(() => {
+				if (this.state.cd === 1) {
+					if (this._interval) {
+						clearInterval(this._interval);
+						this._interval = null;
+					}
+				}
+				this.setState({
+					cd: this.state.cd - 1,
+				});
+			}, 1000);
+			getLoginCode(phone).then(result => {
+				if (__TEST__) {
+					this.setState({
+						code: result.datas.code,
+					});
+					toast('测试环境，验证码已自动填上');
+				} else {
+					toast('验证码已发送');
+				}
+			}).catch(e => {
+				toast(e);
+			});
 		});
 	}
 
 	onLogin() {
-		navigationUtil.reset(this.props.navigation, 'main');
+		const { phone, code } = this.state;
+		if (!code) {
+			toast('请输入正确的验证码');
+			return;
+		}
+		if (!isPhone(phone)) {
+			toast('请输入正确的手机号码');
+			return;
+		}
+		login(phone, code).then(result => {
+			const { token } = result.datas;
+			global.token = token;
+			saveDataToLocal('token', token, () => {
+				navigationUtil.reset(this.props.navigation, 'main');
+			});
+		}).catch(err => {
+			toast(err);
+		})
 	}
 
 	onNavigateToRegister() {
@@ -71,6 +124,7 @@ export default class LoginScene extends PureComponent {
 			code,
 			invitationCode,
 			protocolChecked,
+			cd,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -128,7 +182,7 @@ export default class LoginScene extends PureComponent {
 						/>
 					</View>
 					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetLoginCode(); }}>
-						发送验证码
+						{ cd > 0 ? `${cd}s` : '发送验证码' }
 					</Text>	
 				</View>
 				<View style={styles.line} />

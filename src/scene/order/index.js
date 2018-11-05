@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import toast from '../../utils/toast';
+import { getOrderArr } from '../../service';
 
 export default class MsgScene extends PureComponent {
 	
@@ -28,58 +30,43 @@ export default class MsgScene extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			missionList: [
-				{
-					key: '1',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '2',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '3',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '4',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '5',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '6',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '7',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-			],
+			missionList: [],
 		};
+	}
+
+	componentWillMount() {
+		getOrderArr().then(result => {
+			/*
+				statusDesc 状态描述 
+				orderEndDate 订单结束时间 
+				orderDays 订单执行时长（天） 
+				orderId 订单ID 
+				orderBeginDate 订单开始时间 
+				require 订单要求 
+				orderTitle 订单标题 
+				status 订单状态 
+				orderContent 订单描述 
+				username 订单管理员
+			 */
+			const { receivedOrder, unReceivedOrder } = result.datas;
+			const missionList = [
+				...(receivedOrder.map(o => {
+					o.received = 1;
+					o.key = o.orderId;
+					return o;
+				})),
+				...(unReceivedOrder.map(o => {
+					o.received = 0;
+					o.key = o.orderId;
+					return o;
+				})),
+			];
+			this.setState({
+				missionList,
+			});
+		}).catch(e => {
+			toast(e);
+		});
 	}
 
 	render() {

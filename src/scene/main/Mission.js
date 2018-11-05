@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { loadDataFromLocal } from '../../utils/storage';
+import toast from '../../utils/toast';
+import { getTodayMission } from '../../service';
 
 const ITEM_HEIGHT = toDips(180);
 
@@ -19,44 +20,26 @@ export default class Mission extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			missionList: [
-				{
-					key: '1',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '2',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '3',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '4',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-				{
-					key: '5',
-					name: '清风理货活动',
-					category: '项目类型',
-					time: '2016.12.12-2017.01.12',
-					status: 1,
-				},
-			],
+			missionList: [],
+			numMission: 0,
+			expectedIncome: 0,	
 		};
+	}
+
+	componentWillMount() {
+		getTodayMission().then(result => {
+			const { expectedIncome, taskNum, tasks } = result.datas;
+			this.setState({
+				expectedIncome,
+				numMission: taskNum,
+				missionList: tasks.map(m => {
+					m.key = m.taskId.toString();
+					return m;
+				}),
+			});
+		}).catch(e => {
+			toast(e);
+		})
 	}
 
 	renderItem({item, index}) {
@@ -68,6 +51,8 @@ export default class Mission extends PureComponent {
 	render() {
 		const {
 			missionList,
+			numMission,
+			expectedIncome,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -75,7 +60,7 @@ export default class Mission extends PureComponent {
 				<View style={styles.infoContainer}>
 					<View style={styles.info}>
 						<Text style={styles.infoNum}>
-							16
+							{ numMission }
 						</Text>
 						<View style={styles.infoRow}>
 							<Image style={styles.iconInfo} source={require('../../imgs/dqrw.png')} />
@@ -87,7 +72,7 @@ export default class Mission extends PureComponent {
 					<View style={styles.infoLine} />
 					<View style={styles.info}>
 						<Text style={styles.infoNum}>
-							120
+							{ expectedIncome }
 						</Text>
 						<View style={styles.infoRow}>
 							<Image style={styles.iconInfo} source={require('../../imgs/yjsy.png')} />

@@ -94,6 +94,13 @@ export function getMine() {
 	});
 }
 
+// 对账流水
+export function getBill() {
+	return post(`${SERVER_HOST}/ShareWork/app/financial/bill`, {
+		token: global.token,
+	});
+}
+
 // 获取账户信息
 export function getAccountInfo() {
 	return post(`${SERVER_HOST}/ShareWork/app/account/info`, {

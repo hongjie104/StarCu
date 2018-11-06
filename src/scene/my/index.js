@@ -7,9 +7,12 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
+	Linking,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
+import { getMine } from '../../service';
+import toast from '../../utils/toast';
 
 export default class MyScene extends PureComponent {
 	
@@ -26,6 +29,27 @@ export default class MyScene extends PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			// 头像
+			avatar: null,
+			// 电话号码
+			phoneNo: '',
+			// 姓名
+			fullName: '',
+			// 账户总额
+			totalIncome: 0,
+			// 客服热线
+			consumerHotline: '',
+			// withdrawableAmount 可提现金额
+		};
+	}
+
+	componentWillMount() {
+		getMine().then(result => {
+			this.setState({ ...result.datas });
+		}).catch(e => {
+			toast(e);
+		})
 	}
 
 	onLogout() {
@@ -33,13 +57,20 @@ export default class MyScene extends PureComponent {
 	}
 
 	render() {
+		const {
+			avatar,
+			phoneNo,
+			fullName,
+			totalIncome,
+			consumerHotline,
+		} = this.state;
 		const { navigate } = this.props.navigation;
 		return (
 			<View style={styles.container}>
 				<View style={styles.topContainer}>
-					<Image style={styles.header} source={require('../../imgs/tx.png')} />
+					<Image style={styles.header} source={avatar ? { uri: avatar } : require('../../imgs/tx.png')} />
 					<Text style={styles.myName}>
-						16211242102
+						{ phoneNo }
 					</Text>
 				</View>
 				{
@@ -64,7 +95,7 @@ export default class MyScene extends PureComponent {
 								账户总额
 							</Text>
 							<Text style={styles.infoVal}>
-								¥20000
+								¥{ totalIncome }
 							</Text>
 						</View>
 					</TouchableOpacity>
@@ -130,14 +161,18 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						Linking.openURL(`tel:${consumerHotline.replace(/-/g, '')}`).then(result => {
+							// ...
+						}).catch(e => {
+							console.warn(e);
+						});
 					}}
 					style={styles.itemContainer}
 				>
 					<View style={styles.itemContainerLeft}>
 						<Image style={styles.itemImg} source={require('../../imgs/lxkf.png')} />
 						<Text style={styles.itemName}>
-							联系客服 400-021-21221
+							联系客服 { consumerHotline }
 						</Text>
 					</View>
 					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />

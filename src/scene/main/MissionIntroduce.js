@@ -10,6 +10,8 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { takeOrder } from '../../service';
+import toast from '../../utils/toast';
 
 // 任务说明
 export default class MissionIntroduce extends PureComponent {
@@ -20,36 +22,80 @@ export default class MissionIntroduce extends PureComponent {
 
 	constructor(props) {
 		super(props);
+		/*
+			statusDesc 状态描述 
+			orderEndDate 订单结束时间 
+			orderDays 订单执行时长（天） 
+			standardPhoto: [ 'http://oyxr5nbal.bkt.clouddn.com/20181107114116.jpg' ],
+			orderId 订单ID 
+			orderBeginDate 订单开始时间 
+			require 订单要求 
+			remark: null,
+			orderTitle 订单标题 
+			status 订单状态 
+			orderContent 订单描述 
+			username 订单管理员
+		*/
+		const { mission } = props.navigation.state.params;
+		this.state = {
+			...mission,
+		};
 	}
 
 	onSubmit() {
-		const {navigate} = this.props.navigation;
-		navigate({
-			routeName: 'MissionDetailScene',
-			// params: {
-			// 	missionId,
-			// },
+		// const {navigate} = this.props.navigation;
+		// navigate({
+		// 	routeName: 'MissionDetailScene',
+		// });
+
+		const { orderId } = this.state;
+		takeOrder(orderId).then(result => {
+			console.warn(result);
+		}).catch(e => {
+			toast(e);
 		});
 	}
 
 	render() {
+		/*
+		{ statusDesc: '未接单',
+       orderEndDate: '2018-09-06',
+       orderDays: '14',
+       standardPhoto: [ 'http://oyxr5nbal.bkt.clouddn.com/20181107114116.jpg' ],
+       orderId: '853613593561088',
+       orderBeginDate: '2018-09-06',
+       require: '324',
+       remark: null,
+       orderTitle: 'wef',
+       status: 1,
+       orderContent: 'wef',
+       username: '平台管理员' },
+		*/
+		const {
+			orderTitle,
+			orderBeginDate,
+			orderEndDate,
+			orderDays,
+			orderContent,
+			standardPhoto,
+		} = this.state;
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>
 					<View style={styles.titleContainer}>
 						<Text style={styles.missionTitle}>
-							清风【生活用纸】理货
+							{ orderTitle }
 						</Text>
 						<View style={styles.misstionTitleRow}>
 							<Image style={styles.icon} source={require('../../imgs/sj2.png')} />
 							<Text style={styles.missionInfo}>
-								项目时间：2016-09-01至2016-09-30（30天）
+								项目时间：{ orderBeginDate }至{ orderEndDate }（{ orderDays }天）
 							</Text>
 						</View>
 						<View style={styles.misstionTitleRow}>
 							<Image style={styles.icon} source={require('../../imgs/xm2.png')} />
 							<Text style={styles.missionInfo}>
-								项目介绍:  项目介绍内容项目介绍内容项目介绍内容项目介绍内容项目介绍内容项目介绍内容
+								项目介绍:  { orderContent }
 							</Text>
 						</View>
 					</View>
@@ -61,10 +107,10 @@ export default class MissionIntroduce extends PureComponent {
 							</Text>
 						</View>
 						<Text style={styles.des}>
-							1.牌面货架加满，依照先进先出原则进行补货陈列和前进陈列确保商品陈列先丰满、整齐、美观（严禁只拉一个面，货品排列不乱）
+							1.(服务器没有传)
 						</Text>
 						<Text style={styles.des}>
-							2.严格检查商品质量，如发现货架上出现霉变，过期、包装陈旧、商品破损及非销售期的商品即时撤离货架；
+							2.(服务器没有传)
 						</Text>
 
 						<View style={styles.desTitleContainer}>
@@ -74,7 +120,7 @@ export default class MissionIntroduce extends PureComponent {
 							</Text>
 						</View>
 						<Text style={styles.des}>
-							1.牌面货架加满，依照先进先出原则进行补货陈列和前进陈列确保商品陈列先丰满、整齐、美观（严禁只拉一个面，货品排列不乱）
+							1.(服务器没有传)
 						</Text>
 
 						<View style={styles.desTitleContainer}>
@@ -83,7 +129,11 @@ export default class MissionIntroduce extends PureComponent {
 								标准陈列图片：
 							</Text>
 						</View>
-						<Image style={styles.img} source={{ uri: 'http://g.hiphotos.baidu.com/image/pic/item/21a4462309f790524ec4285a01f3d7ca7acbd5ff.jpg' }} />
+						{
+							standardPhoto.map((photo, i) => (
+								<Image key={i} style={styles.img} source={{ uri: 'photo' }} />
+							))
+						}
 					</View>
 				</ScrollView>
 				{

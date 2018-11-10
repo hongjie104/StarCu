@@ -18,12 +18,12 @@ export default class MissionItem extends PureComponent {
 		super(props);
 	}
 
-	onItemPress(missionId) {
+	onItemPress(mission) {
 		const {navigate} = this.props.navigation;
 		navigate({
 			routeName: 'MissionIntroduceScene',
 			params: {
-				missionId,
+				mission,
 			},
 		});
 	}
@@ -48,7 +48,7 @@ export default class MissionItem extends PureComponent {
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={() => {
-					this.onItemPress(item.taskId);
+					this.onItemPress(item);
 				}}
 				style={styles.itemContainer}
 			>

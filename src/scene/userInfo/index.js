@@ -10,8 +10,12 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import picker from 'react-native-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import cityPicker from '../../component/cityPicker';
+// import cityPicker from '../../component/cityPicker';
+import Spinner from '../../component/Spinner';
+import { getMyInfo, setMyInfo, getCityArr, getStoreArr } from '../../service';
+import toast from '../../utils/toast';
 
 export default class UserInfoScene extends PureComponent {
 	
@@ -22,37 +26,151 @@ export default class UserInfoScene extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			realName: '',
-			// 身份证号码
-			idNo: '',
-			// 身份证正面照
-			idImage1: '',
-			// 身份证反面照
-			idImage2: '',
-			userImage1: '',
-			userImage2: '',
+			myInfo: {
+				fullName: '',
+				// 身份证号码
+				idNo: '',
+				// 身份证正面照
+				idPositivePho: '',
+				// 身份证反面照
+				idOppositePho: '',
+				userImage1: '',
+				userImage2: '',
+			},
+			// 当前选中的城市
+			cityData: null,
+			// 当前选中的门店
+			storeData: null,
+			inited: false,
 		};
 	}
 
+	async componentDidMount() {
+		/*
+			idOppositePho  身份证反面照 
+			salesId  促销员ID 
+			fullName  促销员姓名 
+			idPositivePho  身份证正面照 
+			storeList  门店列表 
+			storeList.storeName  门店名称 
+			storeList.id  门店ID 
+			idNo  身份证号 
+			personalPhoto  个人照片（json数组） 
+			currentStoreId  当前绑定门店ID
+		*/
+		let myInfo = null;
+		try {
+			/*
+			{ idOppositePho: null,
+			currentCityId: null,
+			salesId: '2192667870824448',
+			fullName: '11',
+			idPositivePho: null,
+			idNo: null,
+			personalPhoto: null,
+			currentStoreId: null }
+			*/
+			myInfo = await getMyInfo();
+		} catch (e) {
+			toast(e);
+			return;
+		}
+		try {
+			this.cityArr = await getCityArr();
+			this.cityArr = this.cityArr.datas.cityList;
+		} catch (e) {
+			toast(e);
+			return;
+		}
+		this.setState({
+			myInfo: {
+				...myInfo.datas,
+			},
+			inited: true,
+		});
+	}
+
+	initCityPicker() {
+		picker.init({
+			pickerData: this.cityArr.map(cityData => cityData.name),
+			pickerConfirmBtnText: '确定',
+			pickerCancelBtnText: '取消',
+			pickerTitleText: '城市选择',
+			pickerBg: [255, 255, 255, 1],
+			onPickerConfirm: pickedValue => {
+				for (let i = 0; i < this.cityArr.length; i++) {
+					if (this.cityArr[i].name === pickedValue[0]) {
+						this.setState({
+							cityData: this.cityArr[i],
+							storeData: null,
+						}, () => {
+							// 获取门店数据
+							getStoreArr(this.cityArr[i].id).then(result => {
+								this.storeArr = result.datas.storeList;
+							}).catch(e => {
+								toast(e);
+							});
+						});
+						break;
+					}
+				}
+			},
+		});
+	}
+
+	initStorePicker() {
+		picker.init({
+			pickerData: this.storeArr.map(storeData => storeData.name),
+			pickerConfirmBtnText: '确定',
+			pickerCancelBtnText: '取消',
+			pickerTitleText: '门店选择',
+			pickerBg: [255, 255, 255, 1],
+			onPickerConfirm: pickedValue => {
+				for (let i = 0; i < this.storeArr.length; i++) {
+					if (this.storeArr[i].name === pickedValue[0]) {
+						this.setState({
+							storeData: this.storeArr[i],
+						});
+						break;
+					}
+				}
+			},
+		});
+	}
+
 	componentWillUnmount() {
-		cityPicker.hide();
+		picker.hide();
 	}
 
 	onShowCityPicker() {
-		if (!cityPicker.isPickerShow()) {
-			cityPicker.show();
+		if (!picker.isPickerShow()) {
+			this.initCityPicker();
+			picker.show();
 		}
 	}
 
-	onRealNameChange(realName) {
+	onShowStorePicker() {
+		if (!picker.isPickerShow()) {
+			this.initStorePicker();
+			picker.show();
+		}	
+	}
+
+	onFullNameChange(fullName) {
 		this.setState({
-			realName,
+			myInfo: {
+				...this.state.myInfo,
+				fullName,
+			},
 		});
 	}
 
 	onIdNoChange(idNo) {
 		this.setState({
-			idNo,
+			myInfo: {
+				...this.state.myInfo,
+				idNo,
+			},
 		});
 	}
 
@@ -82,26 +200,49 @@ export default class UserInfoScene extends PureComponent {
 				const source = { uri: response.uri };
 				if (category === 1) {
 					this.setState({
-						[`idImage${type}`]: response.uri,
+						myInfo: {
+							...this.state.myInfo,
+							[`${type === 1 ? 'idPositivePho' : 'idOppositePho'}`]: response.uri,
+						},
 					});
 				} else {
 					this.setState({
-						[`userImage${type}`]: response.uri,
+						myInfo: {
+							...this.state.myInfo,
+							[`userImage${type}`]: response.uri,
+						},
 					});
 				}
 			}
 		});
 	}
 
+	onSubmit() {
+		const { myInfo } = this.state;
+		setMyInfo(myInfo).then(result => {
+			console.warn(result);
+		}).catch(e => {
+			toast(e);
+		})
+	}
+
 	render() {
 		const {
-			realName,
-			idNo,
-			idImage1,
-			idImage2,
-			userImage1,
-			userImage2,
+			myInfo: {
+				fullName,
+				idNo,
+				idPositivePho,
+				idOppositePho,
+				userImage1,
+				userImage2,
+			},
+			cityData,
+			storeData,
+			inited,
 		} = this.state;
+		if (!inited) {
+			return <Spinner />
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.itemContainer}>
@@ -110,10 +251,10 @@ export default class UserInfoScene extends PureComponent {
 						姓名：
 					</Text>
 					<TextInput
-						onChangeText={realName => {
-							this.onRealNameChange(realName);
+						onChangeText={fullName => {
+							this.onFullNameChange(fullName);
 						}}
-						value={realName}
+						value={fullName}
 						placeholder='请输入真实姓名'
 						placeholderTextColor='#B5B5B5'
 						style={styles.input}
@@ -149,8 +290,8 @@ export default class UserInfoScene extends PureComponent {
 						}}
 					>
 						{
-							idImage1 ? (
-								<Image style={styles.phoneBgImg} source={{ uri: idImage1 }} />
+							idPositivePho ? (
+								<Image style={styles.phoneBgImg} source={{ uri: idPositivePho }} />
 							) : (
 								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
 							)
@@ -166,8 +307,8 @@ export default class UserInfoScene extends PureComponent {
 						}}
 					>
 						{
-							idImage2 ? (
-								<Image style={styles.phoneBgImg} source={{ uri: idImage2 }} />
+							idOppositePho ? (
+								<Image style={styles.phoneBgImg} source={{ uri: idOppositePho }} />
 							) : (
 								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
 							)
@@ -230,30 +371,36 @@ export default class UserInfoScene extends PureComponent {
 							所在城市：
 						</Text>
 						<Text style={styles.contentTxt}>
-							选择城市
+							{ cityData ? cityData.name : '选择城市' }
 						</Text>
 					</View>
 					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
 				</TouchableOpacity>
-				<View style={[styles.itemContainer, { justifyContent: 'space-between' }]}>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					onPress={() => {
+						this.onShowStorePicker();
+					}}
+					style={[styles.itemContainer, { justifyContent: 'space-between' }]}
+				>				
 					<View style={styles.itemLeftContainer}>
 						<Image style={styles.icon} source={require('../../imgs/md.png')} />
 						<Text style={styles.contentTxt}>
 							绑定门店：
 						</Text>
 						<Text style={styles.contentTxt}>
-							选择门店
+							{ storeData ? storeData.name : '选择门店' }
 						</Text>
 					</View>
 					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
-				</View>
+				</TouchableOpacity>
 				{
 					// 提交按钮
 				}
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onSubmit();
 					}}
 					style={styles.submitBtn}
 				>

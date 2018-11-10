@@ -69,6 +69,14 @@ export function getOrderArr() {
 	});
 }
 
+// 接受订单
+export function takeOrder(orderId) {
+	return post(`${SERVER_HOST}/ShareWork/app/getOrders`, {
+		token: global.token,
+		orderId,
+	});
+}
+
 // 获取订单消息
 export function getOrderMsg(page, pageSize) {
 	return post(`${SERVER_HOST}/ShareWork/app/orderMessage`, {
@@ -105,5 +113,35 @@ export function getBill() {
 export function getAccountInfo() {
 	return post(`${SERVER_HOST}/ShareWork/app/account/info`, {
 		token: global.token,
+	});
+}
+
+// 获取个人信息
+export function getMyInfo() {
+	return post(`${SERVER_HOST}/ShareWork/app/userinfo/get`, {
+		token: global.token,
+	});
+}
+
+export function setMyInfo(myInfo) {
+	return post(`${SERVER_HOST}/ShareWork/app/userinfo/update`, {
+		...myInfo,
+		token: global.token,
+	});
+}
+
+// 获取城市列表
+export function getCityArr() {
+	return post(`${SERVER_HOST}/ShareWork/app/cityList`, {
+		token: global.token,
+		key: SERVER_KEY,
+	});
+}
+
+export function getStoreArr(cityId) {
+	return post(`${SERVER_HOST}/ShareWork/app/storeList`, {
+		token: global.token,
+		cityId,
+		key: SERVER_KEY,
 	});
 }

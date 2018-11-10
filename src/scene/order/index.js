@@ -40,9 +40,11 @@ export default class MsgScene extends PureComponent {
 				statusDesc 状态描述 
 				orderEndDate 订单结束时间 
 				orderDays 订单执行时长（天） 
+				standardPhoto: [ 'http://oyxr5nbal.bkt.clouddn.com/20181107114116.jpg' ],
 				orderId 订单ID 
 				orderBeginDate 订单开始时间 
 				require 订单要求 
+				remark: null,
 				orderTitle 订单标题 
 				status 订单状态 
 				orderContent 订单描述 

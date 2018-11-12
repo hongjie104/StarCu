@@ -51,6 +51,7 @@ export function post(url, data) {
 		}), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
+				// console.warn(responseText);
 				const jsonData = JSON.parse(responseText);
 				console.log('[post] result => ', jsonData);
 				if (jsonData.errorCode === '0') {

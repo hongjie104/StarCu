@@ -138,6 +138,7 @@ export function getCityArr() {
 	});
 }
 
+// 获取门店列表
 export function getStoreArr(cityId) {
 	return post(`${SERVER_HOST}/ShareWork/app/storeList`, {
 		token: global.token,

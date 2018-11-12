@@ -41,7 +41,7 @@ export function post(url, data) {
 		}
 		console.log('[post] url => ' + url);
 		console.log('[post] data => ', data);
-		timeout(fetch(url, {
+		timeout(fetch(encodeURI(url), {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -75,7 +75,8 @@ export function get(url) {
 			return;
 		}
 		console.log('[get] url => ' + url);
-		timeout(fetch(url), TIME_OUT)
+
+		timeout(fetch(encodeURI(url)), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
 				// console.warn(responseText);

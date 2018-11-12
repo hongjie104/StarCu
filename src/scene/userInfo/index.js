@@ -12,10 +12,12 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import picker from 'react-native-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
-// import cityPicker from '../../component/cityPicker';
 import Spinner from '../../component/Spinner';
 import { getMyInfo, setMyInfo, getCityArr, getStoreArr } from '../../service';
 import toast from '../../utils/toast';
+import * as qiniu from '../../utils/qiniu';
+import { isCardno } from '../../utils/reg';
+import { QI_NIU_DOMAIN } from '../../config';
 
 export default class UserInfoScene extends PureComponent {
 	
@@ -70,7 +72,7 @@ export default class UserInfoScene extends PureComponent {
 			personalPhoto: null,
 			currentStoreId: null }
 			*/
-			myInfo = await getMyInfo();
+			myInfo = await getMyInfo();			
 		} catch (e) {
 			toast(e);
 			return;
@@ -85,6 +87,8 @@ export default class UserInfoScene extends PureComponent {
 		this.setState({
 			myInfo: {
 				...myInfo.datas,
+				userImage1: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[0] : '',
+				userImage2: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[1] : '',
 			},
 			inited: true,
 		});
@@ -103,6 +107,10 @@ export default class UserInfoScene extends PureComponent {
 						this.setState({
 							cityData: this.cityArr[i],
 							storeData: null,
+							myInfo: {
+								...this.state.myInfo,
+								cityId: this.cityArr[i].id,
+							},
 						}, () => {
 							// 获取门店数据
 							getStoreArr(this.cityArr[i].id).then(result => {
@@ -119,23 +127,32 @@ export default class UserInfoScene extends PureComponent {
 	}
 
 	initStorePicker() {
-		picker.init({
-			pickerData: this.storeArr.map(storeData => storeData.name),
-			pickerConfirmBtnText: '确定',
-			pickerCancelBtnText: '取消',
-			pickerTitleText: '门店选择',
-			pickerBg: [255, 255, 255, 1],
-			onPickerConfirm: pickedValue => {
-				for (let i = 0; i < this.storeArr.length; i++) {
-					if (this.storeArr[i].name === pickedValue[0]) {
-						this.setState({
-							storeData: this.storeArr[i],
-						});
-						break;
+		const pickerData = this.storeArr.map(storeData => storeData.name);
+		if (pickerData.length > 0) {
+			picker.init({
+				pickerData,
+				pickerConfirmBtnText: '确定',
+				pickerCancelBtnText: '取消',
+				pickerTitleText: '门店选择',
+				pickerBg: [255, 255, 255, 1],
+				onPickerConfirm: pickedValue => {
+					for (let i = 0; i < this.storeArr.length; i++) {
+						if (this.storeArr[i].name === pickedValue[0]) {
+							this.setState({
+								storeData: this.storeArr[i],
+								myInfo: {
+									...this.state.myInfo,
+									storeId: this.storeArr[i].id,
+								},
+							});
+							break;
+						}
 					}
-				}
-			},
-		});
+				},
+			});
+			return true;
+		}
+		return false;
 	}
 
 	componentWillUnmount() {
@@ -151,8 +168,11 @@ export default class UserInfoScene extends PureComponent {
 
 	onShowStorePicker() {
 		if (!picker.isPickerShow()) {
-			this.initStorePicker();
-			picker.show();
+			if (this.initStorePicker()) {
+				picker.show();
+			} else {
+				toast('该城市的门店列表为空！');
+			}
 		}	
 	}
 
@@ -217,13 +237,79 @@ export default class UserInfoScene extends PureComponent {
 		});
 	}
 
-	onSubmit() {
+	async uploadImg(uri) {
+		let data = null;
+		try {
+			data =  await qiniu.upload(uri, `${new Date().getTime()}.jpg`);
+		} catch (err) {
+			toast('上传照片失败，请重试');
+			return false;
+		}
+		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
+	}
+
+	async onSubmit() {
 		const { myInfo } = this.state;
-		setMyInfo(myInfo).then(result => {
+		let { fullName, idNo, idPositivePho, idOppositePho, userImage1, userImage2, cityId, storeId } = myInfo;
+		if (!fullName) {
+			toast('请输入真实姓名');
+			return;
+		}
+		if (!isCardno(idNo)) {
+			toast('请输入正确的身份证号');
+			return;
+		}
+		if (!idPositivePho) {
+			toast('请上传身份证正面照');
+			return;
+		}
+		if (!idOppositePho) {
+			toast('请上传身份证反面照');
+			return;
+		}
+		if (!userImage1) {
+			toast('请上传第一张个人照片');
+			return;
+		}
+		if (!userImage2) {
+			toast('请上传第二张个人照片');
+			return;
+		}
+		if (!cityId) {
+			toast('请选择所在门店');
+			return;	
+		}
+		if (!storeId) {
+			toast('请选择绑定门店');
+			return;
+		}
+		
+		if (!idPositivePho.startsWith('http')) {
+			idPositivePho = await this.uploadImg(idPositivePho);
+		}
+		if (!idOppositePho.startsWith('http')) {
+			idOppositePho = await this.uploadImg(idOppositePho);
+		}
+		if (!userImage1.startsWith('http')) {
+			userImage1 = await this.uploadImg(userImage1);
+		}
+		if (!userImage2.startsWith('http')) {
+			userImage2 = await this.uploadImg(userImage2);
+		}
+		
+		setMyInfo({
+			fullName,
+			idNo,
+			cityId,
+			storeId,
+			idPositivePho,
+			idOppositePho,
+			personalPhotos: [userImage1, userImage2],
+		}).then(result => {
 			console.warn(result);
 		}).catch(e => {
 			toast(e);
-		})
+		});
 	}
 
 	render() {

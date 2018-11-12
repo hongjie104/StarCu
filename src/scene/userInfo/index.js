@@ -304,7 +304,7 @@ export default class UserInfoScene extends PureComponent {
 			storeId,
 			idPositivePho,
 			idOppositePho,
-			personalPhotos: [userImage1, userImage2],
+			personalPhotos: [userImage1, userImage2].join(','),
 		}).then(result => {
 			console.warn(result);
 		}).catch(e => {

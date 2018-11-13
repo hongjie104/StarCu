@@ -14,6 +14,10 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import * as qiniu from '../../utils/qiniu';
+import { QI_NIU_DOMAIN } from '../../config';
+import { getMissionInfo, updateTally } from '../../service';
+import toast from '../../utils/toast';
 
 export default class MissionDetail extends PureComponent {
 	
@@ -24,15 +28,41 @@ export default class MissionDetail extends PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
+			missionInfo: null,
 			img1: '',
 			img2: '',
 			img3: '',
 			img4: '',
+			skuDataArr: [],
 		};
 	}
 
-	componentWillMount() {
-		// const { params: { missionId } } = this.props.navigation.state;
+	componentDidMount() {
+		const { taskId } = this.props.navigation.state.params;
+		getMissionInfo(taskId).then(result => {
+			this.setState({
+				missionInfo: result.datas,
+				skuDataArr: result.datas.skus.map(sku => {
+					return {
+						skuId: sku.skuId,
+						skuNum: 0,
+					};
+				}),
+			});
+		}).catch(e => {
+			toast(e);
+		});
+	}
+
+	async uploadImg(uri) {
+		let data = null;
+		try {
+			data =  await qiniu.upload(uri, `${new Date().getTime()}.jpg`);
+		} catch (err) {
+			toast('上传照片失败，请重试');
+			return false;
+		}
+		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
 	}
 
 	onPickImage(type) {
@@ -68,12 +98,75 @@ export default class MissionDetail extends PureComponent {
 		this.scroll.props.scrollToFocusedInput(reactNode);
 	}
 
+	onSkuNumChange(skuId, num) {
+		console.warn(skuId, num);
+		if (isNaN(num)) return;
+		const skuDataArr = [...this.state.skuDataArr];
+		for (let i = 0; i < skuDataArr.length; i++) {
+			if (skuDataArr[i].skuId === skuId) {
+				skuDataArr[i].skuNum = parseInt(num);
+				break;
+			}
+		}
+		this.setState({
+			skuDataArr,
+		});
+	}
+
+	async onSubmit() {
+		const {
+			skuDataArr,
+			taskId,
+		} = this.state;
+		let {
+			img1,
+			img2,
+			img3,
+			img4,
+		} = this.state;
+		if (!img1) {
+			toast('请选择理货前正面照');
+			return;
+		}
+		if (!img1.startsWith('http')) {
+			img1 = await this.uploadImg(img1);
+		}
+		if (!img2) {
+			toast('请选择理货前左侧照');
+			return;
+		}
+		if (!img2.startsWith('http')) {
+			img2 = await this.uploadImg(img2);
+		}
+		if (!img3) {
+			toast('请选择理货后正面照');
+			return;
+		}
+		if (!img3.startsWith('http')) {
+			img3 = await this.uploadImg(img3);
+		}
+		if (!img4) {
+			toast('请选择理货后左侧照');
+			return;
+		}
+		if (!img4.startsWith('http')) {
+			img4 = await this.uploadImg(img4);
+		}
+		updateTally(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
+			console.warn(result);
+		}).catch(e => {
+			toast(e);
+		});
+	}
+
 	render() {
 		const {
 			img1,
 			img2,
 			img3,
 			img4,
+			missionInfo,
+			skuDataArr,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -118,7 +211,7 @@ export default class MissionDetail extends PureComponent {
 					<View style={styles.phoneItemLeftContainer}>
 						<View style={styles.phoneItemIndexContainer}>
 							<Text style={styles.phoneItemIndexTxt}>
-								1
+								2
 							</Text>
 						</View>
 						<Text style={styles.phoneItemTxt}>
@@ -148,7 +241,7 @@ export default class MissionDetail extends PureComponent {
 					<View style={styles.phoneItemLeftContainer}>
 						<View style={styles.phoneItemIndexContainer}>
 							<Text style={styles.phoneItemIndexTxt}>
-								1
+								3
 							</Text>
 						</View>
 						<Text style={styles.phoneItemTxt}>
@@ -178,7 +271,7 @@ export default class MissionDetail extends PureComponent {
 					<View style={styles.phoneItemLeftContainer}>
 						<View style={styles.phoneItemIndexContainer}>
 							<Text style={styles.phoneItemIndexTxt}>
-								1
+								4
 							</Text>
 						</View>
 						<Text style={styles.phoneItemTxt}>
@@ -214,46 +307,38 @@ export default class MissionDetail extends PureComponent {
 						补货数据汇报
 					</Text>
 				</View>
-				<View style={styles.dataContainer}>
-					<Text style={styles.dataTxt}>
-						SKU1
-					</Text>
-					<View style={styles.dataInputContainer}>
-						<TextInput
-							keyboardType='numeric'
-							onChange={() => {}}
-							placeholder='请输入补货量'
-							placeholderTextColor='#999'
-							style={styles.input}
-							onFocus={(event: Event) => {
-								// `bind` the function if you're using ES6 classes
-								this.scrollToInput(findNodeHandle(event.target));
-							}}
-						/>
-					</View>
-				</View>
-				<View style={[styles.dataContainer, styles.lastDataContainer]}>
-					<Text style={styles.dataTxt}>
-						SKU2
-					</Text>
-					<View style={styles.dataInputContainer}>
-						<TextInput
-							keyboardType='numeric'
-							onChange={() => {}}
-							placeholder='请输入补货量'
-							placeholderTextColor='#999'
-							style={styles.input}
-						/>
-					</View>
-				</View>
-
+				{
+					missionInfo && missionInfo.skus.map((sku, i) => (
+						<View key={i} style={[styles.dataContainer, i === missionInfo.skus.length - 1 ? styles.lastDataContainer : null]}>
+							<Text style={styles.dataTxt}>
+								{ sku.skuName }
+							</Text>
+							<View style={styles.dataInputContainer}>
+								<TextInput
+									keyboardType='numeric'
+									onChangeText={text => {
+										this.onSkuNumChange(sku.skuId, text);
+									}}
+									placeholder='请输入补货量'
+									placeholderTextColor='#999'
+									style={styles.input}
+									onFocus={(event: Event) => {
+										// `bind` the function if you're using ES6 classes
+										this.scrollToInput(findNodeHandle(event.target));
+									}}
+									value={skuDataArr.filter(item => item.skuId === sku.skuId )[0].skuNum.toString()}
+								/>
+							</View>
+						</View>
+					))
+				}
 				{
 					// 提交按钮
 				}
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onSubmit();
 					}}
 					style={styles.submitBtn}
 				>
@@ -355,9 +440,10 @@ const styles = StyleSheet.create({
 		// fontWeight: '500',
 		color: '#333',
 		marginLeft: toDips(37),
+		width: toDips(160),
 	},
 	dataInputContainer: {
-		width: toDips(534),
+		width: toDips(434),
 		height: toDips(70),
 		borderColor: '#DCDCDC',
 		borderWidth: 1,
@@ -365,7 +451,7 @@ const styles = StyleSheet.create({
 		marginLeft: toDips(50),
 	},
 	input: {
-		width: toDips(500),
+		width: toDips(400),
 		height: toDips(70),
 		marginLeft: toDips(26),
 	},

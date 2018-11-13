@@ -43,17 +43,30 @@ export default class MissionIntroduce extends PureComponent {
 	}
 
 	onSubmit() {
-		// const {navigate} = this.props.navigation;
-		// navigate({
-		// 	routeName: 'MissionDetailScene',
-		// });
-
-		const { orderId } = this.state;
-		takeOrder(orderId).then(result => {
-			console.warn(result);
-		}).catch(e => {
-			toast(e);
-		});
+		const { status } = this.state;
+		const { type } = this.props;
+		if (type === 1 && status === 0) {
+			const { orderId } = this.state;
+			takeOrder(orderId).then(result => {
+				const {navigate} = this.props.navigation;
+				navigate({
+					routeName: 'MissionDetailScene',
+					params: {
+						...this.state,
+					},
+				});
+			}).catch(e => {
+				toast(e);
+			});
+		} else {
+			const {navigate} = this.props.navigation;
+			navigate({
+				routeName: 'MissionDetailScene',
+				params: {
+					...this.state,
+				},
+			});
+		}
 	}
 
 	render() {
@@ -78,7 +91,11 @@ export default class MissionIntroduce extends PureComponent {
 			orderDays,
 			orderContent,
 			standardPhoto,
+			status,
 		} = this.state;
+		console.warn(this.state);
+		// type 0 是任务  1 是订单
+		const { type } = this.props;
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>
@@ -130,7 +147,7 @@ export default class MissionIntroduce extends PureComponent {
 							</Text>
 						</View>
 						{
-							standardPhoto.map((photo, i) => (
+							standardPhoto && standardPhoto.map((photo, i) => (
 								<Image key={i} style={styles.img} source={{ uri: 'photo' }} />
 							))
 						}
@@ -147,7 +164,7 @@ export default class MissionIntroduce extends PureComponent {
 					style={styles.submitBtn}
 				>
 					<Text style={styles.submitBtnTxt}>
-						接单
+						{ type === 1 ? (status === 0 ? '接单' : '做任务') : '做任务' }
 					</Text>
 				</TouchableOpacity>
 			</View>

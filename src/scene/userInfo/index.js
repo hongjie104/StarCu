@@ -84,12 +84,31 @@ export default class UserInfoScene extends PureComponent {
 			toast(e);
 			return;
 		}
+		let cityData = null;
+		let storeData = null;
+		for (let i = 0; i < this.cityArr.length; i++) {
+			if (this.cityArr[i].id === myInfo.datas.currentCityId) {
+				cityData = this.cityArr[i];
+				// 获取门店数据
+				this.storeArr = await getStoreArr(this.cityArr[i].id);
+				this.storeArr = this.storeArr.datas.storeList;
+				for (let i = 0; i < this.storeArr.length; i++) {
+					if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
+						storeData = this.storeArr[i];
+						break;
+					}
+				}
+				break;
+			}
+		}
 		this.setState({
 			myInfo: {
 				...myInfo.datas,
-				userImage1: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[0] : '',
-				userImage2: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[1] : '',
+				userImage1: Array.isArray(myInfo.datas.personalPhoto) ? decodeURI(myInfo.datas.personalPhoto[0]) : '',
+				userImage2: Array.isArray(myInfo.datas.personalPhoto) ? decodeURI(myInfo.datas.personalPhoto[1]) : '',
 			},
+			cityData,
+			storeData,
 			inited: true,
 		});
 	}
@@ -306,7 +325,7 @@ export default class UserInfoScene extends PureComponent {
 			idOppositePho,
 			personalPhotos: [userImage1, userImage2].join(','),
 		}).then(result => {
-			console.warn(result);
+			toast('修改成功');
 		}).catch(e => {
 			toast(e);
 		});
@@ -327,7 +346,7 @@ export default class UserInfoScene extends PureComponent {
 			inited,
 		} = this.state;
 		if (!inited) {
-			return <Spinner />
+			return <Spinner />;
 		}
 		return (
 			<View style={styles.container}>
@@ -527,7 +546,7 @@ const styles = StyleSheet.create({
 	input: {
 		fontSize: getFontSize(32),
 		// fontWeight: '500',
-		color: '#333',	
+		color: '#333',
 	},
 	phoneBgImg: {
 		width: toDips(86),

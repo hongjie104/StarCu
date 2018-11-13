@@ -14,6 +14,7 @@ import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
 import { isPhone } from '../../utils/reg';
 import { resiger, getReigsterCode } from '../../service';
+import { saveDataToLocal } from '../../utils/storage';
 import { __TEST__ } from '../../config';
 
 export default class RegisterScene extends PureComponent {
@@ -117,11 +118,19 @@ export default class RegisterScene extends PureComponent {
 			toast('请输入正确的验证码');
 			return;
 		}
-		resiger(phone, code, invitationCode).then(result => {
-			console.warn(result);
-			navigationUtil.reset(this.props.navigation, 'main');
-		}).catch(err => {
-			toast(err);
+		saveDataToLocal('phone', phone, () => {
+			resiger(phone, code, invitationCode).then(result => {
+				const { token, uid } = result.datas;
+				global.token = token;
+				global.uid = uid;
+				saveDataToLocal('token', token, () => {
+					saveDataToLocal('uid', uid, () => {
+						navigationUtil.reset(this.props.navigation, 'main');
+					});
+				});
+			}).catch(err => {
+				toast(err);
+			});
 		});
 	}
 

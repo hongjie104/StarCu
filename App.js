@@ -28,14 +28,32 @@ export default class App extends PureComponent {
 	componentDidMount() {
 		// 读取本地信息，判断是否已登录
 		loadDataFromLocal('token', data => {
-			this.checkingLocalDataDone(data);
+			this.loadUid(data);
 		}, err => {
-			this.checkingLocalDataDone();
+			this.loadUid();
 		});
 	}
 
-	checkingLocalDataDone(token = null) {
+	loadUid(token = null) {
+		loadDataFromLocal('uid', data => {
+			this.loadPhone(token, data);
+		}, err => {
+			this.loadPhone(token);
+		});
+	}
+
+	loadPhone(token = null, uid = null) {
+		loadDataFromLocal('phone', data => {
+			this.checkingLocalDataDone(token, uid, data);
+		}, err => {
+			this.checkingLocalDataDone(token, uid);
+		});
+	}
+
+	checkingLocalDataDone(token = null, uid = null, phone = null) {
 		global.token = token;
+		global.uid = uid;
+		global.phone = phone;
 		AppNavigation = createAppNavigation(token);
 		if (!deviceInfo.isIOS()) {
             const defaultStateAction = AppNavigation.router.getStateForAction;

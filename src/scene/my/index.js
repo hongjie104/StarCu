@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
-import { getMine } from '../../service';
+import { getMine, getBank } from '../../service';
 import toast from '../../utils/toast';
+import { removeLocalData } from '../../utils/storage';
 
 export default class MyScene extends PureComponent {
 	
@@ -44,15 +45,29 @@ export default class MyScene extends PureComponent {
 		};
 	}
 
-	componentWillMount() {
-		getMine().then(result => {
-			this.setState({ ...result.datas });
-		}).catch(e => {
+	async componentDidMount() {
+		let result = null;
+		try {
+			result = await getMine();
+		} catch(e) {
 			toast(e);
-		})
+			return;
+		}
+		let bankData = null;
+		try {
+			bankData = await getBank();
+		} catch(e) {
+			toast(e);
+			return;
+		}
+		this.setState({ ...result.datas, ...bankData.datas });
 	}
 
 	onLogout() {
+		global.token = null;
+		global.uid = null;
+		removeLocalData('token');
+		removeLocalData('uid');
 		navigationUtil.reset(this.props.navigation, 'LoginScene');
 	}
 

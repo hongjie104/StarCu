@@ -19,11 +19,12 @@ export default class MissionItem extends PureComponent {
 	}
 
 	onItemPress(mission) {
-		const {navigate} = this.props.navigation;
+		const { navigation: { navigate }, type } = this.props;
 		navigate({
 			routeName: 'MissionIntroduceScene',
 			params: {
 				mission,
+				type,
 			},
 		});
 	}
@@ -43,7 +44,8 @@ export default class MissionItem extends PureComponent {
 			taskId  任务ID
 			status  任务状态
 		 */
-		const { item } = this.props;
+		// type 0 是任务  1 是订单
+		const { item, type } = this.props;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.8}
@@ -57,9 +59,14 @@ export default class MissionItem extends PureComponent {
 						style={styles.itemStatusImgBg}
 						source={item.received === 1 ? require('../imgs/lvk.png') : (item.received === 0 ? require('../imgs/hongk.png') : require('../imgs/huangk.png'))}
 					>
-						<Image style={styles.itemStatusImg} source={require('../imgs/wwc.png')} />
+						<Image
+							style={styles.itemStatusImg}
+							source={
+								type === 1 ? (item.status === 0 ? require('../imgs/wjd.png') : require('../imgs/yjd.png')) : require('../imgs/wwc.png')
+							}
+						/>
 						<Text style={styles.itemStatusTxt}>
-							未完成
+							{ type === 1 ? (item.status === 0 ? '未接单' : '已接单') : '未完成' }
 						</Text>
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>
@@ -72,7 +79,7 @@ export default class MissionItem extends PureComponent {
 						<View style={styles.itemDateRow}>
 							<Image style={styles.clockImg} source={require('../imgs/clock.png')} />
 							<Text style={styles.date}>
-								{ item.orderStartDate } - { item.orderEndDate }
+								{ item.orderStartDate || item.orderBeginDate } - { item.orderEndDate }
 							</Text>
 						</View>
 					</View>

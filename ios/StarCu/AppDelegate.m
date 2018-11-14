@@ -10,7 +10,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <MeiQiaSDK/MQManager.h>
-//#import "MQServiceToViewInterface.h"
+#import <UMCommon/UMCommon.h>
 
 @implementation AppDelegate
 
@@ -24,6 +24,9 @@
       NSLog(@"error:%@",error);
     }
   }];
+  
+  // 初始化友盟
+  [UMConfigure initWithAppkey:@"5beba697f1f556e30c000349" channel:@"App Store"];
   
   NSURL *jsCodeLocation;
 

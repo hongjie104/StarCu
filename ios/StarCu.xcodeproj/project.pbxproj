@@ -183,6 +183,10 @@
 		6C49BCF7219BCA2C00249A65 /* MQMessageFormImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BC64219BCA2C00249A65 /* MQMessageFormImageCell.m */; };
 		6C49BCF8219BCA2C00249A65 /* MQMessageFormImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BC67219BCA2C00249A65 /* MQMessageFormImageView.m */; };
 		6C49BCF9219BCA2C00249A65 /* MQMessageFormTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BC6A219BCA2C00249A65 /* MQMessageFormTextView.m */; };
+		6C49BD00219BDFC400249A65 /* UMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C49BCFF219BDFC300249A65 /* UMCommon.framework */; };
+		6C49BD02219BDFDF00249A65 /* UMAnalytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C49BD01219BDFDF00249A65 /* UMAnalytics.framework */; };
+		6C49BD04219BDFF300249A65 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C49BD03219BDFF200249A65 /* libz.tbd */; };
+		6C49BD07219BE04300249A65 /* UMengModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BD06219BE04300249A65 /* UMengModule.m */; };
 		6C6B59BA219BBE2E006A0CA3 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59B9219BBE2E006A0CA3 /* libsqlite3.tbd */; };
 		6C6B59BC219BBE3B006A0CA3 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59BB219BBE3B006A0CA3 /* libicucore.tbd */; };
 		6C6B59BE219BBE43006A0CA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59BD219BBE43006A0CA3 /* AVFoundation.framework */; };
@@ -901,6 +905,11 @@
 		6C49BC68219BCA2C00249A65 /* MQMessageFormImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormImageView.h; sourceTree = "<group>"; };
 		6C49BC6A219BCA2C00249A65 /* MQMessageFormTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormTextView.m; sourceTree = "<group>"; };
 		6C49BC6B219BCA2C00249A65 /* MQMessageFormTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormTextView.h; sourceTree = "<group>"; };
+		6C49BCFF219BDFC300249A65 /* UMCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMCommon.framework; sourceTree = "<group>"; };
+		6C49BD01219BDFDF00249A65 /* UMAnalytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMAnalytics.framework; sourceTree = "<group>"; };
+		6C49BD03219BDFF200249A65 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6C49BD05219BE04300249A65 /* UMengModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UMengModule.h; sourceTree = "<group>"; };
+		6C49BD06219BE04300249A65 /* UMengModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UMengModule.m; sourceTree = "<group>"; };
 		6C6B59B9219BBE2E006A0CA3 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		6C6B59BB219BBE3B006A0CA3 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		6C6B59BD219BBE43006A0CA3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -938,13 +947,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C6B59C6219BBE67006A0CA3 /* QuickLook.framework in Frameworks */,
-				6C6B59C4219BBE60006A0CA3 /* MobileCoreServices.framework in Frameworks */,
 				6C6B59C2219BBE55006A0CA3 /* SystemConfiguration.framework in Frameworks */,
 				6C6B59C0219BBE4D006A0CA3 /* CoreTelephony.framework in Frameworks */,
+				6C6B59BA219BBE2E006A0CA3 /* libsqlite3.tbd in Frameworks */,
+				6C49BD04219BDFF300249A65 /* libz.tbd in Frameworks */,
+				6C6B59C6219BBE67006A0CA3 /* QuickLook.framework in Frameworks */,
+				6C6B59C4219BBE60006A0CA3 /* MobileCoreServices.framework in Frameworks */,
 				6C6B59BE219BBE43006A0CA3 /* AVFoundation.framework in Frameworks */,
 				6C6B59BC219BBE3B006A0CA3 /* libicucore.tbd in Frameworks */,
-				6C6B59BA219BBE2E006A0CA3 /* libsqlite3.tbd in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -968,8 +978,10 @@
 				BAC05F4F672D47BB86F9C636 /* libRNFS.a in Frameworks */,
 				0C74C5B9F5D14B38AABBA420 /* libBVLinearGradient.a in Frameworks */,
 				3DA6A96898564CAB81839C08 /* libRCTVideo.a in Frameworks */,
+				6C49BD00219BDFC400249A65 /* UMCommon.framework in Frameworks */,
 				ABFE1B31A1584EA49C645BB1 /* libRCTBEEPickerManager.a in Frameworks */,
 				380EECEB1841477A92D26838 /* libRNImagePicker.a in Frameworks */,
+				6C49BD02219BDFDF00249A65 /* UMAnalytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1119,6 +1131,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6C49BD03219BDFF200249A65 /* libz.tbd */,
 				6C6B59C5219BBE67006A0CA3 /* QuickLook.framework */,
 				6C6B59C3219BBE60006A0CA3 /* MobileCoreServices.framework */,
 				6C6B59C1219BBE55006A0CA3 /* SystemConfiguration.framework */,
@@ -1156,6 +1169,8 @@
 			children = (
 				6C49BB0C219BC7A100249A65 /* MeiQiaModule.h */,
 				6C49BB0D219BC7A100249A65 /* MeiQiaModule.m */,
+				6C49BD05219BE04300249A65 /* UMengModule.h */,
+				6C49BD06219BE04300249A65 /* UMengModule.m */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -1878,6 +1893,15 @@
 			path = MQMessageFormTextView;
 			sourceTree = "<group>";
 		};
+		6C49BCFE219BDF9E00249A65 /* UMeng */ = {
+			isa = PBXGroup;
+			children = (
+				6C49BD01219BDFDF00249A65 /* UMAnalytics.framework */,
+				6C49BCFF219BDFC300249A65 /* UMCommon.framework */,
+			);
+			path = UMeng;
+			sourceTree = "<group>";
+		};
 		6C63C3912188290500F12610 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1936,6 +1960,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6C49BCFE219BDF9E00249A65 /* UMeng */,
 				6C49BB08219BC46F00249A65 /* Modules */,
 				6C49BACC219BBF9500249A65 /* MeiQia */,
 				13B07FAE1A68108700A75B9A /* StarCu */,
@@ -2765,6 +2790,7 @@
 				6C49BCDF219BCA2C00249A65 /* MQWebViewController.m in Sources */,
 				6C49BC74219BCA2C00249A65 /* XlpEmojiCell.m in Sources */,
 				6C49BCCD219BCA2C00249A65 /* MQPreChatSubmitViewController.m in Sources */,
+				6C49BD07219BE04300249A65 /* UMengModule.m in Sources */,
 				6C49BCF1219BCA2C00249A65 /* MQMessageFormViewStyle.m in Sources */,
 				6C49BCEF219BCA2C00249A65 /* MQMessageFormViewStyleBlue.m in Sources */,
 				6C49BC89219BCA2C00249A65 /* MQCustomizedUIText.m in Sources */,
@@ -3010,6 +3036,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeiQia",
+					"$(PROJECT_DIR)/UMeng",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3052,6 +3079,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeiQia",
+					"$(PROJECT_DIR)/UMeng",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

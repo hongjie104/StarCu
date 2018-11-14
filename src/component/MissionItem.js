@@ -57,16 +57,19 @@ export default class MissionItem extends PureComponent {
 				<View style={styles.itemInfoContainer}>
 					<ImageBackground
 						style={styles.itemStatusImgBg}
-						source={item.received === 1 ? require('../imgs/lvk.png') : (item.received === 0 ? require('../imgs/hongk.png') : require('../imgs/huangk.png'))}
+						// source={item.received === 1 ? require('../imgs/lvk.png') : (item.received === 0 ? require('../imgs/hongk.png') : require('../imgs/huangk.png'))}
+						source={
+							type === 1 ? (item.status === 0 ? require('../imgs/hongk.png') : require('../imgs/lvk.png')) : (item.status === 0 ? require('../imgs/huangk.png') : require('../imgs/lvk.png'))
+						}
 					>
 						<Image
 							style={styles.itemStatusImg}
 							source={
-								type === 1 ? (item.status === 0 ? require('../imgs/wjd.png') : require('../imgs/yjd.png')) : require('../imgs/wwc.png')
+								type === 1 ? (item.status === 0 ? require('../imgs/wjd.png') : require('../imgs/yjd.png')) : (item.status === 0 ? require('../imgs/wwc.png') : require('../imgs/ywc.png'))
 							}
 						/>
 						<Text style={styles.itemStatusTxt}>
-							{ type === 1 ? (item.status === 0 ? '未接单' : '已接单') : '未完成' }
+							{ type === 1 ? (item.status === 0 ? '未接单' : '已接单') : (item.status === 0 ? '未完成' : '已完成') }
 						</Text>
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>

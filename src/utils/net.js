@@ -51,7 +51,6 @@ export function post(url, data) {
 		}), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
-				// console.warn(responseText);
 				const jsonData = JSON.parse(responseText);
 				console.log('[post] result => ', jsonData);
 				if (jsonData.errorCode === '0') {
@@ -80,7 +79,6 @@ export function get(url) {
 		timeout(fetch(encodeURI(url)), TIME_OUT)
 			.then(response => response.text())
 			.then((responseText) => {
-				// console.warn(responseText);
 				const jsonData = JSON.parse(responseText);
 				console.log('[get] result => ', jsonData);
 				if (jsonData.errorCode === '0') {

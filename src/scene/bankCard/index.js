@@ -51,7 +51,7 @@ export default class BankCard extends PureComponent {
 	async uploadImg(uri) {
 		let data = null;
 		try {
-			data =  await qiniu.upload(uri, `${new Date().getTime()}.jpg`);
+			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
 		} catch (err) {
 			toast('上传照片失败，请重试');
 			return false;

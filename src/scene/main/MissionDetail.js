@@ -13,10 +13,11 @@ import {
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN } from '../../config';
-import { getMissionInfo, updateTally } from '../../service';
+import { getMissionInfo, updateMission } from '../../service';
 import toast from '../../utils/toast';
 
 export default class MissionDetail extends PureComponent {
@@ -34,6 +35,7 @@ export default class MissionDetail extends PureComponent {
 			img3: '',
 			img4: '',
 			skuDataArr: [],
+			showSpinner: false,
 		};
 	}
 
@@ -57,7 +59,7 @@ export default class MissionDetail extends PureComponent {
 	async uploadImg(uri) {
 		let data = null;
 		try {
-			data =  await qiniu.upload(uri, `${new Date().getTime()}.jpg`);
+			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
 		} catch (err) {
 			toast('上传照片失败，请重试');
 			return false;
@@ -99,7 +101,6 @@ export default class MissionDetail extends PureComponent {
 	}
 
 	onSkuNumChange(skuId, num) {
-		console.warn(skuId, num);
 		if (isNaN(num)) return;
 		const skuDataArr = [...this.state.skuDataArr];
 		for (let i = 0; i < skuDataArr.length; i++) {
@@ -113,11 +114,11 @@ export default class MissionDetail extends PureComponent {
 		});
 	}
 
-	async onSubmit() {
+	onSubmit() {
 		const {
 			skuDataArr,
-			taskId,
 		} = this.state;
+		const { taskId } = this.props.navigation.state.params;
 		let {
 			img1,
 			img2,
@@ -128,34 +129,44 @@ export default class MissionDetail extends PureComponent {
 			toast('请选择理货前正面照');
 			return;
 		}
-		if (!img1.startsWith('http')) {
-			img1 = await this.uploadImg(img1);
-		}
 		if (!img2) {
 			toast('请选择理货前左侧照');
 			return;
-		}
-		if (!img2.startsWith('http')) {
-			img2 = await this.uploadImg(img2);
 		}
 		if (!img3) {
 			toast('请选择理货后正面照');
 			return;
 		}
-		if (!img3.startsWith('http')) {
-			img3 = await this.uploadImg(img3);
-		}
 		if (!img4) {
 			toast('请选择理货后左侧照');
 			return;
 		}
-		if (!img4.startsWith('http')) {
-			img4 = await this.uploadImg(img4);
-		}
-		updateTally(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
-			console.warn(result);
-		}).catch(e => {
-			toast(e);
+		this.setState({
+			showSpinner: true,
+		}, async () => {
+			if (!img1.startsWith('http')) {
+				img1 = await this.uploadImg(img1);
+			}
+			if (!img2.startsWith('http')) {
+				img2 = await this.uploadImg(img2);
+			}
+			if (!img3.startsWith('http')) {
+				img3 = await this.uploadImg(img3);
+			}
+			if (!img4.startsWith('http')) {
+				img4 = await this.uploadImg(img4);
+			}
+			updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
+				toast('提交成功');
+				this.setState({
+					showSpinner: false,
+				});
+			}).catch(e => {
+				toast(e);
+				this.setState({
+					showSpinner: false,
+				});
+			});
 		});
 	}
 
@@ -167,6 +178,7 @@ export default class MissionDetail extends PureComponent {
 			img4,
 			missionInfo,
 			skuDataArr,
+			showSpinner,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -347,6 +359,9 @@ export default class MissionDetail extends PureComponent {
 					</Text>	
 				</TouchableOpacity>
 				</KeyboardAwareScrollView>
+				{
+					showSpinner && <Spinner />
+				}
 			</View>
 		);
 	}

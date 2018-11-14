@@ -93,7 +93,6 @@ export default class MissionIntroduce extends PureComponent {
 			standardPhoto,
 			status,
 		} = this.state;
-		console.warn(this.state);
 		// type 0 是任务  1 是订单
 		const { type } = this.props;
 		return (

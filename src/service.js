@@ -86,8 +86,8 @@ export function getMissionInfo(missionId) {
 }
 
 // 保存理货信息
-export function updateTally(missionId, beforeTally, beforeTallyLeft, atferTally, atferTallyLeft, skuDataJson) {
-	return post(`${SERVER_HOST}/ShareWork/app/tally/save`, {
+export function updateMission(missionId, beforeTally, beforeTallyLeft, atferTally, atferTallyLeft, skuDataJson) {
+	return post(`${SERVER_HOST}/ShareWork/app/task/save`, {
 		token: global.token,
 		taskId: missionId,
 		dataJson: skuDataJson,

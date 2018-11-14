@@ -27,7 +27,6 @@ export default class Mission extends PureComponent {
 	}
 
 	componentDidMount() {
-		console.warn('aa');
 		getTodayMission().then(result => {
 			const { expectedIncome, taskNum, tasks } = result.datas;
 			this.setState({

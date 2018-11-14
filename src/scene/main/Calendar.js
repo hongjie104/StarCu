@@ -10,6 +10,7 @@ import {
 	Platform,
 } from 'react-native';
 import picker from 'react-native-picker';
+import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
 import { getMissionCalendar } from '../../service';
@@ -28,6 +29,8 @@ export default class Calendar extends PureComponent {
 			nowDate: 30,
 			// 日期数组，是个二维的
 			dateArr: [],
+			// 当前选中的日期下的任务列表
+			selectedMissionDataArr: [],
 		};
 	}
 
@@ -167,6 +170,12 @@ export default class Calendar extends PureComponent {
 		}
 	}
 
+	onDatePress(missionDataArr) {
+		this.setState({
+			selectedMissionDataArr: missionDataArr || [],
+		});
+	}
+
 	render() {
 		const {
 			curDate,
@@ -176,6 +185,7 @@ export default class Calendar extends PureComponent {
 			nowMonth,
 			nowYear,
 			dateArr,
+			selectedMissionDataArr,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -288,6 +298,9 @@ export default class Calendar extends PureComponent {
 															styles.calendarDateTxt,
 															curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
 														]}
+														onPress={() => {
+															this.onDatePress(dateData.misssionData);
+														}}
 													>
 														{ dateData.date }
 													</Text>
@@ -321,6 +334,11 @@ export default class Calendar extends PureComponent {
 						</Text>
 					</View>
 				</View>
+				{
+					selectedMissionDataArr.map((m, i) => (
+						<MissionItem key={i} item={m} type={0} navigation={this.props.navigation} />
+					))
+				}
 			</View>
 		);
 	}

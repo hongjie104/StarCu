@@ -83,8 +83,10 @@ export default class MyScene extends PureComponent {
 		}, () => {
 			openMeiQia();
 		}, err => {
-			toast(err);
+			// toast(err);
+			console.warn(err);
 		});
+		// openMeiQia();
 	}
 
 	onLogout() {

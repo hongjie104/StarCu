@@ -72,6 +72,7 @@ export default function createAppNavigation(isLogedIn) {
 		// headerMode: 'none',
 		// headerTintColor: '#DD4124',
 		navigationOptions: {
+			gesturesEnabled: true,
 			headerStyle: {
 				backgroundColor: '#DD4124',
 				shadowOpacity: 0,

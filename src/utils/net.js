@@ -30,9 +30,9 @@ function timeout(promise, ms) {
  * @param  {[json]} data                数据
  */
 export function post(url, data) {
-	if (__TEST__) {
-		return get(`${url}?${qs.stringify(data || {})}`);
-	}
+	// if (__TEST__) {
+	// 	return get(`${url}?${qs.stringify(data || {})}`);
+	// }
 	return new Promise((resolve, reject) => {
 		if (!isConnected) {
 			// utils.toast('网络链接已断开');

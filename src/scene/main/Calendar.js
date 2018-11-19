@@ -10,6 +10,7 @@ import {
 	Platform,
 } from 'react-native';
 import picker from 'react-native-picker';
+import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
 import { getMissionCalendar } from '../../service';
@@ -28,11 +29,12 @@ export default class Calendar extends PureComponent {
 			nowDate: 30,
 			// 日期数组，是个二维的
 			dateArr: [],
-			misssionArr: [],
+			// 当前选中的日期下的任务列表
+			selectedMissionDataArr: [],
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		const now = new Date();
 		const minYear = now.getFullYear() - 5;
 		const maxYear = now.getFullYear() + 5;
@@ -64,13 +66,12 @@ export default class Calendar extends PureComponent {
 		picker.hide();
 	}
 
-	getMissionData(year, month, date) {
-		const { misssionArr } = this.state;
-		for (var i = 0; i < misssionArr.length; i++) {
-			if (misssionArr[i].year === year) {
-				if (misssionArr[i].month === month) {
-					if (misssionArr[i].date === date) {
-						return misssionArr[i];
+	getMissionData(year, month, date, missionArr) {
+		for (var i = 0; i < missionArr.length; i++) {
+			if (missionArr[i].year === year) {
+				if (missionArr[i].month === month) {
+					if (missionArr[i].date === date) {
+						return missionArr[i].missionArr;
 					}
 				}
 			}
@@ -94,7 +95,7 @@ export default class Calendar extends PureComponent {
 		// 获取数据
 		getMissionCalendar(formatDateTime(new Date(firstDateTime), 'yyyy-MM-dd'), formatDateTime(tmpDate, 'yyyy-MM-dd')).then(result => {
 			const { taskCalendar } = result.datas;
-			const misssionArr = taskCalendar.map(missionData => {
+			const missionArr = taskCalendar.map(missionData => {				
 				const dateArr = missionData.date.split('-');
 				return {
 					year: parseInt(dateArr[0]),
@@ -116,14 +117,14 @@ export default class Calendar extends PureComponent {
 						date: tmpDate.getDate(),
 						month: tmpDate.getMonth() + 1,
 						year: tmpDate.getFullYear(),
-						misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate()),
+						misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
 					};
 				} else {
 					dateRow[i] = {
 						date: dayCounter,
 						month: curMonth,
 						year: curYear,
-						misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
+						misssionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
 					};
 				}
 			}
@@ -137,7 +138,7 @@ export default class Calendar extends PureComponent {
 							date: dayCounter,
 							month: curMonth,
 							year: curYear,
-							misssionData: this.getMissionData(curYear, curMonth, dayCounter++),
+							misssionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
 						};
 					} else {
 						// 下个月的日期
@@ -146,7 +147,7 @@ export default class Calendar extends PureComponent {
 							date: tmpDate.getDate(),
 							month: tmpDate.getMonth() + 1,
 							year: tmpDate.getFullYear(),
-							misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate()),
+							misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
 						};
 					}
 				}
@@ -169,6 +170,12 @@ export default class Calendar extends PureComponent {
 		}
 	}
 
+	onDatePress(missionDataArr) {
+		this.setState({
+			selectedMissionDataArr: missionDataArr || [],
+		});
+	}
+
 	render() {
 		const {
 			curDate,
@@ -178,6 +185,7 @@ export default class Calendar extends PureComponent {
 			nowMonth,
 			nowYear,
 			dateArr,
+			selectedMissionDataArr,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -268,7 +276,7 @@ export default class Calendar extends PureComponent {
 													key={`date${j}`}
 													style={[
 														styles.calendarDateContainer,
-														dateData.misssionData ? (
+														dateData.misssionData && dateData.misssionData.length > 0 ? (
 															nowYear > dateData.year ? styles.calendarPassDateContainer : (
 																nowYear < dateData.year ? styles.calendarFutureDateContainer : (
 																	nowMonth > dateData.month ? styles.calendarPassDateContainer : (
@@ -290,6 +298,9 @@ export default class Calendar extends PureComponent {
 															styles.calendarDateTxt,
 															curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
 														]}
+														onPress={() => {
+															this.onDatePress(dateData.misssionData);
+														}}
 													>
 														{ dateData.date }
 													</Text>
@@ -323,6 +334,11 @@ export default class Calendar extends PureComponent {
 						</Text>
 					</View>
 				</View>
+				{
+					selectedMissionDataArr.map((m, i) => (
+						<MissionItem key={i} item={m} type={0} navigation={this.props.navigation} />
+					))
+				}
 			</View>
 		);
 	}

@@ -77,6 +77,27 @@ export function takeOrder(orderId) {
 	});
 }
 
+// 获取任务详情
+export function getMissionInfo(missionId) {
+	return post(`${SERVER_HOST}/ShareWork/app/taskInfo`, {
+		token: global.token,
+		taskId: missionId,
+	});
+}
+
+// 保存理货信息
+export function updateMission(missionId, beforeTally, beforeTallyLeft, atferTally, atferTallyLeft, skuDataJson) {
+	return post(`${SERVER_HOST}/ShareWork/app/task/save`, {
+		token: global.token,
+		taskId: missionId,
+		dataJson: skuDataJson,
+		beforeTally,
+		beforeTallyLeft,
+		atferTally,
+		atferTallyLeft,
+	});
+}
+
 // 获取订单消息
 export function getOrderMsg(page, pageSize) {
 	return post(`${SERVER_HOST}/ShareWork/app/orderMessage`, {
@@ -144,5 +165,29 @@ export function getStoreArr(cityId) {
 		token: global.token,
 		cityId,
 		key: SERVER_KEY,
+	});
+}
+
+// 获取银行卡信息
+export function getBank() {
+	return post(`${SERVER_HOST}/ShareWork/app/bankInfo/get`, {
+		token: global.token,
+	});
+}
+
+// 修改银行卡信息
+export function updateBank(data, code) {
+	return post(`${SERVER_HOST}/ShareWork/app/bankInfo/update`, {
+		token: global.token,
+		...data,
+		code,
+	});
+}
+
+// 获取修改银行卡信息的验证码
+export function getBankCode() {
+	return post(`${SERVER_HOST}/ShareWork/app/bankInfo/code`, {
+		token: global.token,
+		phoneNo: global.phone,
 	});
 }

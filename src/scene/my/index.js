@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
-import { getMine } from '../../service';
+import { getMine, getBank } from '../../service';
 import toast from '../../utils/toast';
+import { removeLocalData } from '../../utils/storage';
+import { open as openMeiQia, setClientInfo as setClientInfoForMeiQia } from '../../utils/meiQia';
 
 export default class MyScene extends PureComponent {
 	
@@ -44,15 +46,54 @@ export default class MyScene extends PureComponent {
 		};
 	}
 
-	componentWillMount() {
-		getMine().then(result => {
-			this.setState({ ...result.datas });
-		}).catch(e => {
+	async componentDidMount() {
+		let result = null;
+		try {
+			result = await getMine();
+		} catch(e) {
 			toast(e);
-		})
+			return;
+		}
+		let bankData = null;
+		try {
+			bankData = await getBank();
+		} catch(e) {
+			toast(e);
+			return;
+		}
+		this.setState({ ...result.datas, ...bankData.datas });
+	}
+
+	onHelp() {
+		setClientInfoForMeiQia({
+			// name	真实姓名
+			// gender	性别
+			// age	年龄
+			// tel	电话
+			// weixin	微信
+			// weibo	微博
+			// address	地址
+			// email	邮件
+			// weibo	微博
+			// avatar	头像 URL
+			// tags	标签，数组形式，且必须是企业中已经存在的标签
+			// source	顾客来源
+			// comment	备注
+			name: '张三',
+		}, () => {
+			openMeiQia();
+		}, err => {
+			// toast(err);
+			console.warn(err);
+		});
+		// openMeiQia();
 	}
 
 	onLogout() {
+		global.token = null;
+		global.uid = null;
+		removeLocalData('token');
+		removeLocalData('uid');
 		navigationUtil.reset(this.props.navigation, 'LoginScene');
 	}
 
@@ -146,7 +187,7 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onHelp();
 					}}
 					style={styles.itemContainer}
 				>

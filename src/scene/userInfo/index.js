@@ -44,6 +44,7 @@ export default class UserInfoScene extends PureComponent {
 			// 当前选中的门店
 			storeData: null,
 			inited: false,
+			uploading: false,
 		};
 	}
 
@@ -84,12 +85,37 @@ export default class UserInfoScene extends PureComponent {
 			toast(e);
 			return;
 		}
+		let cityData = null;
+		let cityId = null;
+		let storeData = null;
+		let storeId = null;
+		for (let i = 0; i < this.cityArr.length; i++) {
+			if (this.cityArr[i].id === myInfo.datas.currentCityId) {
+				cityData = this.cityArr[i];
+				cityId = cityData.id;
+				// 获取门店数据
+				this.storeArr = await getStoreArr(this.cityArr[i].id);
+				this.storeArr = this.storeArr.datas.storeList;
+				for (let i = 0; i < this.storeArr.length; i++) {
+					if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
+						storeData = this.storeArr[i];
+						storeId: storeData.id;
+						break;
+					}
+				}
+				break;
+			}
+		}
 		this.setState({
 			myInfo: {
 				...myInfo.datas,
-				userImage1: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[0] : '',
-				userImage2: Array.isArray(myInfo.personalPhoto) ? myInfo.personalPhoto[1] : '',
+				userImage1: Array.isArray(myInfo.datas.personalPhoto) ? decodeURIComponent(myInfo.datas.personalPhoto[0]) : '',
+				userImage2: Array.isArray(myInfo.datas.personalPhoto) ? decodeURIComponent(myInfo.datas.personalPhoto[1]) : '',
+				cityId,
+				storeId,
 			},
+			cityData,
+			storeData,
 			inited: true,
 		});
 	}
@@ -240,7 +266,7 @@ export default class UserInfoScene extends PureComponent {
 	async uploadImg(uri) {
 		let data = null;
 		try {
-			data =  await qiniu.upload(uri, `${new Date().getTime()}.jpg`);
+			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
 		} catch (err) {
 			toast('上传照片失败，请重试');
 			return false;
@@ -248,7 +274,7 @@ export default class UserInfoScene extends PureComponent {
 		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
 	}
 
-	async onSubmit() {
+	onSubmit() {
 		const { myInfo } = this.state;
 		let { fullName, idNo, idPositivePho, idOppositePho, userImage1, userImage2, cityId, storeId } = myInfo;
 		if (!fullName) {
@@ -276,39 +302,48 @@ export default class UserInfoScene extends PureComponent {
 			return;
 		}
 		if (!cityId) {
-			toast('请选择所在门店');
+			toast('请选择所在城市');
 			return;	
 		}
 		if (!storeId) {
 			toast('请选择绑定门店');
 			return;
 		}
-		
-		if (!idPositivePho.startsWith('http')) {
-			idPositivePho = await this.uploadImg(idPositivePho);
-		}
-		if (!idOppositePho.startsWith('http')) {
-			idOppositePho = await this.uploadImg(idOppositePho);
-		}
-		if (!userImage1.startsWith('http')) {
-			userImage1 = await this.uploadImg(userImage1);
-		}
-		if (!userImage2.startsWith('http')) {
-			userImage2 = await this.uploadImg(userImage2);
-		}
-		
-		setMyInfo({
-			fullName,
-			idNo,
-			cityId,
-			storeId,
-			idPositivePho,
-			idOppositePho,
-			personalPhotos: [userImage1, userImage2].join(','),
-		}).then(result => {
-			console.warn(result);
-		}).catch(e => {
-			toast(e);
+		this.setState({
+			uploading: true,
+		}, async () => {
+			if (!idPositivePho.startsWith('http')) {
+				idPositivePho = await this.uploadImg(idPositivePho);
+			}
+			if (!idOppositePho.startsWith('http')) {
+				idOppositePho = await this.uploadImg(idOppositePho);
+			}
+			if (!userImage1.startsWith('http')) {
+				userImage1 = await this.uploadImg(userImage1);
+			}
+			if (!userImage2.startsWith('http')) {
+				userImage2 = await this.uploadImg(userImage2);
+			}
+			
+			setMyInfo({
+				fullName,
+				idNo,
+				cityId,
+				storeId,
+				idPositivePho,
+				idOppositePho,
+				personalPhotos: [userImage1, userImage2].join(','),
+			}).then(result => {
+				toast('修改成功');
+				this.setState({
+					uploading: false,
+				});
+			}).catch(e => {
+				toast(e);
+				this.setState({
+					uploading: false,
+				});
+			});
 		});
 	}
 
@@ -325,9 +360,10 @@ export default class UserInfoScene extends PureComponent {
 			cityData,
 			storeData,
 			inited,
+			uploading,
 		} = this.state;
 		if (!inited) {
-			return <Spinner />
+			return <Spinner />;
 		}
 		return (
 			<View style={styles.container}>
@@ -494,6 +530,9 @@ export default class UserInfoScene extends PureComponent {
 						提交
 					</Text>
 				</TouchableOpacity>
+				{
+					uploading && <Spinner />
+				}
 			</View>
 		);
 	}
@@ -527,7 +566,7 @@ const styles = StyleSheet.create({
 	input: {
 		fontSize: getFontSize(32),
 		// fontWeight: '500',
-		color: '#333',	
+		color: '#333',
 	},
 	phoneBgImg: {
 		width: toDips(86),

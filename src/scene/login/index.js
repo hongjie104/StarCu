@@ -100,15 +100,21 @@ export default class LoginScene extends PureComponent {
 			toast('请输入正确的手机号码');
 			return;
 		}
-		login(phone, code).then(result => {
-			const { token } = result.datas;
-			global.token = token;
-			saveDataToLocal('token', token, () => {
-				navigationUtil.reset(this.props.navigation, 'main');
+		saveDataToLocal('phone', phone, () => {
+			global.phone = phone;
+			login(phone, code).then(result => {
+				const { token, uid } = result.datas;
+				global.token = token;
+				global.uid = uid;
+				saveDataToLocal('token', token, () => {
+					saveDataToLocal('uid', uid, () => {
+						navigationUtil.reset(this.props.navigation, 'main');
+					});
+				});
+			}).catch(err => {
+				toast(err);
 			});
-		}).catch(err => {
-			toast(err);
-		})
+		});
 	}
 
 	onNavigateToRegister() {

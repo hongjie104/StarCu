@@ -78,7 +78,7 @@ export default class MsgScene extends PureComponent {
 				<ScrollView style={styles.container}>
 					{
 						missionList.map((mission, index) => (
-							<MissionItem key={mission.key} item={mission} navigation={this.props.navigation} />
+							<MissionItem key={mission.key} item={mission} type={1} navigation={this.props.navigation} />
 						))
 					}
 				</ScrollView>

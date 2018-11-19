@@ -6,10 +6,16 @@ import {
 	View,
 	Text,
 	Image,
+	TextInput,
 	TouchableOpacity,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import MyTextInput from '../../component/MyTextInput';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { getBank } from '../../service';
+import toast from '../../utils/toast';
+import * as qiniu from '../../utils/qiniu';
+import { QI_NIU_DOMAIN } from '../../config';
 
 // 银行卡
 export default class BankCard extends PureComponent {
@@ -24,7 +30,33 @@ export default class BankCard extends PureComponent {
 			protocolChecked: true,
 			cardImage1: '',
 			cardImage2: '',
+			bankName: '',
 		};
+	}
+
+	componentDidMount() {
+		getBank().then(result => {
+			const { cardPhoto } = result.datas;
+			const cardPhotoArr = cardPhoto ? decodeURIComponent(cardPhoto).split(',') : [];
+			this.setState({
+				...result.datas,
+				cardImage1: cardPhotoArr[0] || '',
+				cardImage2: cardPhotoArr[1] || '',
+			});
+		}).catch(e => {
+			toast(e);
+		});
+	}
+
+	async uploadImg(uri) {
+		let data = null;
+		try {
+			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
+		} catch (err) {
+			toast('上传照片失败，请重试');
+			return false;
+		}
+		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
 	}
 
 	onPickImage(type) {
@@ -56,41 +88,148 @@ export default class BankCard extends PureComponent {
 		});
 	}
 
+	onCardHoldersNameChange(cardholdersName) {
+		this.setState({
+			cardholdersName,
+		});
+	}
+
+	onCardHoldersPhoneChange(cardholdersPhone) {
+		this.setState({
+			cardholdersPhone,
+		});
+	}
+
+	onBankCardNoChange(bankCardNo) {
+		this.setState({
+			bankCardNo,
+		});
+	}
+
+	onBankNameChange(bankName) {
+		this.setState({
+			bankName,
+		});
+	}
+
+	async onSubmit() {
+		const {
+			protocolChecked,
+			cardholdersName,
+			cardholdersPhone,
+			bankCardNo,
+			bankName,
+		} = this.state;
+		let {
+			cardImage1,
+			cardImage2,
+		} = this.state;
+		if (!cardholdersName) {
+			toast('请输入持卡人姓名');
+			return;
+		}
+		if (!cardholdersPhone) {
+			toast('请输入持卡人手机号码');
+			return;
+		}
+		if (!bankCardNo) {
+			toast('请输入银行卡号');
+			return;	
+		}
+		if (!bankName) {
+			toast('请输入开户银行');
+			return;		
+		}
+		if (!cardImage1) {
+			toast('请选择银行卡正面照片');
+			return;
+		}
+		if (!cardImage2) {
+			toast('请选择银行卡反面照片');
+			return;
+		}
+		if (!cardImage1.startsWith('http')) {
+			cardImage1 = await this.uploadImg(cardImage1);
+		}
+		if (!cardImage2.startsWith('http')) {
+			cardImage2 = await this.uploadImg(cardImage2);
+		}
+		this.props.navigation.navigate({
+			routeName: 'PhoneCheckerScene',
+			params: {
+				cardholdersName,
+				cardholdersPhone,
+				bankCardNo,
+				bankName,
+				cardPhoto: `${cardImage1},${cardImage2}`,
+			},
+		});
+	}
+
 	render() {
-		const { protocolChecked, cardImage1, cardImage2 } = this.state;
+		const { protocolChecked, cardImage1, cardImage2, cardholdersName, cardholdersPhone, bankCardNo, bankName } = this.state;
 		return (
 			<View style={styles.container}>
 				<View style={styles.itemContainer}>
 					<Text style={styles.keyTxt}>
 						持卡人姓名：
 					</Text>
-					<Text style={styles.valTxt}>
-						李三
-					</Text>
+					<TextInput
+						onChangeText={cardholdersName => {
+							this.onCardHoldersNameChange(cardholdersName);
+						}}
+						value={cardholdersName}
+						placeholder='请输入持卡人姓名'
+						placeholderTextColor='#B5B5B5'
+						style={styles.valTxt}
+						maxLength={6}
+					/>
 				</View>
 				<View style={styles.itemContainer}>
 					<Text style={styles.keyTxt}>
 						持卡人电话：
 					</Text>
-					<Text style={styles.valTxt}>
-						18523632019
-					</Text>
+					<TextInput
+						onChangeText={cardholdersPhone => {
+							this.onCardHoldersPhoneChange(cardholdersPhone);
+						}}
+						value={cardholdersPhone}
+						placeholder='请输入持卡人手机号码'
+						placeholderTextColor='#B5B5B5'
+						style={styles.valTxt}
+						maxLength={11}
+						keyboardType='numeric'
+					/>
 				</View>
 				<View style={styles.itemContainer}>
 					<Text style={styles.keyTxt}>
 						银行卡号：
 					</Text>
-					<Text style={styles.valTxt}>
-						6214 4512 1102 0124 021
-					</Text>
+					<TextInput
+						onChangeText={bankCardNo => {
+							this.onBankCardNoChange(bankCardNo);
+						}}
+						value={bankCardNo}
+						placeholder='请输入银行卡号'
+						placeholderTextColor='#B5B5B5'
+						style={styles.valTxt}
+						maxLength={19}
+						keyboardType='numeric'
+					/>
 				</View>
 				<View style={styles.itemContainer}>
 					<Text style={styles.keyTxt}>
 						开户行：
 					</Text>
-					<Text style={styles.valTxt}>
-						招商银行
-					</Text>
+					<TextInput
+						onChangeText={bankName => {
+							this.onBankNameChange(bankName);
+						}}
+						value={bankName}
+						placeholder='请输入开户银行'
+						placeholderTextColor='#B5B5B5'
+						style={styles.valTxt}
+					/>
 				</View>
 				<View style={[styles.itemContainer, { height: toDips(141) }]}>
 					<Text style={styles.keyTxt}>
@@ -166,7 +305,7 @@ export default class BankCard extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onSubmit();
 					}}
 					style={styles.saveBtn}
 				>

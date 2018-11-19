@@ -27,7 +27,6 @@ export default class WithdrawScene extends PureComponent {
 	}
 
 	onValueChange(value) {
-		// console.warn(value);
 		this.setState({
 			value,
 		});

@@ -26,7 +26,7 @@ export default class Mission extends PureComponent {
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		getTodayMission().then(result => {
 			const { expectedIncome, taskNum, tasks } = result.datas;
 			this.setState({
@@ -44,7 +44,7 @@ export default class Mission extends PureComponent {
 
 	renderItem({item, index}) {
 		return (
-			<MissionItem item={item} navigation={this.props.navigation} />
+			<MissionItem item={item} type={0} navigation={this.props.navigation} />
 		);
 	}
 

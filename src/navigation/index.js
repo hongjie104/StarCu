@@ -15,6 +15,7 @@ import AccountScene from '../scene/account';
 import WithdrawScene from '../scene/withdraw';
 import AccountDetailScene from '../scene/accountDetail';
 import BankCardScene from '../scene/bankCard';
+import PhoneCheckerScene from '../scene/bankCard/PhoneChecker';
 import UserInfoScene from '../scene/userInfo';
 import RegisterScene from '../scene/register';
 import LoginScene from '../scene/login';
@@ -60,14 +61,18 @@ export default function createAppNavigation(isLogedIn) {
 		AccountDetailScene,
 		// 银行卡
 		BankCardScene,
+		// 验证手机号码
+		PhoneCheckerScene,
 		UserInfoScene,
 	}, {
 		// initialRouteName: 'RegisterScene',
+		// initialRouteName: isLogedIn ? 'PhoneCheckerScene' : 'LoginScene',
 		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
 		// mode: 'card',
 		// headerMode: 'none',
 		// headerTintColor: '#DD4124',
 		navigationOptions: {
+			gesturesEnabled: true,
 			headerStyle: {
 				backgroundColor: '#DD4124',
 				shadowOpacity: 0,

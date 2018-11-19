@@ -487,20 +487,6 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
-		CCFAA18C2187356600EE8BE7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83BD4B80628943ABB7DB918C /* BVLinearGradient.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = BVLinearGradient;
-		};
-		CCFAA18E2187356600EE8BE7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83BD4B80628943ABB7DB918C /* BVLinearGradient.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 64AA15081EF7F30100718508;
-			remoteInfo = "BVLinearGradient-tvOS";
-		};
 		CCFAA1912187356600EE8BE7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1D75F21C3BDC4AA293B00B66 /* RCTCordova.xcodeproj */;
@@ -521,20 +507,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 327633421BFAAD7E004DA88E;
 			remoteInfo = RCTToast;
-		};
-		CCFAA19B2187356600EE8BE7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1B6750396A7244FA81962824 /* RCTVideo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 134814201AA4EA6300B7C361;
-			remoteInfo = RCTVideo;
-		};
-		CCFAA19D2187356600EE8BE7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1B6750396A7244FA81962824 /* RCTVideo.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 641E28441F0EEC8500443AF6;
-			remoteInfo = "RCTVideo-tvOS";
 		};
 		CCFAA1A02187356600EE8BE7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -602,7 +574,6 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = StarCu/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = StarCu/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		1B6750396A7244FA81962824 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
 		1D75F21C3BDC4AA293B00B66 /* RCTCordova.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCordova.xcodeproj; path = "../node_modules/@remobile/react-native-cordova/ios/RCTCordova.xcodeproj"; sourceTree = "<group>"; };
 		1E71BA6E108E470B8C3186AE /* libRCTToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTToast.a; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* StarCu-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StarCu-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -919,7 +890,6 @@
 		6C6B59C5219BBE67006A0CA3 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		83BD4B80628943ABB7DB918C /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		99479418E6B744CDBCD12A2C /* RCTToast.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
 		A0084E45FBD946E19610561A /* RCTFileTransfer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFileTransfer.xcodeproj; path = "../node_modules/@remobile/react-native-file-transfer/ios/RCTFileTransfer.xcodeproj"; sourceTree = "<group>"; };
 		AB4F49F277AE40C7AAD63BBB /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
@@ -1940,8 +1910,6 @@
 				CEB1B7E189C8470FBE938BC4 /* RCTZip.xcodeproj */,
 				61087403D2404F49B063431C /* RNDeviceInfo.xcodeproj */,
 				37FD0FFF53554570BCD47801 /* RNFS.xcodeproj */,
-				83BD4B80628943ABB7DB918C /* BVLinearGradient.xcodeproj */,
-				1B6750396A7244FA81962824 /* RCTVideo.xcodeproj */,
 				C27794E3044C43F29BBB4340 /* RCTBEEPickerManager.xcodeproj */,
 				B7234C2257BD480794D9D639 /* RNImagePicker.xcodeproj */,
 			);
@@ -2059,24 +2027,6 @@
 			children = (
 				CCFAA1AB2187356600EE8BE7 /* libRNFS.a */,
 				CCFAA1AD2187356600EE8BE7 /* libRNFS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CCFAA1862187356500EE8BE7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CCFAA18D2187356600EE8BE7 /* libBVLinearGradient.a */,
-				CCFAA18F2187356600EE8BE7 /* libBVLinearGradient.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		CCFAA1882187356500EE8BE7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CCFAA19C2187356600EE8BE7 /* libRCTVideo.a */,
-				CCFAA19E2187356600EE8BE7 /* libRCTVideo.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2204,10 +2154,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = CCFAA1862187356500EE8BE7 /* Products */;
-					ProjectRef = 83BD4B80628943ABB7DB918C /* BVLinearGradient.xcodeproj */;
-				},
-				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -2262,10 +2208,6 @@
 				{
 					ProductGroup = 00C302E01ABCB9EE00DB3ED1 /* Products */;
 					ProjectRef = 00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */;
-				},
-				{
-					ProductGroup = CCFAA1882187356500EE8BE7 /* Products */;
-					ProjectRef = 1B6750396A7244FA81962824 /* RCTVideo.xcodeproj */;
 				},
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
@@ -2569,20 +2511,6 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CCFAA18D2187356600EE8BE7 /* libBVLinearGradient.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBVLinearGradient.a;
-			remoteRef = CCFAA18C2187356600EE8BE7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CCFAA18F2187356600EE8BE7 /* libBVLinearGradient.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBVLinearGradient.a;
-			remoteRef = CCFAA18E2187356600EE8BE7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		CCFAA1922187356600EE8BE7 /* libRCTCordova.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2602,20 +2530,6 @@
 			fileType = archive.ar;
 			path = libRCTToast.a;
 			remoteRef = CCFAA1972187356600EE8BE7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CCFAA19C2187356600EE8BE7 /* libRCTVideo.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTVideo.a;
-			remoteRef = CCFAA19B2187356600EE8BE7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		CCFAA19E2187356600EE8BE7 /* libRCTVideo.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTVideo.a;
-			remoteRef = CCFAA19D2187356600EE8BE7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		CCFAA1A12187356600EE8BE7 /* libRCTZip.a */ = {

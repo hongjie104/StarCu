@@ -8,6 +8,7 @@ import {
 	Text,
 	Image,
 	Platform,
+	ScrollView,
 } from 'react-native';
 import picker from 'react-native-picker';
 import MissionItem from '../../component/MissionItem';
@@ -334,11 +335,13 @@ export default class Calendar extends PureComponent {
 						</Text>
 					</View>
 				</View>
-				{
-					selectedMissionDataArr.map((m, i) => (
-						<MissionItem key={i} item={m} type={0} navigation={this.props.navigation} />
-					))
-				}
+				<ScrollView style={styles.container}>
+					{
+						selectedMissionDataArr.map((m, i) => (
+							<MissionItem key={i} item={m} type={0} navigation={this.props.navigation} />
+						))
+					}
+				</ScrollView>
 			</View>
 		);
 	}

@@ -9,6 +9,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
@@ -40,6 +41,10 @@ export default class RegisterScene extends PureComponent {
 			clearInterval(this._interval);
 			this._interval = null;
 		}
+	}
+
+	scrollToInput(reactNode) {
+		this.scroll.props.scrollToFocusedInput(reactNode);
 	}
 
 	onPhoneChange(phone) {
@@ -144,130 +149,140 @@ export default class RegisterScene extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
-				<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
-				<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
-					<Image
-						style={{
-							width: toDips(29),
-							height: toDips(46),
-							marginLeft: toDips(80),
-							marginRight: toDips(22),
-						}}
-						source={require('../../imgs/icon61.png')}
-					/>
-					<Text style={styles.keyTxt}>
-						手机号码：
-					</Text>
-					<TextInput
-						onChangeText={phone => {
-							this.onPhoneChange(phone);
-						}}
-						value={phone}
-						placeholder='请输入手机号'
-						placeholderTextColor='#999999'
-						style={styles.input}
-						maxLength={11}
-						keyboardType='numeric'
-					/>
-				</View>
-				<View style={styles.line} />
-				<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							flex: 1,
-						}}
-					>
+				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid>
+					<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
+					<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
 						<Image
 							style={{
-								width: toDips(39),
-								height: toDips(47),
-								marginLeft: toDips(75),
+								width: toDips(29),
+								height: toDips(46),
+								marginLeft: toDips(80),
+								marginRight: toDips(22),
+							}}
+							source={require('../../imgs/icon61.png')}
+						/>
+						<Text style={styles.keyTxt}>
+							手机号码：
+						</Text>
+						<TextInput
+							onChangeText={phone => {
+								this.onPhoneChange(phone);
+							}}
+							value={phone}
+							placeholder='请输入手机号'
+							placeholderTextColor='#999999'
+							style={styles.input}
+							maxLength={11}
+							keyboardType='numeric'
+						/>
+					</View>
+					<View style={styles.line} />
+					<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
+						<View
+							style={{
+								flexDirection: 'row',
+								alignItems: 'center',
+								flex: 1,
+							}}
+						>
+							<Image
+								style={{
+									width: toDips(39),
+									height: toDips(47),
+									marginLeft: toDips(75),
+									marginRight: toDips(16),
+								}}
+								source={require('../../imgs/icon63.png')}
+							/>
+							<TextInput
+								onChangeText={code => {
+									this.onCodeChange(code);
+								}}
+								value={code}
+								placeholder='请输入验证码'
+								placeholderTextColor='#999999'
+								style={styles.input}
+								maxLength={6}
+								keyboardType='numeric'
+								onFocus={(event: Event) => {
+									// `bind` the function if you're using ES6 classes
+									this.scrollToInput(findNodeHandle(event.target));
+								}}
+							/>
+						</View>
+						<Text style={styles.codeBtnTxt} onPress={() => { this.onGetRegisterCode(); }}>
+							{ cd > 0 ? `${cd}s` : '获取验证码' }
+						</Text>	
+					</View>
+					<View style={styles.line} />
+					<View style={[styles.inputContainer, { marginTop: toDips(47) }]}>
+						<Image
+							style={{
+								width: toDips(41),
+								height: toDips(38),
+								marginLeft: toDips(74),
 								marginRight: toDips(16),
 							}}
-							source={require('../../imgs/icon63.png')}
+							source={require('../../imgs/icon64.png')}
 						/>
+						<Text style={styles.keyTxt}>
+							邀请码：
+						</Text>
 						<TextInput
-							onChangeText={code => {
-								this.onCodeChange(code);
+							onChangeText={invitationCode => {
+								this.onInvitationCodeChange(invitationCode);
 							}}
-							value={code}
-							placeholder='请输入验证码'
+							value={invitationCode}
+							placeholder='请输入邀请码'
 							placeholderTextColor='#999999'
 							style={styles.input}
 							maxLength={6}
 							keyboardType='numeric'
+							onFocus={(event: Event) => {
+								// `bind` the function if you're using ES6 classes
+								this.scrollToInput(findNodeHandle(event.target));
+							}}
 						/>
 					</View>
-					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetRegisterCode(); }}>
-						{ cd > 0 ? `${cd}s` : '获取验证码' }
-					</Text>	
-				</View>
-				<View style={styles.line} />
-				<View style={[styles.inputContainer, { marginTop: toDips(47) }]}>
-					<Image
-						style={{
-							width: toDips(41),
-							height: toDips(38),
-							marginLeft: toDips(74),
-							marginRight: toDips(16),
-						}}
-						source={require('../../imgs/icon64.png')}
-					/>
-					<Text style={styles.keyTxt}>
-						邀请码：
-					</Text>
-					<TextInput
-						onChangeText={invitationCode => {
-							this.onInvitationCodeChange(invitationCode);
-						}}
-						value={invitationCode}
-						placeholder='请输入邀请码'
-						placeholderTextColor='#999999'
-						style={styles.input}
-						maxLength={6}
-						keyboardType='numeric'
-					/>
-				</View>
-				<View style={styles.line} />
-				{
-					// 协议
-				}
-				<View style={styles.protocolContainer}>
+					<View style={styles.line} />
+					{
+						// 协议
+					}
+					<View style={styles.protocolContainer}>
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.setState({
+									protocolChecked: !protocolChecked,
+								});
+							}}
+						>
+							<Image
+								style={styles.checkBoxImg}
+								source={
+									protocolChecked ? require('../../imgs/wgou.png') : require('../../imgs/gou.png')
+								}
+							/>
+						</TouchableOpacity>
+						<Text style={styles.protocolTxt}>
+							我已阅读并同意星促伙伴 <Text style={{ color: '#2579E0' }}>服务条款协议</Text>
+						</Text>
+					</View>
+					{
+						// 注册按钮
+					}
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-							this.setState({
-								protocolChecked: !protocolChecked,
-							});
+							this.onRegister();
 						}}
+						style={styles.registerBtn}
 					>
-						<Image
-							style={styles.checkBoxImg}
-							source={
-								protocolChecked ? require('../../imgs/wgou.png') : require('../../imgs/gou.png')
-							}
-						/>
+						<Text style={styles.registerBtnTxt}>
+							注册
+						</Text>
 					</TouchableOpacity>
-					<Text style={styles.protocolTxt}>
-						我已阅读并同意星促伙伴 <Text style={{ color: '#2579E0' }}>服务条款协议</Text>
-					</Text>
-				</View>
-				{
-					// 注册按钮
-				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onRegister();
-					}}
-					style={styles.registerBtn}
-				>
-					<Text style={styles.registerBtnTxt}>
-						注册
-					</Text>
-				</TouchableOpacity>
+				</KeyboardAwareScrollView>
 			</View>
 		);
 	}

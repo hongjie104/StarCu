@@ -99,7 +99,7 @@ export default class UserInfoScene extends PureComponent {
 				for (let i = 0; i < this.storeArr.length; i++) {
 					if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
 						storeData = this.storeArr[i];
-						storeId: storeData.id;
+						storeId = storeData.id;
 						break;
 					}
 				}
@@ -268,6 +268,7 @@ export default class UserInfoScene extends PureComponent {
 		try {
 			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
 		} catch (err) {
+			console.warn(err);
 			toast('上传照片失败，请重试');
 			return false;
 		}
@@ -314,15 +315,19 @@ export default class UserInfoScene extends PureComponent {
 		}, async () => {
 			if (!idPositivePho.startsWith('http')) {
 				idPositivePho = await this.uploadImg(idPositivePho);
+				if (!idPositivePho) return;
 			}
 			if (!idOppositePho.startsWith('http')) {
 				idOppositePho = await this.uploadImg(idOppositePho);
+				if (!idOppositePho) return;
 			}
 			if (!userImage1.startsWith('http')) {
 				userImage1 = await this.uploadImg(userImage1);
+				if (!userImage1) return;
 			}
 			if (!userImage2.startsWith('http')) {
 				userImage2 = await this.uploadImg(userImage2);
+				if (!userImage2) return;
 			}
 			
 			setMyInfo({

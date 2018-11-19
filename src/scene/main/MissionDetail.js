@@ -69,7 +69,7 @@ export default class MissionDetail extends PureComponent {
 
 	onPickImage(type) {
 		// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
-		ImagePicker.showImagePicker({
+		ImagePicker.launchCamera({
 			title: '挑选照片',
 			cancelButtonTitle: '取消',
 			takePhotoButtonTitle: '拍照',
@@ -183,181 +183,181 @@ export default class MissionDetail extends PureComponent {
 		return (
 			<View style={styles.container}>
 				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid>
-				<View style={styles.titleContainer}>
-					<View style={styles.titleIcon} />
-					<Text style={styles.titleTxt}>
-						理货拍照
-					</Text>
-				</View>
-				<View style={styles.phoneItemContainer}>
-					<View style={styles.phoneItemLeftContainer}>
-						<View style={styles.phoneItemIndexContainer}>
-							<Text style={styles.phoneItemIndexTxt}>
-								1
-							</Text>
-						</View>
-						<Text style={styles.phoneItemTxt}>
-							理货前牌面（正面）
+					<View style={styles.titleContainer}>
+						<View style={styles.titleIcon} />
+						<Text style={styles.titleTxt}>
+							理货拍照
 						</Text>
 					</View>
-					{
-						// 虚线框
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(1);
-						}}
-						style={styles.addPhoneBtn}
-					>
-						{
-							img1 ? (
-								<Image style={styles.addPhoneImg} source={{ uri: img1 }} />
-							) : (
-								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
-							)
-						}
-					</TouchableOpacity>
-				</View>
-				<View style={styles.phoneItemContainer}>
-					<View style={styles.phoneItemLeftContainer}>
-						<View style={styles.phoneItemIndexContainer}>
-							<Text style={styles.phoneItemIndexTxt}>
-								2
-							</Text>
-						</View>
-						<Text style={styles.phoneItemTxt}>
-							理货前牌面（左侧）
-						</Text>
-					</View>
-					{
-						// 虚线框
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(2);
-						}}
-						style={styles.addPhoneBtn}
-					>
-						{
-							img2 ? (
-								<Image style={styles.addPhoneImg} source={{ uri: img2 }} />
-							) : (
-								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
-							)
-						}
-					</TouchableOpacity>
-				</View>
-				<View style={styles.phoneItemContainer}>
-					<View style={styles.phoneItemLeftContainer}>
-						<View style={styles.phoneItemIndexContainer}>
-							<Text style={styles.phoneItemIndexTxt}>
-								3
-							</Text>
-						</View>
-						<Text style={styles.phoneItemTxt}>
-							理货后牌面（正面）
-						</Text>
-					</View>
-					{
-						// 虚线框
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(3);
-						}}
-						style={styles.addPhoneBtn}
-					>
-						{
-							img3 ? (
-								<Image style={styles.addPhoneImg} source={{ uri: img3 }} />
-							) : (
-								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
-							)
-						}
-					</TouchableOpacity>
-				</View>
-				<View style={[styles.phoneItemContainer, styles.lastPhoneItemContainer]}>
-					<View style={styles.phoneItemLeftContainer}>
-						<View style={styles.phoneItemIndexContainer}>
-							<Text style={styles.phoneItemIndexTxt}>
-								4
-							</Text>
-						</View>
-						<Text style={styles.phoneItemTxt}>
-							理货后牌面（左侧）
-						</Text>
-					</View>
-					{
-						// 虚线框
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(4);
-						}}
-						style={styles.addPhoneBtn}
-					>
-						{
-							img4 ? (
-								<Image style={styles.addPhoneImg} source={{ uri: img4 }} />
-							) : (
-								<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
-							)
-						}
-					</TouchableOpacity>
-				</View>
-				{
-					// 补货数据汇报
-				}
-
-				<View style={styles.titleContainer}>
-					<View style={styles.titleIcon} />
-					<Text style={styles.titleTxt}>
-						补货数据汇报
-					</Text>
-				</View>
-				{
-					missionInfo && missionInfo.skus.map((sku, i) => (
-						<View key={i} style={[styles.dataContainer, i === missionInfo.skus.length - 1 ? styles.lastDataContainer : null]}>
-							<Text style={styles.dataTxt}>
-								{ sku.skuName }
-							</Text>
-							<View style={styles.dataInputContainer}>
-								<TextInput
-									keyboardType='numeric'
-									onChangeText={text => {
-										this.onSkuNumChange(sku.skuId, text);
-									}}
-									placeholder='请输入补货量'
-									placeholderTextColor='#999'
-									style={styles.input}
-									onFocus={(event: Event) => {
-										// `bind` the function if you're using ES6 classes
-										this.scrollToInput(findNodeHandle(event.target));
-									}}
-									value={skuDataArr.filter(item => item.skuId === sku.skuId )[0].skuNum.toString()}
-								/>
+					<View style={styles.phoneItemContainer}>
+						<View style={styles.phoneItemLeftContainer}>
+							<View style={styles.phoneItemIndexContainer}>
+								<Text style={styles.phoneItemIndexTxt}>
+									1
+								</Text>
 							</View>
+							<Text style={styles.phoneItemTxt}>
+								理货前牌面（正面）
+							</Text>
 						</View>
-					))
-				}
-				{
-					// 提交按钮
-				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onSubmit();
-					}}
-					style={styles.submitBtn}
-				>
-					<Text style={styles.submitBtnTxt}>
-						提交		
-					</Text>	
-				</TouchableOpacity>
+						{
+							// 虚线框
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onPickImage(1);
+							}}
+							style={styles.addPhoneBtn}
+						>
+							{
+								img1 ? (
+									<Image style={styles.addPhoneImg} source={{ uri: img1 }} />
+								) : (
+									<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+								)
+							}
+						</TouchableOpacity>
+					</View>
+					<View style={styles.phoneItemContainer}>
+						<View style={styles.phoneItemLeftContainer}>
+							<View style={styles.phoneItemIndexContainer}>
+								<Text style={styles.phoneItemIndexTxt}>
+									2
+								</Text>
+							</View>
+							<Text style={styles.phoneItemTxt}>
+								理货前牌面（左侧）
+							</Text>
+						</View>
+						{
+							// 虚线框
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onPickImage(2);
+							}}
+							style={styles.addPhoneBtn}
+						>
+							{
+								img2 ? (
+									<Image style={styles.addPhoneImg} source={{ uri: img2 }} />
+								) : (
+									<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+								)
+							}
+						</TouchableOpacity>
+					</View>
+					<View style={styles.phoneItemContainer}>
+						<View style={styles.phoneItemLeftContainer}>
+							<View style={styles.phoneItemIndexContainer}>
+								<Text style={styles.phoneItemIndexTxt}>
+									3
+								</Text>
+							</View>
+							<Text style={styles.phoneItemTxt}>
+								理货后牌面（正面）
+							</Text>
+						</View>
+						{
+							// 虚线框
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onPickImage(3);
+							}}
+							style={styles.addPhoneBtn}
+						>
+							{
+								img3 ? (
+									<Image style={styles.addPhoneImg} source={{ uri: img3 }} />
+								) : (
+									<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+								)
+							}
+						</TouchableOpacity>
+					</View>
+					<View style={[styles.phoneItemContainer, styles.lastPhoneItemContainer]}>
+						<View style={styles.phoneItemLeftContainer}>
+							<View style={styles.phoneItemIndexContainer}>
+								<Text style={styles.phoneItemIndexTxt}>
+									4
+								</Text>
+							</View>
+							<Text style={styles.phoneItemTxt}>
+								理货后牌面（左侧）
+							</Text>
+						</View>
+						{
+							// 虚线框
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onPickImage(4);
+							}}
+							style={styles.addPhoneBtn}
+						>
+							{
+								img4 ? (
+									<Image style={styles.addPhoneImg} source={{ uri: img4 }} />
+								) : (
+									<Image style={styles.addPhoneImg} source={require('../../imgs/jia.png')} />
+								)
+							}
+						</TouchableOpacity>
+					</View>
+					{
+						// 补货数据汇报
+					}
+
+					<View style={styles.titleContainer}>
+						<View style={styles.titleIcon} />
+						<Text style={styles.titleTxt}>
+							补货数据汇报
+						</Text>
+					</View>
+					{
+						missionInfo && missionInfo.skus.map((sku, i) => (
+							<View key={i} style={[styles.dataContainer, i === missionInfo.skus.length - 1 ? styles.lastDataContainer : null]}>
+								<Text style={styles.dataTxt}>
+									{ sku.skuName }
+								</Text>
+								<View style={styles.dataInputContainer}>
+									<TextInput
+										keyboardType='numeric'
+										onChangeText={text => {
+											this.onSkuNumChange(sku.skuId, text);
+										}}
+										placeholder='请输入补货量'
+										placeholderTextColor='#999'
+										style={styles.input}
+										onFocus={(event: Event) => {
+											// `bind` the function if you're using ES6 classes
+											this.scrollToInput(findNodeHandle(event.target));
+										}}
+										value={skuDataArr.filter(item => item.skuId === sku.skuId )[0].skuNum.toString()}
+									/>
+								</View>
+							</View>
+						))
+					}
+					{
+						// 提交按钮
+					}
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							this.onSubmit();
+						}}
+						style={styles.submitBtn}
+					>
+						<Text style={styles.submitBtnTxt}>
+							提交		
+						</Text>	
+					</TouchableOpacity>
 				</KeyboardAwareScrollView>
 				{
 					showSpinner && <Spinner />

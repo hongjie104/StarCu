@@ -69,6 +69,14 @@ export function getOrderArr() {
 	});
 }
 
+// 根据订单找到对应的任务
+export function getMissionByOrder(orderId) {
+	return post(`${SERVER_HOST}/ShareWork/app/taskListByOrderId`, {
+		token: global.token,
+		orderId,
+	});
+}
+
 // 接受订单
 export function takeOrder(orderId) {
 	return post(`${SERVER_HOST}/ShareWork/app/getOrders`, {
@@ -113,6 +121,14 @@ export function getSystemMsg(page, pageSize) {
 		token: global.token,
 		page,
 		pageSize,
+	});
+}
+
+// 标记消息为已读
+export function setMsgReaded(messageIds) {
+	return post(`${SERVER_HOST}/ShareWork/app/message/read`, {
+		token: global.token,
+		messageIds,
 	});
 }
 

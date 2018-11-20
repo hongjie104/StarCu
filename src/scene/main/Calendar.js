@@ -258,13 +258,13 @@ export default class Calendar extends PureComponent {
 							// 星期
 						}
 						<View style={styles.calendarContentRow}>
-							<Text style={styles.calendarWeekTxt}>SUN</Text>
-							<Text style={styles.calendarWeekTxt}>MON</Text>
-							<Text style={styles.calendarWeekTxt}>TUE</Text>
-							<Text style={styles.calendarWeekTxt}>WED</Text>
-							<Text style={styles.calendarWeekTxt}>THU</Text>
-							<Text style={styles.calendarWeekTxt}>FRI</Text>
-							<Text style={styles.calendarWeekTxt}>SAT</Text>
+							<Text style={styles.calendarWeekTxt}>日</Text>
+							<Text style={styles.calendarWeekTxt}>一</Text>
+							<Text style={styles.calendarWeekTxt}>二</Text>
+							<Text style={styles.calendarWeekTxt}>三</Text>
+							<Text style={styles.calendarWeekTxt}>四</Text>
+							<Text style={styles.calendarWeekTxt}>五</Text>
+							<Text style={styles.calendarWeekTxt}>六</Text>
 						</View>
 						{
 							// 日期

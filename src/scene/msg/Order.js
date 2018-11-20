@@ -7,9 +7,10 @@ import {
 	FlatList,
 	Image,
 	Text,
+	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { getOrderMsg } from '../../service';
+import { getOrderMsg, setMsgReaded } from '../../service';
 import toast from '../../utils/toast';
 
 const ITEM_HEIGHT = toDips(206);
@@ -75,6 +76,24 @@ export default class OrderMsgList extends PureComponent {
 		return data.orderMessages;
 	}
 
+	onItemPress(msgData) {
+		const { id } = msgData;
+		setMsgReaded(id).then(result => {
+			const msgList = [...this.state.msgList];
+			for (let i = 0; i < msgList.length; i++) {
+				if (msgList[i].id === id) {
+					msgList[i].status = 1;
+					break
+				}
+			}
+			this.setState({
+				msgList,
+			});
+		}).catch(e => {
+			toast(e);
+		});
+	}
+
 	onRefresh() {
 		this.page = 1;
 		this.setState({
@@ -90,7 +109,13 @@ export default class OrderMsgList extends PureComponent {
 
 	renderItem({item, index}) {
 		return (
-			<View style={styles.itemContainer}>
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() => {
+					this.onItemPress(item);
+				}}
+				style={styles.itemContainer}
+			>
 				<Image style={styles.itemIcon} source={this.getItemImg()} />
 				<View style={styles.itemInfo}>
 					<View style={styles.nameContainer}>
@@ -108,7 +133,7 @@ export default class OrderMsgList extends PureComponent {
 						{ item.content }
 					</Text>
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 

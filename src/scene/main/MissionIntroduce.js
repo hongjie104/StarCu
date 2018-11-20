@@ -10,7 +10,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { takeOrder } from '../../service';
+import { takeOrder, getMissionByOrder } from '../../service';
 import toast from '../../utils/toast';
 
 // 任务说明
@@ -23,19 +23,21 @@ export default class MissionIntroduce extends PureComponent {
 	constructor(props) {
 		super(props);
 		/*
-			statusDesc 状态描述 
-			orderEndDate 订单结束时间 
-			orderDays 订单执行时长（天） 
-			standardPhoto: [ 'http://oyxr5nbal.bkt.clouddn.com/20181107114116.jpg' ],
-			orderId 订单ID 
-			orderBeginDate 订单开始时间 
-			require 订单要求 
-			remark: null,
-			orderTitle 订单标题 
-			status 订单状态 
-			orderContent 订单描述 
-			username 订单管理员
-		*/
+		{ statusDesc: '未接单',
+		  orderEndDate: '2018-09-06',
+		  orderDays: '14',
+		  standardPhoto: [ 'http://media.hqxyun.com/20181116095741.jpg' ],
+		  orderId: '853596988835840',
+		  orderBeginDate: '2018-09-06',
+		  require: '陈列要求',
+		  remark: '其他说明',
+		  orderTitle: 'wef',
+		  status: 1,
+		  orderContent: 'wef',
+		  username: '平台管理员',
+		  received: 0,
+		  key: '853596988835840' }
+		 */
 		const { mission } = props.navigation.state.params;
 		this.state = {
 			...mission,
@@ -44,17 +46,22 @@ export default class MissionIntroduce extends PureComponent {
 
 	onSubmit() {
 		const { status } = this.state;
-		const { type } = this.props;
-		if (type === 1 && status === 0) {
+		const { type } = this.props.navigation.state.params;
+		if (type === 1 && status === 1) {
 			const { orderId } = this.state;
-			takeOrder(orderId).then(result => {
-				const {navigate} = this.props.navigation;
-				navigate({
-					routeName: 'MissionDetailScene',
-					params: {
-						...this.state,
-					},
-				});
+			getMissionByOrder(orderId).then(result => {
+				console.warn(result);
+				// takeOrder(orderId).then(result => {
+				// 	const {navigate} = this.props.navigation;
+				// 	navigate({
+				// 		routeName: 'MissionDetailScene',
+				// 		params: {
+				// 			...this.state,
+				// 		},
+				// 	});
+				// }).catch(e => {
+				// 	toast(e);
+				// });
 			}).catch(e => {
 				toast(e);
 			});
@@ -72,18 +79,20 @@ export default class MissionIntroduce extends PureComponent {
 	render() {
 		/*
 		{ statusDesc: '未接单',
-       orderEndDate: '2018-09-06',
-       orderDays: '14',
-       standardPhoto: [ 'http://oyxr5nbal.bkt.clouddn.com/20181107114116.jpg' ],
-       orderId: '853613593561088',
-       orderBeginDate: '2018-09-06',
-       require: '324',
-       remark: null,
-       orderTitle: 'wef',
-       status: 1,
-       orderContent: 'wef',
-       username: '平台管理员' },
-		*/
+		  orderEndDate: '2018-09-06',
+		  orderDays: '14',
+		  standardPhoto: [ 'http://media.hqxyun.com/20181116095741.jpg' ],
+		  orderId: '853596988835840',
+		  orderBeginDate: '2018-09-06',
+		  require: '陈列要求',
+		  remark: '其他说明',
+		  orderTitle: 'wef',
+		  status: 1,
+		  orderContent: 'wef',
+		  username: '平台管理员',
+		  received: 0,
+		  key: '853596988835840' }
+		 */
 		const {
 			orderTitle,
 			orderBeginDate,
@@ -92,9 +101,10 @@ export default class MissionIntroduce extends PureComponent {
 			orderContent,
 			standardPhoto,
 			status,
+			remark,
 		} = this.state;
 		// type 0 是任务  1 是订单
-		const { type } = this.props;
+		const { type } = this.props.navigation.state.params;
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>
@@ -123,11 +133,13 @@ export default class MissionIntroduce extends PureComponent {
 							</Text>
 						</View>
 						<Text style={styles.des}>
-							1.(服务器没有传)
+							{ this.state.require }
 						</Text>
-						<Text style={styles.des}>
-							2.(服务器没有传)
-						</Text>
+						{
+							// <Text style={styles.des}>
+							// 	2.(服务器没有传)
+							// </Text>
+						}
 
 						<View style={styles.desTitleContainer}>
 							<View style={styles.desTitleIcon} />
@@ -136,7 +148,7 @@ export default class MissionIntroduce extends PureComponent {
 							</Text>
 						</View>
 						<Text style={styles.des}>
-							1.(服务器没有传)
+							{ remark }
 						</Text>
 
 						<View style={styles.desTitleContainer}>
@@ -163,7 +175,7 @@ export default class MissionIntroduce extends PureComponent {
 					style={styles.submitBtn}
 				>
 					<Text style={styles.submitBtnTxt}>
-						{ type === 1 ? (status === 0 ? '接单' : '做任务') : '做任务' }
+						{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
 					</Text>
 				</TouchableOpacity>
 			</View>

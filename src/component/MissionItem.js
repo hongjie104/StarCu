@@ -16,6 +16,12 @@ export default class MissionItem extends PureComponent {
 
 	constructor(props) {
 		super(props);
+		this.state = {
+			item: {
+				...props.item,
+				status: parseInt(props.item.status),
+			},
+		};
 	}
 
 	onItemPress(mission) {
@@ -25,8 +31,20 @@ export default class MissionItem extends PureComponent {
 			params: {
 				mission,
 				type,
+				onTakeOrder: type === 1 ? orderId => { this.onTakeOrder(orderId); } : null,
 			},
 		});
+	}
+
+	onTakeOrder(orderId) {
+		if (orderId === this.state.item.orderId) {
+			this.setState({
+				item: {
+					...this.state.item,
+					status: 2,
+				},
+			});
+		}
 	}
 
 	render() {
@@ -45,7 +63,10 @@ export default class MissionItem extends PureComponent {
 			status  任务状态
 		 */
 		// type 0 是任务  1 是订单
-		const { item, type } = this.props;
+		const { type } = this.props;
+		const {
+			item,
+		} = this.state;
 		return (
 			<TouchableOpacity
 				activeOpacity={0.8}
@@ -57,19 +78,18 @@ export default class MissionItem extends PureComponent {
 				<View style={styles.itemInfoContainer}>
 					<ImageBackground
 						style={styles.itemStatusImgBg}
-						// source={item.received === 1 ? require('../imgs/lvk.png') : (item.received === 0 ? require('../imgs/hongk.png') : require('../imgs/huangk.png'))}
 						source={
-							type === 1 ? (item.status === 0 ? require('../imgs/hongk.png') : require('../imgs/lvk.png')) : (item.status === 0 ? require('../imgs/huangk.png') : require('../imgs/lvk.png'))
+							type === 1 ? (item.status === 1 ? require('../imgs/hongk.png') : require('../imgs/lvk.png')) : (item.status === 0 ? require('../imgs/huangk.png') : require('../imgs/lvk.png'))
 						}
 					>
 						<Image
 							style={styles.itemStatusImg}
 							source={
-								type === 1 ? (item.status === 0 ? require('../imgs/wjd.png') : require('../imgs/yjd.png')) : (item.status === 0 ? require('../imgs/wwc.png') : require('../imgs/ywc.png'))
+								type === 1 ? (item.status === 1 ? require('../imgs/wjd.png') : require('../imgs/yjd.png')) : (item.status === 0 ? require('../imgs/wwc.png') : require('../imgs/ywc.png'))
 							}
 						/>
 						<Text style={styles.itemStatusTxt}>
-							{ type === 1 ? (item.status === 0 ? '未接单' : '已接单') : (item.status === 0 ? '未完成' : '已完成') }
+							{ type === 1 ? (item.status === 1 ? '未接单' : '已接单') : (item.status === 0 ? '未完成' : '已完成') }
 						</Text>
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>

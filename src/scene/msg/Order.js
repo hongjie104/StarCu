@@ -13,7 +13,7 @@ import { toDips, getFontSize } from '../../utils/dimensions';
 import { getOrderMsg, setMsgReaded } from '../../service';
 import toast from '../../utils/toast';
 
-const ITEM_HEIGHT = toDips(206);
+// const ITEM_HEIGHT = toDips(206);
 
 export default class OrderMsgList extends PureComponent {
 	
@@ -146,9 +146,9 @@ export default class OrderMsgList extends PureComponent {
 					renderItem={itemData => {
 						return this.renderItem(itemData);
 					}}
-					getItemLayout={(_, index) => (
-						{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-					)}
+					// getItemLayout={(_, index) => (
+					// 	{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
+					// )}
 					style={styles.list}
 					ItemSeparatorComponent={() => (<View
 						style={{
@@ -179,10 +179,12 @@ const styles = StyleSheet.create({
 	},
 	itemContainer: {
 		width: toDips(750),
-		height: toDips(206),
+		// height: toDips(206),
 		backgroundColor: 'white',
 		flexDirection: 'row',
 		alignItems: 'center',
+		paddingTop: toDips(24),
+		paddingBottom: toDips(24),
 	},
 	itemIcon: {
 		width: toDips(84),
@@ -219,5 +221,6 @@ const styles = StyleSheet.create({
 		color: '#333333',
 		width: toDips(569),
 		marginTop: toDips(22),
+		lineHeight: toDips(42),
 	},
 });

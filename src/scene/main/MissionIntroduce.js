@@ -39,34 +39,72 @@ export default class MissionIntroduce extends PureComponent {
 		  key: '853596988835840' }
 		 */
 		const { mission } = props.navigation.state.params;
+		// console.warn(mission);
 		this.state = {
 			...mission,
 		};
 	}
 
-	onSubmit() {
-		const { status } = this.state;
-		const { type } = this.props.navigation.state.params;
-		if (type === 1 && status === 1) {
-			const { orderId } = this.state;
-			getMissionByOrder(orderId).then(result => {
-				console.warn(result);
-				// takeOrder(orderId).then(result => {
-				// 	const {navigate} = this.props.navigation;
-				// 	navigate({
-				// 		routeName: 'MissionDetailScene',
-				// 		params: {
-				// 			...this.state,
-				// 		},
-				// 	});
-				// }).catch(e => {
-				// 	toast(e);
-				// });
-			}).catch(e => {
-				toast(e);
-			});
+	async getFirstMissionByOrder(orderId) {
+		// status 1 是未接  2 是已接
+		const result = await getMissionByOrder(orderId);
+		const { tasks, taskNum } = result.datas;
+		if (taskNum > 0) {
+			return tasks[0];
+		}
+		toast('该订单的任务数量为0');
+		//.then(result => {
+			// { datas: 
+			//    { expectedIncome: 300,
+			//      tasks: 
+			//       [ { orderType: '堆头理货',
+			//           statusDesc: '未完成',
+			//           orderEndDate: '2018-09-20',
+			//           orderId: '853289351841792',
+			//           orderStartDate: '2018-09-06',
+			//           orderTypeId: '1871479136913408',
+			//           orderTitle: 'wef',
+			//           taskId: '853289791981568',
+			//           status: '0' } ],
+			//      taskNum: 1 } }
+		// }).catch(e => {
+		// 	toast(e);
+		// });
+	}
+
+	async onSubmit() {
+		const { status, orderId } = this.state;
+		const { type, onTakeOrder } = this.props.navigation.state.params;
+		if (type === 1) {
+			if (status === 1) {
+				// 还没有接，那就先接一下任务
+				try {
+					await takeOrder(orderId);
+				} catch (err) {
+					toast(err);
+					return;
+				}
+				onTakeOrder && onTakeOrder(orderId)
+			}
+			const missionData = await this.getFirstMissionByOrder(orderId);
+			if (missionData) {
+				// [ { orderType: '堆头理货',
+				// statusDesc: '未完成',
+				// orderEndDate: '2018-09-20',
+				// orderId: '853289351841792',
+				// orderStartDate: '2018-09-06',
+				// orderTypeId: '1871479136913408',
+				// orderTitle: 'wef',
+				// taskId: '853289791981568',
+				// status: '0' } ],
+				const { navigate } = this.props.navigation;
+				navigate({
+					routeName: 'MissionDetailScene',
+					params: missionData,
+				});
+			}
 		} else {
-			const {navigate} = this.props.navigation;
+			const { navigate } = this.props.navigation;
 			navigate({
 				routeName: 'MissionDetailScene',
 				params: {

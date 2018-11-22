@@ -190,152 +190,152 @@ export default class Calendar extends PureComponent {
 		} = this.state;
 		return (
 			<View style={styles.container}>
-				{
-					Platform.OS !== 'ios' && (<View style={styles.androidPatch} />)
-				}
-				<View style={styles.calendarContainer}>
+				<ScrollView style={styles.container}>
 					{
-						// 年月选择容器
+						Platform.OS !== 'ios' && (<View style={styles.androidPatch} />)
 					}
-					<View style={styles.yearAndMonthSelector}>
+					<View style={styles.calendarContainer}>
 						{
-							// 年选择器
+							// 年月选择容器
 						}
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-								this.onShowDatePicker();
-							}}
-							style={styles.selector}
-						>
-							<Text style={styles.selectorTxt}>
-								{ curYear }年
-							</Text>
+						<View style={styles.yearAndMonthSelector}>
 							{
-								// <Image style={styles.arrowDownImg} source={require('../../imgs/xl.png')} />
+								// 年选择器
 							}
-						</TouchableOpacity>
-						{
-							// 月选择器
-						}
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-								this.onShowDatePicker();
-							}}
-							style={[styles.selector, { marginLeft: toDips(74) }]}
-						>
+							<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onShowDatePicker();
+								}}
+								style={styles.selector}
+							>
+								<Text style={styles.selectorTxt}>
+									{ curYear }年
+								</Text>
+								{
+									// <Image style={styles.arrowDownImg} source={require('../../imgs/xl.png')} />
+								}
+							</TouchableOpacity>
 							{
-								// <Image style={styles.arrowSelectorImg} source={require('../../imgs/z.png')} />
+								// 月选择器
 							}
-							<Text style={styles.selectorTxt}>
-								{ curMonth }月
-							</Text>
+							<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onShowDatePicker();
+								}}
+								style={[styles.selector, { marginLeft: toDips(74) }]}
+							>
+								{
+									// <Image style={styles.arrowSelectorImg} source={require('../../imgs/z.png')} />
+								}
+								<Text style={styles.selectorTxt}>
+									{ curMonth }月
+								</Text>
+								{
+									// <Image style={styles.arrowSelectorImg} source={require('../../imgs/y.png')} />
+								}
+							</TouchableOpacity>
 							{
-								// <Image style={styles.arrowSelectorImg} source={require('../../imgs/y.png')} />
+								// 查看按钮
 							}
-						</TouchableOpacity>
-						{
-							// 查看按钮
-						}
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-								this.onShowDatePicker();
-							}}
-							style={styles.lookUpBtn}
-						>
-							<Text style={styles.lookUpBtnTxt}>
-								选择
-							</Text>
-						</TouchableOpacity>
-					</View>
-					{
-						// 日历内容
-					}
-					<View style={styles.calendarContentContainer}>
-						{
-							// 星期
-						}
-						<View style={styles.calendarContentRow}>
-							<Text style={styles.calendarWeekTxt}>日</Text>
-							<Text style={styles.calendarWeekTxt}>一</Text>
-							<Text style={styles.calendarWeekTxt}>二</Text>
-							<Text style={styles.calendarWeekTxt}>三</Text>
-							<Text style={styles.calendarWeekTxt}>四</Text>
-							<Text style={styles.calendarWeekTxt}>五</Text>
-							<Text style={styles.calendarWeekTxt}>六</Text>
+							<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onShowDatePicker();
+								}}
+								style={styles.lookUpBtn}
+							>
+								<Text style={styles.lookUpBtnTxt}>
+									选择
+								</Text>
+							</TouchableOpacity>
 						</View>
 						{
-							// 日期
-							dateArr.map((dateRow, i) => {
-								return (
-									<View key={`dateRow${i}`} style={styles.calendarContentDateRow}>
-										{
-											dateRow.map((dateData, j) => (
-												<View
-													key={`date${j}`}
-													style={[
-														styles.calendarDateContainer,
-														dateData.misssionData && dateData.misssionData.length > 0 ? (
-															nowYear > dateData.year ? styles.calendarPassDateContainer : (
-																nowYear < dateData.year ? styles.calendarFutureDateContainer : (
-																	nowMonth > dateData.month ? styles.calendarPassDateContainer : (
-																		nowMonth < dateData.month ? styles.calendarFutureDateContainer : (
-																			nowDate > dateData.date ? styles.calendarPassDateContainer : (
-																				nowDate < dateData.date ? styles.calendarFutureDateContainer : (
-																					styles.calendarCurDateContainer
-																				)
-																			)		
+							// 日历内容
+						}
+						<View style={styles.calendarContentContainer}>
+							{
+								// 星期
+							}
+							<View style={styles.calendarContentRow}>
+								<Text style={styles.calendarWeekTxt}>日</Text>
+								<Text style={styles.calendarWeekTxt}>一</Text>
+								<Text style={styles.calendarWeekTxt}>二</Text>
+								<Text style={styles.calendarWeekTxt}>三</Text>
+								<Text style={styles.calendarWeekTxt}>四</Text>
+								<Text style={styles.calendarWeekTxt}>五</Text>
+								<Text style={styles.calendarWeekTxt}>六</Text>
+							</View>
+							{
+								// 日期
+								dateArr.map((dateRow, i) => {
+									return (
+										<View key={`dateRow${i}`} style={styles.calendarContentDateRow}>
+											{
+												dateRow.map((dateData, j) => (
+													<View
+														key={`date${j}`}
+														style={[
+															styles.calendarDateContainer,
+															dateData.misssionData && dateData.misssionData.length > 0 ? (
+																nowYear > dateData.year ? styles.calendarPassDateContainer : (
+																	nowYear < dateData.year ? styles.calendarFutureDateContainer : (
+																		nowMonth > dateData.month ? styles.calendarPassDateContainer : (
+																			nowMonth < dateData.month ? styles.calendarFutureDateContainer : (
+																				nowDate > dateData.date ? styles.calendarPassDateContainer : (
+																					nowDate < dateData.date ? styles.calendarFutureDateContainer : (
+																						styles.calendarCurDateContainer
+																					)
+																				)		
+																			)
 																		)
 																	)
 																)
-															)
-														) : null,
-													]}
-												>
-													<Text
-														style={[
-															styles.calendarDateTxt,
-															curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
+															) : null,
 														]}
-														onPress={() => {
-															this.onDatePress(dateData.misssionData);
-														}}
 													>
-														{ dateData.date }
-													</Text>
-												</View>
-											))
-										}
-									</View>
-								);
-							})
+														<Text
+															style={[
+																styles.calendarDateTxt,
+																curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
+															]}
+															onPress={() => {
+																this.onDatePress(dateData.misssionData);
+															}}
+														>
+															{ dateData.date }
+														</Text>
+													</View>
+												))
+											}
+										</View>
+									);
+								})
+							}
+						</View>
+						{
+							// 分割线
 						}
+						<View style={styles.calendarLine} />
+						{
+							// 标识说明
+						}
+						<View style={styles.infoContainer}>
+							<View style={styles.infoIcon} />
+							<Text style={styles.infoTxt}>
+								过去
+							</Text>
+							<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#F06292' }]} />
+							<Text style={styles.infoTxt}>
+								现在
+							</Text>
+							<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#FFC108' }]} />
+							<Text style={styles.infoTxt}>
+								未来
+							</Text>
+						</View>
 					</View>
-					{
-						// 分割线
-					}
-					<View style={styles.calendarLine} />
-					{
-						// 标识说明
-					}
-					<View style={styles.infoContainer}>
-						<View style={styles.infoIcon} />
-						<Text style={styles.infoTxt}>
-							过去
-						</Text>
-						<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#F06292' }]} />
-						<Text style={styles.infoTxt}>
-							现在
-						</Text>
-						<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#FFC108' }]} />
-						<Text style={styles.infoTxt}>
-							未来
-						</Text>
-					</View>
-				</View>
-				<ScrollView style={styles.container}>
 					{
 						selectedMissionDataArr.map((m, i) => (
 							<MissionItem key={i} item={m} type={0} navigation={this.props.navigation} />

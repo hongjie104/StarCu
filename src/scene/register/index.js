@@ -8,6 +8,7 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
+	findNodeHandle,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { toDips, getFontSize } from '../../utils/dimensions';

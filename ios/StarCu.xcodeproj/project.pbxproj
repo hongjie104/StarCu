@@ -13,7 +13,6 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* StarCuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* StarCuTests.m */; };
-		0C74C5B9F5D14B38AABBA420 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 683724341E234E15ABCA091E /* libBVLinearGradient.a */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -38,7 +37,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* StarCuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* StarCuTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		380EECEB1841477A92D26838 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB4F49F277AE40C7AAD63BBB /* libRNImagePicker.a */; };
-		3DA6A96898564CAB81839C08 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D40F076FA7314C0488E68F5B /* libRCTVideo.a */; };
 		6C49BB04219BBFD700249A65 /* MeiQiaSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C49BB00219BBFD300249A65 /* MeiQiaSDK.framework */; };
 		6C49BB0E219BC7A100249A65 /* MeiQiaModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BB0D219BC7A100249A65 /* MeiQiaModule.m */; };
 		6C49BC6C219BCA2C00249A65 /* MEIQIA_HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C49BB18219BCA2B00249A65 /* MEIQIA_HPTextViewInternal.m */; };
@@ -946,8 +944,6 @@
 				990D3C4574E54F3F88B3D9A6 /* libRNDeviceInfo.a in Frameworks */,
 				6C49BC77219BCA2C00249A65 /* libopencore-amrwb.a in Frameworks */,
 				BAC05F4F672D47BB86F9C636 /* libRNFS.a in Frameworks */,
-				0C74C5B9F5D14B38AABBA420 /* libBVLinearGradient.a in Frameworks */,
-				3DA6A96898564CAB81839C08 /* libRCTVideo.a in Frameworks */,
 				6C49BD00219BDFC400249A65 /* UMCommon.framework in Frameworks */,
 				ABFE1B31A1584EA49C645BB1 /* libRCTBEEPickerManager.a in Frameworks */,
 				380EECEB1841477A92D26838 /* libRNImagePicker.a in Frameworks */,
@@ -2128,6 +2124,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = B3YFC7Y933;
 						ProvisioningStyle = Manual;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -2943,10 +2940,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B3YFC7Y933;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeiQia",
@@ -2960,8 +2959,6 @@
 					"$(SRCROOT)/../node_modules/@remobile/react-native-zip/ios/RCTZip/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
@@ -2976,9 +2973,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starcu.starcu;
 				PRODUCT_NAME = StarCu;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "33ff96ba-23b7-4c4c-9dc0-ee2cbdc15e67";
+				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-01";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2987,9 +2985,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B3YFC7Y933;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/MeiQia",
@@ -3003,8 +3003,6 @@
 					"$(SRCROOT)/../node_modules/@remobile/react-native-zip/ios/RCTZip/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
-					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
-					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 				);
@@ -3019,9 +3017,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.starcu.starcu;
 				PRODUCT_NAME = StarCu;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "33ff96ba-23b7-4c4c-9dc0-ee2cbdc15e67";
+				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-01";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

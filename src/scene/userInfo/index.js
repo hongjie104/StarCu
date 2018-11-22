@@ -270,6 +270,9 @@ export default class UserInfoScene extends PureComponent {
 		} catch (err) {
 			console.warn(err);
 			toast('上传照片失败，请重试');
+			this.setState({
+				uploading: false,
+			});
 			return false;
 		}
 		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;

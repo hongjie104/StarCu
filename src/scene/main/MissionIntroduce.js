@@ -140,7 +140,9 @@ export default class MissionIntroduce extends PureComponent {
 			standardPhoto,
 			status,
 			remark,
+			isEnabled,
 		} = this.state;
+		console.warn(isEnabled);
 		// type 0 是任务  1 是订单
 		const { type } = this.props.navigation.state.params;
 		return (
@@ -204,18 +206,20 @@ export default class MissionIntroduce extends PureComponent {
 				</ScrollView>
 				{
 					// 按钮
+					!(isEnabled === false) && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onSubmit();
+							}}
+							style={styles.submitBtn}
+						>
+							<Text style={styles.submitBtnTxt}>
+								{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
+							</Text>
+						</TouchableOpacity>
+					)
 				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onSubmit();
-					}}
-					style={styles.submitBtn}
-				>
-					<Text style={styles.submitBtnTxt}>
-						{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
-					</Text>
-				</TouchableOpacity>
 			</View>
 		);
 	}

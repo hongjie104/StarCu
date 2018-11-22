@@ -61,7 +61,7 @@ export default class MissionItem extends PureComponent {
 			orderTitle  订单标题
 			taskId  任务ID
 			status  任务状态
-		 */
+		 */		
 		// type 0 是任务  1 是订单
 		const { type } = this.props;
 		const {

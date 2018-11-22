@@ -171,9 +171,15 @@ export default class Calendar extends PureComponent {
 		}
 	}
 
-	onDatePress(missionDataArr) {
+	onDatePress({ misssionData, year, month, date }) {
+		const now = new Date();
+		let newMisssionData = misssionData || [];
+		newMisssionData = newMisssionData.map(m => {
+			m.isEnabled = year === now.getFullYear() && month === now.getMonth() + 1 && date === now.getDate();
+			return m;
+		});
 		this.setState({
-			selectedMissionDataArr: missionDataArr || [],
+			selectedMissionDataArr: newMisssionData,
 		});
 	}
 
@@ -301,7 +307,7 @@ export default class Calendar extends PureComponent {
 																curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
 															]}
 															onPress={() => {
-																this.onDatePress(dateData.misssionData);
+																this.onDatePress(dateData);
 															}}
 														>
 															{ dateData.date }

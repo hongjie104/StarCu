@@ -9,6 +9,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 } from 'react-native';
+import AutoHideKeyboard from '../../component/AutoHideKeyboard';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
@@ -17,7 +18,7 @@ import { isPhone } from '../../utils/reg';
 import { __TEST__ } from '../../config';
 import { saveDataToLocal } from '../../utils/storage';
 
-export default class LoginScene extends PureComponent {
+class LoginScene extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		header: null,
@@ -288,3 +289,5 @@ const styles = StyleSheet.create({
 		marginRight: toDips(82),
 	},
 });
+
+export default AutoHideKeyboard(LoginScene);

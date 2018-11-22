@@ -12,6 +12,7 @@ import {
 import ImagePicker from 'react-native-image-picker';
 import picker from 'react-native-picker';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import navigationUtil from '../../utils/navigation';
 import Spinner from '../../component/Spinner';
 import { getMyInfo, setMyInfo, getCityArr, getStoreArr } from '../../service';
 import toast from '../../utils/toast';
@@ -280,6 +281,7 @@ export default class UserInfoScene extends PureComponent {
 
 	onSubmit() {
 		const { myInfo } = this.state;
+		const { from } = this.props.navigation.state.params;
 		let { fullName, idNo, idPositivePho, idOppositePho, userImage1, userImage2, cityId, storeId } = myInfo;
 		if (!fullName) {
 			toast('请输入真实姓名');
@@ -342,10 +344,19 @@ export default class UserInfoScene extends PureComponent {
 				idOppositePho,
 				personalPhotos: [userImage1, userImage2].join(','),
 			}).then(result => {
-				toast('修改成功');
-				this.setState({
-					uploading: false,
-				});
+				if (from === 'register') {
+					// 跳到首页
+					this.setState({
+						uploading: false,
+					}, () => {
+						navigationUtil.reset(this.props.navigation, 'main');
+					});
+				} else {
+					toast('修改成功');
+					this.setState({
+						uploading: false,
+					});
+				}
 			}).catch(e => {
 				toast(e);
 				this.setState({

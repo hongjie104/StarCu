@@ -19,6 +19,7 @@ import PhoneCheckerScene from '../scene/bankCard/PhoneChecker';
 import UserInfoScene from '../scene/userInfo';
 import RegisterScene from '../scene/register';
 import LoginScene from '../scene/login';
+import HelperScene from '../scene/helper';
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
 
@@ -64,6 +65,7 @@ export default function createAppNavigation(isLogedIn) {
 		// 验证手机号码
 		PhoneCheckerScene,
 		UserInfoScene,
+		HelperScene,
 	}, {
 		// initialRouteName: 'RegisterScene',
 		// initialRouteName: isLogedIn ? 'PhoneCheckerScene' : 'LoginScene',

@@ -7,7 +7,7 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
-	Linking,
+	// Linking,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
@@ -65,6 +65,16 @@ export default class MyScene extends PureComponent {
 	}
 
 	onHelp() {
+		const { navigation: { navigate } } = this.props;
+		navigate({
+			routeName: 'HelperScene',
+			params: {
+				url: 'https://www.baidu.com',
+			},
+		});
+	}
+
+	onContactCustomerService() {
 		setClientInfoForMeiQia({
 			// name	真实姓名
 			// gender	性别
@@ -86,7 +96,6 @@ export default class MyScene extends PureComponent {
 			// toast(err);
 			console.warn(err);
 		});
-		// openMeiQia();
 	}
 
 	onLogout() {
@@ -202,11 +211,12 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-						Linking.openURL(`tel:${consumerHotline.replace(/-/g, '')}`).then(result => {
-							// ...
-						}).catch(e => {
-							console.warn(e);
-						});
+						this.onContactCustomerService();
+						// Linking.openURL(`tel:${consumerHotline.replace(/-/g, '')}`).then(result => {
+						// 	// ...
+						// }).catch(e => {
+						// 	console.warn(e);
+						// });
 					}}
 					style={styles.itemContainer}
 				>

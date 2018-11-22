@@ -131,7 +131,7 @@ export default class RegisterScene extends PureComponent {
 				global.uid = uid;
 				saveDataToLocal('token', token, () => {
 					saveDataToLocal('uid', uid, () => {
-						navigationUtil.reset(this.props.navigation, 'main');
+						navigationUtil.reset(this.props.navigation, 'UserInfoScene', { from: 'register' });
 					});
 				});
 			}).catch(err => {

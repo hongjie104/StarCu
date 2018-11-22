@@ -10,9 +10,11 @@ import {
 	TouchableOpacity,
 	TextInput,
 	findNodeHandle,
+	Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AutoHideKeyboard from '../../component/AutoHideKeyboard';
 import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
@@ -20,7 +22,7 @@ import { QI_NIU_DOMAIN } from '../../config';
 import { getMissionInfo, updateMission } from '../../service';
 import toast from '../../utils/toast';
 
-export default class MissionDetail extends PureComponent {
+class MissionDetail extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		title: '任务详情',
@@ -101,11 +103,10 @@ export default class MissionDetail extends PureComponent {
 	}
 
 	onSkuNumChange(skuId, num) {
-		if (isNaN(num)) return;
 		const skuDataArr = [...this.state.skuDataArr];
 		for (let i = 0; i < skuDataArr.length; i++) {
 			if (skuDataArr[i].skuId === skuId) {
-				skuDataArr[i].skuNum = parseInt(num);
+				skuDataArr[i].skuNum = num === '' ? 0 : (isNaN(num) ? skuDataArr[i].skuNum : parseInt(num));
 				break;
 			}
 		}
@@ -115,59 +116,69 @@ export default class MissionDetail extends PureComponent {
 	}
 
 	onSubmit() {
-		const {
-			skuDataArr,
-		} = this.state;
-		const { taskId } = this.props.navigation.state.params;
-		let {
-			img1,
-			img2,
-			img3,
-			img4,
-		} = this.state;
-		if (!img1) {
-			toast('请选择理货前正面照');
-			return;
-		}
-		if (!img2) {
-			toast('请选择理货前左侧照');
-			return;
-		}
-		if (!img3) {
-			toast('请选择理货后正面照');
-			return;
-		}
-		if (!img4) {
-			toast('请选择理货后左侧照');
-			return;
-		}
-		this.setState({
-			showSpinner: true,
-		}, async () => {
-			if (!img1.startsWith('http')) {
-				img1 = await this.uploadImg(img1);
-			}
-			if (!img2.startsWith('http')) {
-				img2 = await this.uploadImg(img2);
-			}
-			if (!img3.startsWith('http')) {
-				img3 = await this.uploadImg(img3);
-			}
-			if (!img4.startsWith('http')) {
-				img4 = await this.uploadImg(img4);
-			}
-			updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
-				toast('提交成功');
-				this.setState({
-					showSpinner: false,
-				});
-			}).catch(e => {
-				toast(e);
-				this.setState({
-					showSpinner: false,
-				});
-			});
-		});
+		Alert.alert(
+			'询问',
+			'要提交？',
+			[
+				{ text: '不', onPress: () => {}, style: 'cancel'},
+				{ text: '是的', onPress: () => {
+					const {
+						skuDataArr,
+					} = this.state;
+					const { taskId } = this.props.navigation.state.params;
+					let {
+						img1,
+						img2,
+						img3,
+						img4,
+					} = this.state;
+					if (!img1) {
+						toast('请选择理货前正面照');
+						return;
+					}
+					if (!img2) {
+						toast('请选择理货前左侧照');
+						return;
+					}
+					if (!img3) {
+						toast('请选择理货后正面照');
+						return;
+					}
+					if (!img4) {
+						toast('请选择理货后左侧照');
+						return;
+					}
+					this.setState({
+						showSpinner: true,
+					}, async () => {
+						if (!img1.startsWith('http')) {
+							img1 = await this.uploadImg(img1);
+						}
+						if (!img2.startsWith('http')) {
+							img2 = await this.uploadImg(img2);
+						}
+						if (!img3.startsWith('http')) {
+							img3 = await this.uploadImg(img3);
+						}
+						if (!img4.startsWith('http')) {
+							img4 = await this.uploadImg(img4);
+						}
+						updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
+							toast('提交成功');
+							this.setState({
+								showSpinner: false,
+							});
+						}).catch(e => {
+							toast(e);
+							this.setState({
+								showSpinner: false,
+							});
+						});
+					});
+				} },				
+			],
+			{ cancelable: false }
+		);
 	}
 
 	render() {
@@ -487,3 +498,5 @@ const styles = StyleSheet.create({
 		color: 'white',
 	},
 });
+
+export default AutoHideKeyboard(MissionDetail);

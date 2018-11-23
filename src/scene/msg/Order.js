@@ -88,6 +88,8 @@ export default class OrderMsgList extends PureComponent {
 			}
 			this.setState({
 				msgList,
+			}, () => {
+				// ...
 			});
 		}).catch(e => {
 			toast(e);

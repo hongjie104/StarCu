@@ -18,7 +18,7 @@ import AutoHideKeyboard from '../../component/AutoHideKeyboard';
 import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
-import { QI_NIU_DOMAIN } from '../../config';
+import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
 import { getMissionInfo, updateMission } from '../../service';
 import toast from '../../utils/toast';
 
@@ -44,14 +44,48 @@ class MissionDetail extends PureComponent {
 	componentDidMount() {
 		const { taskId } = this.props.navigation.state.params;
 		getMissionInfo(taskId).then(result => {
+			// let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
+			// let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
+			// let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
+			// let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
+			let img1 = '';
+			let img2 = '';
+			let img3 = '';
+			let img4 = '';
+			if (result.datas.skus[0]) {
+				if (Array.isArray(result.datas.skus[0].feedDatas)) {
+					for (let i= 0; i < result.datas.skus[0].feedDatas.length; i++) {
+						if (result.datas.skus[0].feedDatas[i].dataCode === 'beforeTally') {
+							img1 = result.datas.skus[0].feedDatas[i].dataContent;
+						} else if (result.datas.skus[0].feedDatas[i].dataCode === 'beforeTallyLeft') {
+							img2 = result.datas.skus[0].feedDatas[i].dataContent;
+						} else if (result.datas.skus[0].feedDatas[i].dataCode === 'afterTally') {
+							img3 = result.datas.skus[0].feedDatas[i].dataContent;
+						} else if (result.datas.skus[0].feedDatas[i].dataCode === 'afterTallyLeft') {
+							img4 = result.datas.skus[0].feedDatas[i].dataContent;
+						}
+					}
+				}
+			}
 			this.setState({
 				missionInfo: result.datas,
 				skuDataArr: result.datas.skus.map(sku => {
+					let skuNum = 0;
+					for (let i = 0; i < sku.feedDatas.length; i++) {
+						if (sku.feedDatas[i].dataType === sku.skuId) {
+							skuNum = parseInt(sku.feedDatas[i].dataContent, 10);
+							break;
+						}
+					}
 					return {
 						skuId: sku.skuId,
-						skuNum: 0,
+						skuNum,
 					};
 				}),
+				img1,
+				img2,
+				img3,
+				img4,
 			});
 		}).catch(e => {
 			toast(e);
@@ -116,38 +150,38 @@ class MissionDetail extends PureComponent {
 	}
 
 	onSubmit() {
+		const {
+			skuDataArr,
+		} = this.state;
+		const { taskId } = this.props.navigation.state.params;
+		let {
+			img1,
+			img2,
+			img3,
+			img4,
+		} = this.state;
+		if (!img1) {
+			toast('请选择理货前正面照');
+			return;
+		}
+		if (!img2) {
+			toast('请选择理货前左侧照');
+			return;
+		}
+		if (!img3) {
+			toast('请选择理货后正面照');
+			return;
+		}
+		if (!img4) {
+			toast('请选择理货后左侧照');
+			return;
+		}
 		Alert.alert(
 			'提示',
 			'是否确认提交',
 			[
 				{ text: '否', onPress: () => {}, style: 'cancel'},
 				{ text: '是', onPress: () => {
-					const {
-						skuDataArr,
-					} = this.state;
-					const { taskId } = this.props.navigation.state.params;
-					let {
-						img1,
-						img2,
-						img3,
-						img4,
-					} = this.state;
-					if (!img1) {
-						toast('请选择理货前正面照');
-						return;
-					}
-					if (!img2) {
-						toast('请选择理货前左侧照');
-						return;
-					}
-					if (!img3) {
-						toast('请选择理货后正面照');
-						return;
-					}
-					if (!img4) {
-						toast('请选择理货后左侧照');
-						return;
-					}
 					this.setState({
 						showSpinner: true,
 					}, async () => {
@@ -174,8 +208,8 @@ class MissionDetail extends PureComponent {
 								showSpinner: false,
 							});
 						});
-					});
-				} },				
+					});			
+				} },
 			],
 			{ cancelable: false }
 		);

@@ -234,7 +234,7 @@ export default class MyScene extends PureComponent {
 					<View style={styles.itemContainerLeft}>
 						<Image style={styles.itemImg} source={require('../../imgs/lxkf.png')} />
 						<Text style={styles.itemName}>
-							联系客服 { consumerHotline }
+							联系客服
 						</Text>
 					</View>
 					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />

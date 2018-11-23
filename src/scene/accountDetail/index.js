@@ -5,6 +5,7 @@ import {
 	StyleSheet,
 	View,
 	Text,
+	Image,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import { getBill } from '../../service';
@@ -51,6 +52,11 @@ export default class AccountDetail extends PureComponent {
 		}
 		return (
 			<View style={styles.container}>
+				{
+					billArr.length === 0 && (
+						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
+					)
+				}
 				{
 					billArr.map((bill, i) => (
 						<View style={styles.itemContainer}>
@@ -142,5 +148,11 @@ const styles = StyleSheet.create({
 		// fontWeight: '500',
 		color: '#999',
 		marginTop: toDips(27),
+	},
+	emptyImg: {
+		width: toDips(283),
+		height: toDips(292),
+		marginLeft: toDips(267),
+		marginTop: toDips(250),
 	},
 });

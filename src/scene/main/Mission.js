@@ -8,6 +8,7 @@ import {
 	Image,
 	FlatList,
 } from 'react-native';
+import Spinner from '../../component/Spinner';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
@@ -21,7 +22,7 @@ export default class Mission extends PureComponent {
 		super(props);
 		this.state = {
 			missionList: [],
-			numMission: 0,
+			numMission: -1,
 			expectedIncome: 0,	
 		};
 	}
@@ -60,7 +61,7 @@ export default class Mission extends PureComponent {
 				<View style={styles.infoContainer}>
 					<View style={styles.info}>
 						<Text style={styles.infoNum}>
-							{ numMission }
+							{ numMission < 0 ? 0 : numMission }
 						</Text>
 						<View style={styles.infoRow}>
 							<Image style={styles.iconInfo} source={require('../../imgs/dqrw.png')} />
@@ -82,16 +83,26 @@ export default class Mission extends PureComponent {
 						</View>
 					</View>
 				</View>
-				<FlatList
-					data={missionList}
-					renderItem={itemData => {
-						return this.renderItem(itemData);
-					}}
-					getItemLayout={(_, index) => (
-						{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-					)}
-					style={styles.list}
-				/>
+				{
+					numMission === 0 ? (
+						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
+					) : (
+						numMission > 0 ? (
+							<FlatList
+								data={missionList}
+								renderItem={itemData => {
+									return this.renderItem(itemData);
+								}}
+								getItemLayout={(_, index) => (
+									{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
+								)}
+								style={styles.list}
+							/>
+						) : (
+							<Spinner />
+						)
+					)
+				}
 			</View>
 		);
 	}
@@ -151,5 +162,11 @@ const styles = StyleSheet.create({
 	list: {
 		marginTop: toDips(33),
 		flex: 1,
+	},
+	emptyImg: {
+		width: toDips(283),
+		height: toDips(292),
+		marginLeft: toDips(267),
+		marginTop: toDips(250),
 	},
 });

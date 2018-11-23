@@ -75,13 +75,19 @@ export default class MsgScene extends PureComponent {
 		const { missionList } = this.state;
 		return (
 			<View style={styles.container}>
-				<ScrollView style={styles.container}>
-					{
-						missionList.map((mission, index) => (
-							<MissionItem key={mission.key} item={mission} type={1} navigation={this.props.navigation} />
-						))
-					}
-				</ScrollView>
+				{
+					Array.isArray(missionList) && missionList.length > 0 ? (
+						<ScrollView style={styles.container}>
+							{
+								missionList.map((mission, index) => (
+									<MissionItem key={mission.key} item={mission} type={1} navigation={this.props.navigation} />
+								))
+							}
+						</ScrollView>
+					) : (
+						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
+					)
+				}
 			</View>
 		);
 	}
@@ -91,5 +97,11 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#FBFBFB',
+	},
+	emptyImg: {
+		width: toDips(283),
+		height: toDips(292),
+		marginLeft: toDips(267),
+		marginTop: toDips(250),
 	},
 });

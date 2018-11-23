@@ -184,6 +184,13 @@ export function getStoreArr(cityId) {
 	});
 }
 
+// 获取银行列表
+export function getBankList() {
+	return post(`${SERVER_HOST}/ShareWork/app/bankList`, {
+		token: global.token,
+	});
+}
+
 // 获取银行卡信息
 export function getBank() {
 	return post(`${SERVER_HOST}/ShareWork/app/bankInfo/get`, {
@@ -205,5 +212,21 @@ export function getBankCode() {
 	return post(`${SERVER_HOST}/ShareWork/app/bankInfo/code`, {
 		token: global.token,
 		phoneNo: global.phone,
+	});
+}
+
+// 获取提现信息
+export function getReflect() {
+	return post(`${SERVER_HOST}/ShareWork/app/reflect/get`, {
+		token: global.token,
+	});
+}
+
+// 提现
+export function reflect(amount, reflectKey) {
+	return post(`${SERVER_HOST}/ShareWork/app/reflect/save`, {
+		token: global.token,
+		amount,
+		reflectKey,
 	});
 }

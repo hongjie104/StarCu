@@ -141,30 +141,36 @@ export default class OrderMsgList extends PureComponent {
 		const { msgList, refreshing } = this.state;
 		return (
 			<View style={styles.container}>
-				<FlatList
-					data={msgList}
-					renderItem={itemData => {
-						return this.renderItem(itemData);
-					}}
-					// getItemLayout={(_, index) => (
-					// 	{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-					// )}
-					style={styles.list}
-					ItemSeparatorComponent={() => (<View
-						style={{
-							backgroundColor: '#E0E0E0',
-							width: toDips(750),
-							height: toDips(1),
-						}}
-					/>)}
-					onRefresh={() => {
-						this.onRefresh();
-					}}
-					refreshing={refreshing}
-					onEndReached={() => {
-						this.onMore();
-					}}
-				/>
+				{
+					Array.isArray(msgList) && msgList.length > 0 ? (
+						<FlatList
+							data={msgList}
+							renderItem={itemData => {
+								return this.renderItem(itemData);
+							}}
+							// getItemLayout={(_, index) => (
+							// 	{length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
+							// )}
+							style={styles.list}
+							ItemSeparatorComponent={() => (<View
+								style={{
+									backgroundColor: '#E0E0E0',
+									width: toDips(750),
+									height: toDips(1),
+								}}
+							/>)}
+							onRefresh={() => {
+								this.onRefresh();
+							}}
+							refreshing={refreshing}
+							onEndReached={() => {
+								this.onMore();
+							}}
+						/>
+					) : (
+						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
+					)
+				}
 			</View>
 		);
 	}
@@ -222,5 +228,11 @@ const styles = StyleSheet.create({
 		width: toDips(569),
 		marginTop: toDips(22),
 		lineHeight: toDips(42),
+	},
+	emptyImg: {
+		width: toDips(283),
+		height: toDips(292),
+		marginLeft: toDips(267),
+		marginTop: toDips(250),
 	},
 });

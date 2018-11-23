@@ -117,11 +117,11 @@ class MissionDetail extends PureComponent {
 
 	onSubmit() {
 		Alert.alert(
-			'询问',
-			'要提交？',
+			'提示',
+			'是否确认提交',
 			[
-				{ text: '不', onPress: () => {}, style: 'cancel'},
-				{ text: '是的', onPress: () => {
+				{ text: '否', onPress: () => {}, style: 'cancel'},
+				{ text: '是', onPress: () => {
 					const {
 						skuDataArr,
 					} = this.state;
@@ -366,7 +366,9 @@ class MissionDetail extends PureComponent {
 						style={styles.submitBtn}
 					>
 						<Text style={styles.submitBtnTxt}>
-							提交		
+							{
+								(missionInfo && missionInfo.tallyStatus) === 1 ? '再次提交' : '提交'
+							}
 						</Text>	
 					</TouchableOpacity>
 				</KeyboardAwareScrollView>

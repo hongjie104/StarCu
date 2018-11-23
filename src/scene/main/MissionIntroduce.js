@@ -38,6 +38,18 @@ export default class MissionIntroduce extends PureComponent {
 		  received: 0,
 		  key: '853596988835840' }
 		 */
+		/*
+		{ orderType: '堆头理货',
+  statusDesc: '未完成',
+  orderEndDate: '2018-11-30',
+  orderId: '2579483158448128',
+  orderStartDate: '2018-11-22',
+  orderTypeId: '1871479136913408',
+  orderTitle: '测试2测试2测试2测试2',
+  taskId: '2580334666385408',
+  key: '2580334666385408',
+  status: 0 }
+		 */
 		const { mission } = props.navigation.state.params;
 		// console.warn(mission);
 		this.state = {
@@ -134,6 +146,7 @@ export default class MissionIntroduce extends PureComponent {
 		const {
 			orderTitle,
 			orderBeginDate,
+			orderStartDate,
 			orderEndDate,
 			orderDays,
 			orderContent,
@@ -142,7 +155,6 @@ export default class MissionIntroduce extends PureComponent {
 			remark,
 			isEnabled,
 		} = this.state;
-		console.warn(isEnabled);
 		// type 0 是任务  1 是订单
 		const { type } = this.props.navigation.state.params;
 		return (
@@ -155,7 +167,7 @@ export default class MissionIntroduce extends PureComponent {
 						<View style={styles.misstionTitleRow}>
 							<Image style={styles.icon} source={require('../../imgs/sj2.png')} />
 							<Text style={styles.missionInfo}>
-								项目时间：{ orderBeginDate }至{ orderEndDate }（{ orderDays }天）
+								项目时间：{ orderBeginDate || orderStartDate }至{ orderEndDate }（{ orderDays }天）
 							</Text>
 						</View>
 						<View style={styles.misstionTitleRow}>

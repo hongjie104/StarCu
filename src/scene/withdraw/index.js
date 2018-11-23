@@ -9,7 +9,10 @@ import {
 	TouchableOpacity,
 	TextInput,
 } from 'react-native';
+import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { getReflect, getBankList, reflect } from '../../service';
+import toast from '../../utils/toast';
 
 // 提现
 export default class WithdrawScene extends PureComponent {
@@ -23,7 +26,58 @@ export default class WithdrawScene extends PureComponent {
 		this.state = {
 			// 提现金额
 			value: '',
+			// 可提现金额
+			withdrawableAmount: '',
+ 			// 银行卡信息
+			bankInfo: {
+				// 持卡人姓名
+				cardholders_name: '',
+				// 开户银行名称
+				bankName: '',
+				// 银行卡号
+				bank_card_no: '',
+			},
+ 			// 提现码，防止单次重复提现
+			reflectKey: '',
+ 			// 到账描述
+			arrivalDes: '',
+			loading: true,
 		};
+	}
+
+	async componentDidMount() {
+		const bankArr = await getBankList();
+		let data = null;
+		try {
+			data = await getReflect();
+		} catch(e) {
+			toast(e);
+			return;
+		}
+		data = data.datas;
+		let bankName = '';
+		for (let i = 0; i < bankArr.datas.bankList.length; i++) {
+			if (bankArr.datas.bankList[i].id === data.bankInfo.bankName) {
+				bankName = bankArr.datas.bankList[i].text;
+				break;
+			}
+		}
+		this.setState({
+			...data,
+			bankInfo: {
+				...data.bankInfo,
+				bankName,
+			},
+			loading: false,
+		});
+	}
+
+	// 全部提现
+	onAllPress() {
+		const { withdrawableAmount } = this.state;
+		this.setState({
+			value: withdrawableAmount,
+		});
 	}
 
 	onValueChange(value) {
@@ -32,30 +86,55 @@ export default class WithdrawScene extends PureComponent {
 		});
 	}
 
+	onSubmit() {
+		const { value, reflectKey, withdrawableAmount } = this.state;
+		if (value === '' || isNaN(value)) {
+			toast('请输入提现金额');
+			return;
+		}
+		const amount = parseFloat(value);
+		if (amount < 1) {
+			toast('可提现金额不能少于1元');
+			return;
+		}
+		const withdrawableAmountValue = parseFloat(withdrawableAmount);
+		if (amount > withdrawableAmountValue) {
+			toast('提现金额超出了最大金额');
+			return;
+		}
+		reflect(amount, reflectKey).then(result => {
+			toast('提现成功!' + result.datas.arrivalDes);
+		}).catch(e => {
+			toast(e);
+		});
+	}
+
 	render() {
-		// const { navigate, goBack } = this.props.navigation;
-		const { value } = this.state;
+		const { loading, value, withdrawableAmount, bankInfo } = this.state;
+		if (loading) {
+			return <Spinner />;
+		}
 		return (
 			<View style={styles.container}>
 				<View style={styles.cardContainer}>
 					<Image style={styles.cardImg} source={require('../../imgs/yhk.png')} />
 					<View style={styles.cardInfoContainer}>
 						<Text style={styles.bankName}>
-							招商银行
+							{ bankInfo.bankName }
 						</Text>
 						<Text style={styles.cardNum}>
-							2312 **** **** **** 261
+							{ bankInfo.bankCardNo }
 						</Text>
 					</View>
 				</View>
 				<View style={styles.numMoneyContainer}>
 					<Text style={styles.numMoneyTxt}>
-						可提现金额 <Text style={{ color: '#DD4124' }}>5000</Text> 元
+						可提现金额 <Text style={{ color: '#DD4124' }}>{ withdrawableAmount }</Text> 元
 					</Text>
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
-
+							this.onAllPress();
 						}}
 						style={styles.allBtn}
 					>
@@ -92,7 +171,7 @@ export default class WithdrawScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						this.onSubmit();
 					}}
 					style={styles.submitBtn}
 				>

@@ -118,14 +118,14 @@ export default class Calendar extends PureComponent {
 						date: tmpDate.getDate(),
 						month: tmpDate.getMonth() + 1,
 						year: tmpDate.getFullYear(),
-						misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
+						missionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
 					};
 				} else {
 					dateRow[i] = {
 						date: dayCounter,
 						month: curMonth,
 						year: curYear,
-						misssionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
+						missionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
 					};
 				}
 			}
@@ -139,7 +139,7 @@ export default class Calendar extends PureComponent {
 							date: dayCounter,
 							month: curMonth,
 							year: curYear,
-							misssionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
+							missionData: this.getMissionData(curYear, curMonth, dayCounter++, missionArr),
 						};
 					} else {
 						// 下个月的日期
@@ -148,17 +148,39 @@ export default class Calendar extends PureComponent {
 							date: tmpDate.getDate(),
 							month: tmpDate.getMonth() + 1,
 							year: tmpDate.getFullYear(),
-							misssionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
+							missionData: this.getMissionData(tmpDate.getFullYear(), tmpDate.getMonth() + 1, tmpDate.getDate(), missionArr),
 						};
 					}
 				}
 				dateArr.push(dateRow);   
 			}
+
+			let selectedMissionDataArr = null;
+			for (let i = 0; i < dateArr.length; i++) {
+				for (let j = 0; j < dateArr[i].length; j++) {
+					if (dateArr[i][j].year === curYear && dateArr[i][j].month === curMonth && dateArr[i][j].date === curDate) {						
+						if (Array.isArray(dateArr[i][j].missionData)) {
+							selectedMissionDataArr = dateArr[i][j].missionData.map(item => {
+								item.isEnabled = true;
+								return item;
+							});
+						} else {
+							selectedMissionDataArr = [];
+						}
+						break;
+					}
+				}
+				if (selectedMissionDataArr) {
+					break;
+				}
+			}
+
 			this.setState({
 				curYear,
 				curMonth,
 				curDate,
 				dateArr,
+				selectedMissionDataArr: selectedMissionDataArr || [],
 			});
 		}).catch(e => {
 			toast(e);
@@ -171,15 +193,15 @@ export default class Calendar extends PureComponent {
 		}
 	}
 
-	onDatePress({ misssionData, year, month, date }) {
+	onDatePress({ missionData, year, month, date }) {
 		const now = new Date();
-		let newMisssionData = misssionData || [];
-		newMisssionData = newMisssionData.map(m => {
+		let newMissionData = missionData || [];
+		newMissionData = newMissionData.map(m => {
 			m.isEnabled = year === now.getFullYear() && month === now.getMonth() + 1 && date === now.getDate();
 			return m;
 		});
 		this.setState({
-			selectedMissionDataArr: newMisssionData,
+			selectedMissionDataArr: newMissionData,
 		});
 	}
 
@@ -280,11 +302,15 @@ export default class Calendar extends PureComponent {
 										<View key={`dateRow${i}`} style={styles.calendarContentDateRow}>
 											{
 												dateRow.map((dateData, j) => (
-													<View
+													<TouchableOpacity
+														activeOpacity={0.8}
+														onPress={() => {
+															this.onDatePress(dateData);
+														}}
 														key={`date${j}`}
 														style={[
 															styles.calendarDateContainer,
-															dateData.misssionData && dateData.misssionData.length > 0 ? (
+															dateData.missionData && dateData.missionData.length > 0 ? (
 																nowYear > dateData.year ? styles.calendarPassDateContainer : (
 																	nowYear < dateData.year ? styles.calendarFutureDateContainer : (
 																		nowMonth > dateData.month ? styles.calendarPassDateContainer : (
@@ -306,13 +332,10 @@ export default class Calendar extends PureComponent {
 																styles.calendarDateTxt,
 																curMonth !== dateData.month ? styles.calendarDateTxtNotThisMonth : null,
 															]}
-															onPress={() => {
-																this.onDatePress(dateData);
-															}}
 														>
 															{ dateData.date }
 														</Text>
-													</View>
+													</TouchableOpacity>
 												))
 											}
 										</View>
@@ -334,7 +357,7 @@ export default class Calendar extends PureComponent {
 							</Text>
 							<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#F06292' }]} />
 							<Text style={styles.infoTxt}>
-								现在
+								今天
 							</Text>
 							<View style={[styles.infoIcon, { marginLeft: toDips(40), backgroundColor: '#FFC108' }]} />
 							<Text style={styles.infoTxt}>

@@ -8,8 +8,9 @@ import {
 	Text,
 	TextInput,
 	TouchableOpacity,
+	TouchableWithoutFeedback,
 } from 'react-native';
-import AutoHideKeyboard from '../../component/AutoHideKeyboard';
+const dismissKeyboard = require('dismissKeyboard');
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
 import toast from '../../utils/toast';
@@ -18,7 +19,7 @@ import { isPhone } from '../../utils/reg';
 import { __TEST__ } from '../../config';
 import { saveDataToLocal } from '../../utils/storage';
 
-class LoginScene extends PureComponent {
+export default class LoginScene extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		header: null,
@@ -134,92 +135,94 @@ class LoginScene extends PureComponent {
 			cd,
 		} = this.state;
 		return (
-			<View style={styles.container}>
-				<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
-				<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
-					<Image
-						style={{
-							width: toDips(29),
-							height: toDips(46),
-							marginLeft: toDips(80),
-							marginRight: toDips(22),
-						}}
-						source={require('../../imgs/icon61.png')}
-					/>
-					<TextInput
-						onChangeText={phone => {
-							this.onPhoneChange(phone);
-						}}
-						value={phone}
-						placeholder='请输入手机号'
-						placeholderTextColor='#999999'
-						style={styles.input}
-						maxLength={11}
-						keyboardType='numeric'
-					/>
-				</View>
-				<View style={styles.line} />
-				<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							flex: 1,
-						}}
-					>
+			<TouchableWithoutFeedback style={styles.container} onPress={dismissKeyboard}>
+				<View style={styles.container}>
+					<Image style={styles.bigIcon} source={require('../../imgs/icon.png')} />
+					<View style={[styles.inputContainer, { marginTop: toDips(85) }]}>
 						<Image
 							style={{
-								width: toDips(39),
-								height: toDips(47),
-								marginLeft: toDips(75),
-								marginRight: toDips(16),
+								width: toDips(29),
+								height: toDips(46),
+								marginLeft: toDips(80),
+								marginRight: toDips(22),
 							}}
-							source={require('../../imgs/icon63.png')}
+							source={require('../../imgs/icon61.png')}
 						/>
 						<TextInput
-							onChangeText={code => {
-								this.onCodeChange(code);
+							onChangeText={phone => {
+								this.onPhoneChange(phone);
 							}}
-							value={code}
-							placeholder='请输入验证码'
+							value={phone}
+							placeholder='请输入手机号'
 							placeholderTextColor='#999999'
 							style={styles.input}
-							maxLength={6}
+							maxLength={11}
 							keyboardType='numeric'
 						/>
 					</View>
-					<Text style={styles.codeBtnTxt} onPress={() => { this.onGetLoginCode(); }}>
-						{ cd > 0 ? `${cd}s` : '发送验证码' }
-					</Text>	
+					<View style={styles.line} />
+					<View style={[styles.inputContainer, { marginTop: toDips(44) }]}>
+						<View
+							style={{
+								flexDirection: 'row',
+								alignItems: 'center',
+								flex: 1,
+							}}
+						>
+							<Image
+								style={{
+									width: toDips(39),
+									height: toDips(47),
+									marginLeft: toDips(75),
+									marginRight: toDips(16),
+								}}
+								source={require('../../imgs/icon63.png')}
+							/>
+							<TextInput
+								onChangeText={code => {
+									this.onCodeChange(code);
+								}}
+								value={code}
+								placeholder='请输入验证码'
+								placeholderTextColor='#999999'
+								style={styles.input}
+								maxLength={6}
+								keyboardType='numeric'
+							/>
+						</View>
+						<Text style={styles.codeBtnTxt} onPress={() => { this.onGetLoginCode(); }}>
+							{ cd > 0 ? `${cd}s` : '发送验证码' }
+						</Text>	
+					</View>
+					<View style={styles.line} />
+					{
+						// 登录按钮
+					}
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							this.onLogin();
+						}}
+						style={styles.loginBtn}
+					>
+						<Text style={styles.loginBtnTxt}>
+							登录
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							this.onNavigateToRegister();
+						}}
+						style={styles.registerBtbContainer}
+					>
+						<Text style={styles.registerBtn}>
+							去注册
+						</Text>
+						<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
+					</TouchableOpacity>
 				</View>
-				<View style={styles.line} />
-				{
-					// 登录按钮
-				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onLogin();
-					}}
-					style={styles.loginBtn}
-				>
-					<Text style={styles.loginBtnTxt}>
-						登录
-					</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onNavigateToRegister();
-					}}
-					style={styles.registerBtbContainer}
-				>
-					<Text style={styles.registerBtn}>
-						去注册
-					</Text>
-					<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
-				</TouchableOpacity>
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }
@@ -289,5 +292,3 @@ const styles = StyleSheet.create({
 		marginRight: toDips(82),
 	},
 });
-
-export default AutoHideKeyboard(LoginScene);

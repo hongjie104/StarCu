@@ -10,9 +10,11 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import picker from 'react-native-picker';
+import Spinner from '../../component/Spinner';
 import MyTextInput from '../../component/MyTextInput';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { getBank } from '../../service';
+import { getBank, getBankList } from '../../service';
 import toast from '../../utils/toast';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN } from '../../config';
@@ -31,21 +33,56 @@ export default class BankCard extends PureComponent {
 			cardImage1: '',
 			cardImage2: '',
 			bankName: '',
+			uploading: false,
 		};
 	}
 
-	componentDidMount() {
-		getBank().then(result => {
-			const { cardPhoto } = result.datas;
-			const cardPhotoArr = cardPhoto ? decodeURIComponent(cardPhoto).split(',') : [];
-			this.setState({
-				...result.datas,
-				cardImage1: cardPhotoArr[0] || '',
-				cardImage2: cardPhotoArr[1] || '',
-			});
-		}).catch(e => {
-			toast(e);
+	async componentDidMount() {
+		const bankArr = await getBankList();
+		this.bankArr = bankArr.datas.bankList;
+		this.initBrankPicker();
+
+		let bankCard = await getBank();
+		bankCard = bankCard.datas;
+		const { cardPhoto } = bankCard;
+		const cardPhotoArr = cardPhoto ? decodeURIComponent(cardPhoto).split(',') : [];
+		let bankName = '点击选择';
+		for (let i = 0; i < this.bankArr.length; i++) {
+			if (this.bankArr[i].id === bankCard.bankName) {
+				bankName = this.bankArr[i].text;
+				break;
+			}
+		}
+		this.setState({
+			...bankCard,
+			bankName,
+			cardImage1: cardPhotoArr[0] || '',
+			cardImage2: cardPhotoArr[1] || '',
 		});
+	}
+
+	initBrankPicker() {
+		const pickerData = this.bankArr.map(bankData => bankData.text);
+		if (pickerData.length > 0) {
+			picker.init({
+				pickerData,
+				pickerConfirmBtnText: '确定',
+				pickerCancelBtnText: '取消',
+				pickerTitleText: '银行选择',
+				pickerBg: [255, 255, 255, 1],
+				onPickerConfirm: pickedValue => {
+					this.setState({
+						bankName: pickedValue[0],
+					});
+				},
+			});
+			return true;
+		}
+		return false;
+	}
+
+	componentWillUnmount() {
+		picker.hide();
 	}
 
 	async uploadImg(uri) {
@@ -53,6 +90,7 @@ export default class BankCard extends PureComponent {
 		try {
 			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
 		} catch (err) {
+			console.warn(err);
 			toast('上传照片失败，请重试');
 			return false;
 		}
@@ -112,7 +150,7 @@ export default class BankCard extends PureComponent {
 		});
 	}
 
-	async onSubmit() {
+	onSubmit() {
 		const {
 			protocolChecked,
 			cardholdersName,
@@ -136,7 +174,7 @@ export default class BankCard extends PureComponent {
 			toast('请输入银行卡号');
 			return;	
 		}
-		if (!bankName) {
+		if (bankName === '点击选择') {
 			toast('请输入开户银行');
 			return;		
 		}
@@ -148,26 +186,64 @@ export default class BankCard extends PureComponent {
 			toast('请选择银行卡反面照片');
 			return;
 		}
-		if (!cardImage1.startsWith('http')) {
-			cardImage1 = await this.uploadImg(cardImage1);
-		}
-		if (!cardImage2.startsWith('http')) {
-			cardImage2 = await this.uploadImg(cardImage2);
-		}
-		this.props.navigation.navigate({
-			routeName: 'PhoneCheckerScene',
-			params: {
-				cardholdersName,
-				cardholdersPhone,
-				bankCardNo,
-				bankName,
-				cardPhoto: `${cardImage1},${cardImage2}`,
-			},
+
+		this.setState({
+			uploading: true,
+		}, async () => {
+			if (!cardImage1.startsWith('http')) {
+				cardImage1 = await this.uploadImg(cardImage1);
+			}
+			if (!cardImage1) {
+				this.setState({
+					uploading: false,
+				});
+				return;
+			}
+			if (!cardImage2.startsWith('http')) {
+				cardImage2 = await this.uploadImg(cardImage2);
+			}
+			if (!cardImage2) {
+				this.setState({
+					uploading: false,
+				});
+				return;
+			}
+			this.setState({
+				uploading: false,
+			}, () => {
+				let bankId = -1;
+				for (let i = 0; i < this.bankArr.length; i++) {
+					if (this.bankArr[i].text === bankName) {
+						bankId = this.bankArr[i].id;
+						break;
+					}
+				}
+				this.props.navigation.navigate({
+					routeName: 'PhoneCheckerScene',
+					params: {
+						cardholdersName,
+						cardholdersPhone,
+						bankCardNo,
+						bankName,
+						bankId,
+						cardPhoto: `${cardImage1},${cardImage2}`,
+					},
+				});
+			});
 		});
 	}
 
 	render() {
-		const { protocolChecked, cardImage1, cardImage2, cardholdersName, cardholdersPhone, bankCardNo, bankName } = this.state;
+		const {
+			protocolChecked,
+			cardImage1,
+			cardImage2,
+			cardholdersName,
+			cardholdersPhone,
+			bankCardNo,
+			bankName,
+			uploading,
+		} = this.state;
 		return (
 			<View style={styles.container}>
 				<View style={styles.itemContainer}>
@@ -221,15 +297,27 @@ export default class BankCard extends PureComponent {
 					<Text style={styles.keyTxt}>
 						开户行：
 					</Text>
-					<TextInput
-						onChangeText={bankName => {
-							this.onBankNameChange(bankName);
-						}}
-						value={bankName}
-						placeholder='请输入开户银行'
-						placeholderTextColor='#B5B5B5'
-						style={styles.valTxt}
-					/>
+					{
+						// <TextInput
+						// 	onChangeText={bankName => {
+						// 		this.onBankNameChange(bankName);
+						// 	}}
+						// 	value={bankName}
+						// 	placeholder='请输入开户银行'
+						// 	placeholderTextColor='#B5B5B5'
+						// 	style={styles.valTxt}
+						// />
+						<Text
+							style={styles.valTxt}
+							onPress={() => {
+								if (!picker.isPickerShow()) {
+									picker.show();
+								}
+							}}
+						>
+							{ bankName }
+						</Text>
+					}
 				</View>
 				<View style={[styles.itemContainer, { height: toDips(141) }]}>
 					<Text style={styles.keyTxt}>
@@ -313,6 +401,9 @@ export default class BankCard extends PureComponent {
 						保存
 					</Text>
 				</TouchableOpacity>
+				{
+					uploading && <Spinner />
+				}
 			</View>
 		);
 	}
@@ -342,6 +433,7 @@ const styles = StyleSheet.create({
 		fontSize: getFontSize(30),
 		// fontWeight: '500',
 		color: '#666',
+		flex: 1,
 	},
 	phoneBgImg: {
 		width: toDips(86),

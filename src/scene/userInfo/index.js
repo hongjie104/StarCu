@@ -46,6 +46,7 @@ export default class UserInfoScene extends PureComponent {
 			storeData: null,
 			inited: false,
 			uploading: false,
+			isCanEdit: false,
 		};
 	}
 
@@ -118,6 +119,7 @@ export default class UserInfoScene extends PureComponent {
 			cityData,
 			storeData,
 			inited: true,
+			isCanEdit: myInfo.datas.fullName === '',
 		});
 	}
 

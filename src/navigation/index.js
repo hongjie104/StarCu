@@ -67,8 +67,6 @@ export default function createAppNavigation(isLogedIn) {
 		UserInfoScene,
 		HelperScene,
 	}, {
-		// initialRouteName: 'RegisterScene',
-		// initialRouteName: isLogedIn ? 'PhoneCheckerScene' : 'LoginScene',
 		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
 		// mode: 'card',
 		// headerMode: 'none',

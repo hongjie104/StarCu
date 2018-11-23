@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import navigationUtil from '../../utils/navigation';
-import { getMine, getBank } from '../../service';
+import { getMine, getBank, getBankList } from '../../service';
 import toast from '../../utils/toast';
 import { removeLocalData } from '../../utils/storage';
 import { open as openMeiQia, setClientInfo as setClientInfoForMeiQia } from '../../utils/meiQia';
@@ -54,14 +54,23 @@ export default class MyScene extends PureComponent {
 			toast(e);
 			return;
 		}
+		let bankArr = await getBankList()
+		bankArr = bankArr.datas.bankList;
 		let bankData = null;
+		let bankName = '';
 		try {
 			bankData = await getBank();
+			for (let i = 0; i < bankArr.length; i++) {
+				if (bankArr[i].id === bankData.datas.bankName) {
+					bankName = bankArr[i].text;
+					break;
+				}
+			}
 		} catch(e) {
 			toast(e);
 			return;
 		}
-		this.setState({ ...result.datas, ...bankData.datas });
+		this.setState({ ...result.datas, ...bankData.datas, bankName });
 	}
 
 	onHelp() {
@@ -103,6 +112,7 @@ export default class MyScene extends PureComponent {
 		global.uid = null;
 		removeLocalData('token');
 		removeLocalData('uid');
+		removeLocalData('phone');
 		navigationUtil.reset(this.props.navigation, 'LoginScene');
 	}
 
@@ -113,6 +123,7 @@ export default class MyScene extends PureComponent {
 			fullName,
 			totalIncome,
 			consumerHotline,
+			bankName,
 		} = this.state;
 		const { navigate } = this.props.navigation;
 		return (
@@ -168,7 +179,7 @@ export default class MyScene extends PureComponent {
 								银行卡
 							</Text>
 							<Text style={styles.infoVal}>
-								未绑定
+								{ bankName || '未绑定' }
 							</Text>
 						</View>
 					</TouchableOpacity>

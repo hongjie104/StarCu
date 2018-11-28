@@ -161,7 +161,7 @@ export default class Calendar extends PureComponent {
 					if (dateArr[i][j].year === curYear && dateArr[i][j].month === curMonth && dateArr[i][j].date === curDate) {						
 						if (Array.isArray(dateArr[i][j].missionData)) {
 							selectedMissionDataArr = dateArr[i][j].missionData.map(item => {
-								item.isEnabled = true;
+								item.isEnabled = 0;
 								return item;
 							});
 						} else {
@@ -197,7 +197,26 @@ export default class Calendar extends PureComponent {
 		const now = new Date();
 		let newMissionData = missionData || [];
 		newMissionData = newMissionData.map(m => {
-			m.isEnabled = year === now.getFullYear() && month === now.getMonth() + 1 && date === now.getDate();
+			if (year > now.getFullYear()) {
+				m.isEnabled	= 1;
+			} else if (year < now.getFullYear()) {
+				m.isEnabled	= -1;
+			} else {
+				if (month > now.getMonth() + 1) {
+					m.isEnabled	= 1;
+				} else if (month < now.getMonth() + 1) {
+					m.isEnabled	= -1;
+				} else {
+					if (date > now.getDate()) {
+						m.isEnabled	= 1;
+					} else if (date < now.getDate()) {
+						m.isEnabled	= -1;
+					} else {
+						m.isEnabled	= 0;
+					}
+				}
+			}
+			// m.isEnabled = year === now.getFullYear() && month === now.getMonth() + 1 && date === now.getDate();
 			return m;
 		});
 		this.setState({

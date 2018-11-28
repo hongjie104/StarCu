@@ -20,6 +20,7 @@ import UserInfoScene from '../scene/userInfo';
 import RegisterScene from '../scene/register';
 import LoginScene from '../scene/login';
 import HelperScene from '../scene/helper';
+import ProtocolScene from '../scene/protocol';
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
 
@@ -66,6 +67,7 @@ export default function createAppNavigation(isLogedIn) {
 		PhoneCheckerScene,
 		UserInfoScene,
 		HelperScene,
+		ProtocolScene,
 	}, {
 		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
 		// mode: 'card',

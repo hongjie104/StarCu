@@ -8,6 +8,7 @@ import {
 	Image,
 	TextInput,
 	TouchableOpacity,
+	Alert,
 } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import picker from 'react-native-picker';
@@ -20,10 +21,47 @@ import * as qiniu from '../../utils/qiniu';
 import { isCardno } from '../../utils/reg';
 import { QI_NIU_DOMAIN } from '../../config';
 
+class HeaderRight extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isCanEdit: false,
+		};
+	}
+
+	render() {
+		const { isCanEdit } = this.state;
+		return (
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() => {
+					this.setState({
+						isCanEdit: !isCanEdit,
+					}, () => {
+						this.props.navigation.state.params.onHeaderRightPress(this.state.isCanEdit);
+					});
+				}}
+				style={{flex: 1,}}
+			>
+				<Text
+					style={{
+						fontSize: getFontSize(34),
+						color: 'white',
+						marginRight: toDips(32),
+					}}
+				>
+					{ isCanEdit ? '保存' : '编辑' }
+				</Text>
+			</TouchableOpacity>
+		);
+	}
+}
+
 export default class UserInfoScene extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		title: '填写个人信息',
+		headerRight: <HeaderRight navigation={navigation} />,
 	});
 
 	constructor(props) {
@@ -47,10 +85,16 @@ export default class UserInfoScene extends PureComponent {
 			inited: false,
 			uploading: false,
 			isCanEdit: false,
+			isEmpty: false,
 		};
 	}
 
 	async componentDidMount() {
+		this.props.navigation.setParams({
+			onHeaderRightPress: (isCanEdit) => {
+				this.onHeaderRightPress(isCanEdit);
+			},
+		});
 		/*
 			idOppositePho  身份证反面照 
 			salesId  促销员ID 
@@ -119,8 +163,40 @@ export default class UserInfoScene extends PureComponent {
 			cityData,
 			storeData,
 			inited: true,
-			isCanEdit: myInfo.datas.fullName === '',
+			isEmpty: myInfo.datas.full === '',
 		});
+	}
+
+	onHeaderRightPress(isCanEdit) {
+		if (!isCanEdit) {
+			Alert.alert(
+				'提示',
+				'是否保存修改内容',
+				[
+					{ text: '否', onPress: () => {
+						if (result) {
+							this.setState({
+								isCanEdit,
+							});
+						}
+					}, style: 'cancel'},
+					{ text: '是', onPress: () => {
+						this.onSubmit((result) => {
+							if (result) {
+								this.setState({
+									isCanEdit,
+								});
+							}
+						});
+					} },
+				],
+				{ cancelable: false }
+			);
+		} else {
+			this.setState({
+				isCanEdit,
+			});
+		}
 	}
 
 	initCityPicker() {
@@ -189,20 +265,24 @@ export default class UserInfoScene extends PureComponent {
 	}
 
 	onShowCityPicker() {
-		if (!picker.isPickerShow()) {
-			this.initCityPicker();
-			picker.show();
+		if (this.state.isCanEdit) {
+			if (!picker.isPickerShow()) {
+				this.initCityPicker();
+				picker.show();
+			}
 		}
 	}
 
 	onShowStorePicker() {
-		if (!picker.isPickerShow()) {
-			if (this.initStorePicker()) {
-				picker.show();
-			} else {
-				toast('该城市的门店列表为空！');
-			}
-		}	
+		if (this.state.isCanEdit) {
+			if (!picker.isPickerShow()) {
+				if (this.initStorePicker()) {
+					picker.show();
+				} else {
+					toast('该城市的门店列表为空！');
+				}
+			}	
+		}
 	}
 
 	onFullNameChange(fullName) {
@@ -224,6 +304,8 @@ export default class UserInfoScene extends PureComponent {
 	}
 
 	onPickImage(category, type) {
+		const { isCanEdit } = this.state;
+		if (!isCanEdit) { return; }
 		// category 1 是身份证照 2 是个人照片
 		// type 1 是正面照 2 是反面照
 		// type 1 是个人照1 2 是个人照2
@@ -281,40 +363,48 @@ export default class UserInfoScene extends PureComponent {
 		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
 	}
 
-	onSubmit() {
+	onSubmit(callback) {
 		const { myInfo } = this.state;
 		const { from } = this.props.navigation.state.params;
 		let { fullName, idNo, idPositivePho, idOppositePho, userImage1, userImage2, cityId, storeId } = myInfo;
 		if (!fullName) {
 			toast('请输入真实姓名');
+			callback && callback(false);
 			return;
 		}
 		if (!isCardno(idNo)) {
 			toast('请输入正确的身份证号');
+			callback && callback(false);
 			return;
 		}
 		if (!idPositivePho) {
 			toast('请上传身份证正面照');
+			callback && callback(false);
 			return;
 		}
 		if (!idOppositePho) {
 			toast('请上传身份证反面照');
+			callback && callback(false);
 			return;
 		}
 		if (!userImage1) {
 			toast('请上传第一张个人照片');
+			callback && callback(false);
 			return;
 		}
 		if (!userImage2) {
 			toast('请上传第二张个人照片');
+			callback && callback(false);
 			return;
 		}
 		if (!cityId) {
 			toast('请选择所在城市');
+			callback && callback(false);
 			return;	
 		}
 		if (!storeId) {
 			toast('请选择绑定门店');
+			callback && callback(false);
 			return;
 		}
 		this.setState({
@@ -322,19 +412,31 @@ export default class UserInfoScene extends PureComponent {
 		}, async () => {
 			if (!idPositivePho.startsWith('http')) {
 				idPositivePho = await this.uploadImg(idPositivePho);
-				if (!idPositivePho) return;
+				if (!idPositivePho) {
+					callback && callback(false);
+					return;
+				}
 			}
 			if (!idOppositePho.startsWith('http')) {
 				idOppositePho = await this.uploadImg(idOppositePho);
-				if (!idOppositePho) return;
+				if (!idOppositePho) {
+					callback && callback(false);
+					return;
+				}
 			}
 			if (!userImage1.startsWith('http')) {
 				userImage1 = await this.uploadImg(userImage1);
-				if (!userImage1) return;
+				if (!userImage1) {
+					callback && callback(false);
+					return;
+				}
 			}
 			if (!userImage2.startsWith('http')) {
 				userImage2 = await this.uploadImg(userImage2);
-				if (!userImage2) return;
+				if (!userImage2) {
+					callback && callback(false);
+					return;
+				}
 			}
 			
 			setMyInfo({
@@ -358,12 +460,14 @@ export default class UserInfoScene extends PureComponent {
 					this.setState({
 						uploading: false,
 					});
+					callback && callback(true);
 				}
 			}).catch(e => {
 				toast(e);
 				this.setState({
 					uploading: false,
 				});
+				callback && callback(false);
 			});
 		});
 	}
@@ -382,6 +486,8 @@ export default class UserInfoScene extends PureComponent {
 			storeData,
 			inited,
 			uploading,
+			isCanEdit,
+			isEmpty,
 		} = this.state;
 		if (!inited) {
 			return <Spinner />;
@@ -393,33 +499,49 @@ export default class UserInfoScene extends PureComponent {
 					<Text style={styles.contentTxt}>
 						姓名：
 					</Text>
-					<TextInput
-						onChangeText={fullName => {
-							this.onFullNameChange(fullName);
-						}}
-						value={fullName}
-						placeholder='请输入真实姓名'
-						placeholderTextColor='#B5B5B5'
-						style={styles.input}
-						maxLength={6}
-					/>
+					{
+						isCanEdit ? (
+							<TextInput
+								onChangeText={fullName => {
+									this.onFullNameChange(fullName);
+								}}
+								value={fullName}
+								placeholder='请输入真实姓名'
+								placeholderTextColor='#B5B5B5'
+								style={styles.input}
+								maxLength={6}
+							/>
+						) : (
+							<Text style={styles.input}>
+								{ fullName }
+							</Text>
+						)
+					}
 				</View>
 				<View style={styles.itemContainer}>
 					<Image style={styles.icon} source={require('../../imgs/sfzh.png')} />
 					<Text style={styles.contentTxt}>
 						身份证号码：
 					</Text>
-					<TextInput
-						onChangeText={idNo => {
-							this.onIdNoChange(idNo);
-						}}
-						value={idNo}
-						placeholder='请输入18位身份证号'
-						placeholderTextColor='#B5B5B5'
-						style={styles.input}
-						maxLength={18}
-						keyboardType='numeric'
-					/>
+					{
+						isCanEdit ? (
+							<TextInput
+								onChangeText={idNo => {
+									this.onIdNoChange(idNo);
+								}}
+								value={idNo}
+								placeholder='请输入18位身份证号'
+								placeholderTextColor='#B5B5B5'
+								style={styles.input}
+								maxLength={18}
+								keyboardType='numeric'
+							/>
+						) : (
+							<Text style={styles.input}>
+								{ idNo }
+							</Text>
+						)
+					}
 				</View>
 				<View style={[styles.itemContainer, { height: toDips(141) }]}>
 					<Image style={styles.icon} source={require('../../imgs/sfzzp.png')} />
@@ -517,7 +639,9 @@ export default class UserInfoScene extends PureComponent {
 							{ cityData ? cityData.name : '选择城市' }
 						</Text>
 					</View>
-					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+					{
+						isCanEdit && <Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+					}
 				</TouchableOpacity>
 				<TouchableOpacity
 					activeOpacity={0.8}
@@ -535,22 +659,28 @@ export default class UserInfoScene extends PureComponent {
 							{ storeData ? storeData.name : '选择门店' }
 						</Text>
 					</View>
-					<Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+					{
+						isCanEdit && <Image style={styles.arrowImg} source={require('../../imgs/jt.png')} />
+					}
 				</TouchableOpacity>
 				{
 					// 提交按钮
 				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onSubmit();
-					}}
-					style={styles.submitBtn}
-				>
-					<Text style={styles.submitBtnTxt}>
-						提交
-					</Text>
-				</TouchableOpacity>
+				{
+					isEmpty && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onSubmit();
+							}}
+							style={styles.submitBtn}
+						>
+							<Text style={styles.submitBtnTxt}>
+								提交
+							</Text>
+						</TouchableOpacity>
+					)
+				}
 				{
 					uploading && <Spinner />
 				}

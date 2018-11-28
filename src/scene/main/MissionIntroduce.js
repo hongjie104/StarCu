@@ -218,18 +218,36 @@ export default class MissionIntroduce extends PureComponent {
 				</ScrollView>
 				{
 					// 按钮
-					!(isEnabled === false) && (
-						<TouchableOpacity
-							activeOpacity={0.8}
-							onPress={() => {
-								this.onSubmit();
-							}}
-							style={styles.submitBtn}
+					isEnabled === 1 ? (
+						<View
+							style={styles.submitBtn_disabeld}
 						>
 							<Text style={styles.submitBtnTxt}>
-								{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
+								未开始
 							</Text>
-						</TouchableOpacity>
+						</View>
+					) : (
+						isEnabled === -1 ? (
+							<View
+								style={styles.submitBtn_disabeld}
+							>
+								<Text style={styles.submitBtnTxt}>
+									已过期
+								</Text>
+							</View>
+						) : (
+							<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onSubmit();
+								}}
+								style={styles.submitBtn}
+							>
+								<Text style={styles.submitBtnTxt}>
+									{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
+								</Text>
+							</TouchableOpacity>
+						)
 					)
 				}
 			</View>
@@ -318,5 +336,8 @@ const styles = StyleSheet.create({
 	submitBtnTxt: {
 		fontSize: getFontSize(32),
 		color: 'white',
+	},
+	submitBtn_disabeld: {
+		backgroundColor: '#E9E9E9',
 	},
 });

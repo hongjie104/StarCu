@@ -47,6 +47,7 @@ export default class AccountDetail extends PureComponent {
 
 	render() {
 		const { billArr, loading } = this.state;
+		console.warn(billArr);
 		if (loading) {
 			return <Spinner />;
 		}
@@ -59,7 +60,7 @@ export default class AccountDetail extends PureComponent {
 				}
 				{
 					billArr.map((bill, i) => (
-						<View style={styles.itemContainer}>
+						<View style={styles.itemContainer} key={i}>
 							<View style={styles.itemTitle}>
 								<Text style={styles.titleTxt}>
 									流水号：{ bill.billNo }

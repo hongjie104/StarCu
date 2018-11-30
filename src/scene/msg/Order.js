@@ -33,7 +33,7 @@ export default class OrderMsgList extends PureComponent {
 	}
 
 	fetchOrderMsg() {
-		if (this.isFetching){
+		if (this.isFetching) {
 			this.setState({
 				refreshing: false,
 			});
@@ -50,10 +50,10 @@ export default class OrderMsgList extends PureComponent {
 			 */
 			const orderMessages = this.getMsgFromData(result.datas);
 			this.setState({
-				msgList: orderMessages.map(m => {
+				msgList: orderMessages ? orderMessages.map(m => {
 					m.key = m.id.toString();
 					return m;
-				}),
+				}) : [],
 				refreshing: false,
 			}, () => {
 				this.page++;

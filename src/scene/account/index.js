@@ -145,7 +145,12 @@ export default class AccountScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
-
+						navigate({
+							routeName: 'HelperScene',
+							params: {
+								url: 'http://101.132.113.94/accountCenter.html'
+							},
+						});
 					}}
 					style={styles.itemContainer}
 				>

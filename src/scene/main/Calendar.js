@@ -11,6 +11,7 @@ import {
 	ScrollView,
 } from 'react-native';
 import picker from 'react-native-picker';
+import Spinner from '../../component/Spinner';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
@@ -32,6 +33,7 @@ export default class Calendar extends PureComponent {
 			dateArr: [],
 			// 当前选中的日期下的任务列表
 			selectedMissionDataArr: [],
+			loading: false,
 		};
 	}
 
@@ -80,6 +82,9 @@ export default class Calendar extends PureComponent {
 	}
 
 	updateDate(now = new Date()) {
+		this.setState({
+			loading: true,
+		});
 		const curYear = now.getFullYear();
 		const curMonth = now.getMonth() + 1;
 		const curDate = now.getDate();
@@ -181,6 +186,7 @@ export default class Calendar extends PureComponent {
 				curDate,
 				dateArr,
 				selectedMissionDataArr: selectedMissionDataArr || [],
+				loading: false,
 			});
 		}).catch(e => {
 			toast(e);
@@ -234,6 +240,7 @@ export default class Calendar extends PureComponent {
 			nowYear,
 			dateArr,
 			selectedMissionDataArr,
+			loading,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -390,6 +397,9 @@ export default class Calendar extends PureComponent {
 						))
 					}
 				</ScrollView>
+				{
+					loading && <Spinner />
+				}
 			</View>
 		);
 	}

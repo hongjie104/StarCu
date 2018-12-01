@@ -78,7 +78,7 @@ export default class MyScene extends PureComponent {
 		navigate({
 			routeName: 'HelperScene',
 			params: {
-				url: 'https://www.baidu.com',
+				url: 'http://101.132.113.94/helper.html',
 			},
 		});
 	}

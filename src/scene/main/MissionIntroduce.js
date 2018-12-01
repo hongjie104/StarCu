@@ -9,6 +9,7 @@ import {
 	ScrollView,
 	TouchableOpacity,
 } from 'react-native';
+import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import { takeOrder, getMissionByOrder } from '../../service';
 import toast from '../../utils/toast';
@@ -54,7 +55,14 @@ export default class MissionIntroduce extends PureComponent {
 		// console.warn(mission);
 		this.state = {
 			...mission,
+			loading: false,
 		};
+	}
+
+	componentWillUnmount() {
+		this.setState({
+			loading: false,
+		});
 	}
 
 	async getFirstMissionByOrder(orderId) {
@@ -85,6 +93,9 @@ export default class MissionIntroduce extends PureComponent {
 	}
 
 	async onSubmit() {
+		this.setState({
+			loading: true,
+		});
 		const { status, orderId } = this.state;
 		const { type, onTakeOrder } = this.props.navigation.state.params;
 		if (type === 1) {
@@ -124,6 +135,9 @@ export default class MissionIntroduce extends PureComponent {
 				},
 			});
 		}
+		this.setState({
+			loading: false,
+		});
 	}
 
 	render() {
@@ -154,6 +168,7 @@ export default class MissionIntroduce extends PureComponent {
 			status,
 			remark,
 			isEnabled,
+			loading,
 		} = this.state;
 		// type 0 是任务  1 是订单
 		const { type } = this.props.navigation.state.params;
@@ -249,6 +264,9 @@ export default class MissionIntroduce extends PureComponent {
 							</TouchableOpacity>
 						)
 					)
+				}
+				{
+					loading && <Spinner />
 				}
 			</View>
 		);

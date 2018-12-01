@@ -29,6 +29,9 @@ export default class Calendar extends PureComponent {
 			nowYear: 2018,
 			nowMonth: 10,
 			nowDate: 30,
+			selectedYear: 2018,
+			selectedMonth: 2018,
+			selectedDate: 2018,
 			// 日期数组，是个二维的
 			dateArr: [],
 			// 当前选中的日期下的任务列表
@@ -186,6 +189,9 @@ export default class Calendar extends PureComponent {
 				curDate,
 				dateArr,
 				selectedMissionDataArr: selectedMissionDataArr || [],
+				selectedYear: curYear,
+				selectedMonth: curMonth,
+				selectedDate: curDate,
 				loading: false,
 			});
 		}).catch(e => {
@@ -227,6 +233,9 @@ export default class Calendar extends PureComponent {
 		});
 		this.setState({
 			selectedMissionDataArr: newMissionData,
+			selectedYear: year,
+			selectedMonth: month,
+			selectedDate: date,
 		});
 	}
 
@@ -241,6 +250,9 @@ export default class Calendar extends PureComponent {
 			dateArr,
 			selectedMissionDataArr,
 			loading,
+			selectedYear,
+			selectedMonth,
+			selectedDate,
 		} = this.state;
 		return (
 			<View style={styles.container}>
@@ -351,6 +363,7 @@ export default class Calendar extends PureComponent {
 																	)
 																)
 															) : null,
+															selectedYear === dateData.year && selectedMonth === dateData.month && selectedDate === dateData.date ? styles.calendarSelectedContainer : null,
 														]}
 													>
 														<Text
@@ -503,6 +516,9 @@ const styles = StyleSheet.create({
 	},
 	calendarCurDateContainer: {
 		backgroundColor: '#F06292',
+	},
+	calendarSelectedContainer: {
+		backgroundColor: '#FF0000',
 	},
 	calendarDateTxt: {
 		fontSize: getFontSize(32),

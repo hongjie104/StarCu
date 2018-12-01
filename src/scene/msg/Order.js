@@ -10,7 +10,7 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { getOrderMsg, setMsgReaded } from '../../service';
+import { getOrderMsg, setMsgReaded, getTodayMission } from '../../service';
 import toast from '../../utils/toast';
 
 // const ITEM_HEIGHT = toDips(206);
@@ -77,7 +77,15 @@ export default class OrderMsgList extends PureComponent {
 	}
 
 	onItemPress(msgData) {
-		const { id } = msgData;
+		/*
+		{ orderId: '2579483158448128',
+             time: '2018-11-22 22:32:57',
+             id: '2584867454388224',
+             title: '测试2测试2测试2测试2',
+             content: '2580334082590720的订单您已成功接单，请及时完成任务并反馈。',
+             taskId: '2580334082590720',
+             status: '0' }*/
+		const { id, taskId } = msgData;
 		setMsgReaded(id).then(result => {
 			const msgList = [...this.state.msgList];
 			for (let i = 0; i < msgList.length; i++) {
@@ -89,7 +97,27 @@ export default class OrderMsgList extends PureComponent {
 			this.setState({
 				msgList,
 			}, () => {
-				// ...
+				if (taskId) {
+					// 跳转到任务详情
+					getTodayMission(taskId).then(result => {
+						const { tasks } = result.datas;
+						if (Array.isArray(tasks) && tasks.length > 0) {
+							const { navigation: { navigate }, type } = this.props;
+							navigate({
+								routeName: 'MissionIntroduceScene',
+								params: {
+									mission: tasks[0],
+									// 0 是任务
+									type: 0,
+								},
+							});
+						} else {
+							toast('该消息tasks的不是数组或者长度为0,请联系后端');
+						}
+					}).catch(e => {
+						toast(e);
+					});
+				}
 			});
 		}).catch(e => {
 			toast(e);

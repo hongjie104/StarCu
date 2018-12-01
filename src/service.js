@@ -46,10 +46,11 @@ export function login(phone, code) {
 }
 
 // 获取今日任务
-export function getTodayMission() {
+export function getTodayMission(taskId = null) {
 	return post(`${SERVER_HOST}/app/app/taskList`, {
 		token: global.token,
 		date: formatDateTime(new Date(), 'yyyy-MM-dd'),
+		taskId,
 	});
 }
 

@@ -6,6 +6,7 @@ import {
 	View,
 	Text,
 	Image,
+	ScrollView,
 } from 'react-native';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import { getBill } from '../../service';
@@ -58,26 +59,40 @@ export default class AccountDetail extends PureComponent {
 						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
 					)
 				}
-				{
-					billArr.map((bill, i) => (
-						<View style={styles.itemContainer} key={i}>
-							<View style={styles.itemTitle}>
-								<Text style={styles.titleTxt}>
-									流水号：{ bill.billNo }
-								</Text>
-								<Text style={styles.titleTxt}>
+				<ScrollView style={styles.container}>
+					{
+						billArr.map((bill, i) => (
+							<View style={styles.itemContainer} key={i}>
+								<View style={styles.itemTitle}>
+									<Text style={styles.titleTxt}>
+										流水号：{ bill.billNo }
+									</Text>
+									<Text style={styles.titleTxt}>
+										{
+											bill.state === '0' ? '审核中' : (bill.state === '1' ? '审核通过' : '审核失败')
+										}
+									</Text>
+								</View>
+								<Text style={styles.contentTxt}>
 									收入：{ bill.amount }元
 								</Text>
+								{
+									bill.salesDeduction && (
+										<Text style={styles.contentTxt}>
+											扣款：{ bill.salesDeduction }元
+										</Text>
+									)
+								}
+								<Text style={styles.contentTxt}>
+									项目名称：{ bill.proName }
+								</Text>
+								<Text style={styles.contentTxt}>
+									发生日期：{ bill.date }
+								</Text>
 							</View>
-							<Text style={styles.contentTxt}>
-								项目名称：{ bill.proName }
-							</Text>
-							<Text style={styles.contentTxt}>
-								发生日期：{ bill.date }
-							</Text>
-						</View>
-					))
-				}
+						))
+					}
+				</ScrollView>
 				{
 					// <View style={styles.itemContainer}>
 					// 	<View style={styles.itemTitle}>

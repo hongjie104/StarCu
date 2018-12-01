@@ -44,8 +44,8 @@ export default class MsgScene extends PureComponent {
 						backgroundColor: '#DD4124',
 					}}
 				>
-					<OrderMsgList tabLabel='订单消息' />
-					<SystemMsgList tabLabel='系统消息' />
+					<OrderMsgList tabLabel='订单消息' navigation={ this.props.navigation } />
+					<SystemMsgList tabLabel='系统消息' navigation={ this.props.navigation } />
 				</ScrollableTabView>
 			</View>
 		);

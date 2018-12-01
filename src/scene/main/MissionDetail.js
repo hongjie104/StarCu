@@ -44,28 +44,29 @@ class MissionDetail extends PureComponent {
 	componentDidMount() {
 		const { taskId } = this.props.navigation.state.params;
 		getMissionInfo(taskId).then(result => {
-			console.warn(result);
-			let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
-			let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
-			let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
-			let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
-			// let img1 = '';
-			// let img2 = '';
-			// let img3 = '';
-			// let img4 = '';
-			const { skus } = result.datas; 
+			// console.warn(result);
+			// let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
+			// let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
+			// let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
+			// let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
+			let img1 = '';
+			let img2 = '';
+			let img3 = '';
+			let img4 = '';
+			const { skus } = result.datas;
+			console.warn(skus);
 			for (let i = 0; i < skus.length; i++) {
 				if (Array.isArray(skus[i].feedDatas)) {
 					const feedDatas = skus[i].feedDatas;
-					for (let j= 0; j < feedDatas.length; i++) {
+					for (let j= 0; j < feedDatas.length; j++) {
 						if (feedDatas[j].dataCode === 'beforeTally') {
-							img1 = feedDatas[j].dataContent;
+							img1 = decodeURIComponent(feedDatas[j].dataContent);
 						} else if (feedDatas[j].dataCode === 'beforeTallyLeft') {
-							img2 = feedDatas[j].dataContent;
+							img2 = decodeURIComponent(feedDatas[j].dataContent);
 						} else if (feedDatas[j].dataCode === 'afterTally') {
-							img3 = feedDatas[j].dataContent;
+							img3 = decodeURIComponent(feedDatas[j].dataContent);
 						} else if (feedDatas[j].dataCode === 'afterTallyLeft') {
-							img4 = feedDatas[j].dataContent;
+							img4 = decodeURIComponent(feedDatas[j].dataContent);
 						}
 					}
 					break;
@@ -84,7 +85,8 @@ class MissionDetail extends PureComponent {
 						}
 					}
 					return {
-						skuId: sku.skuId,
+						outOfStockFlag: 0,
+						skuId: sku.skuId,						
 						skuNum,
 					};
 				}),
@@ -153,6 +155,19 @@ class MissionDetail extends PureComponent {
 		this.setState({
 			skuDataArr,
 		});
+	}
+
+	onSkuOutOfStockFlagChange(skuId) {
+		const skuDataArr = [...this.state.skuDataArr];
+		for (let i = 0; i < skuDataArr.length; i++) {
+			if (skuDataArr[i].skuId === skuId) {
+				skuDataArr[i].outOfStockFlag = skuDataArr[i].outOfStockFlag === 0 ? 1 : 0;
+				break;
+			}
+		}
+		this.setState({
+			skuDataArr,
+		});	
 	}
 
 	onSubmit() {
@@ -378,6 +393,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 								<View style={styles.dataInputContainer}>
 									<TextInput
+										editable={skuDataArr.filter(item => item.skuId === sku.skuId )[0].outOfStockFlag === 0}
 										keyboardType='numeric'
 										onChangeText={text => {
 											this.onSkuNumChange(sku.skuId, text);
@@ -386,12 +402,23 @@ class MissionDetail extends PureComponent {
 										placeholderTextColor='#999'
 										style={styles.input}
 										onFocus={(event: Event) => {
-											// `bind` the function if you're using ES6 classes
 											this.scrollToInput(findNodeHandle(event.target));
 										}}
-										value={skuDataArr.filter(item => item.skuId === sku.skuId )[0].skuNum.toString()}
+										value={
+											skuDataArr.filter(item => item.skuId === sku.skuId )[0].outOfStockFlag === 0 ? 
+												skuDataArr.filter(item => item.skuId === sku.skuId )[0].skuNum.toString() :
+												'缺货'
+										}
 									/>
 								</View>
+								<Text
+									style={{ marginLeft: toDips(16), marginRight: toDips(16), }}
+									onPress={() => {
+										this.onSkuOutOfStockFlagChange(sku.skuId);
+									}}
+								>
+									缺货
+								</Text>
 							</View>
 						))
 					}
@@ -511,7 +538,7 @@ const styles = StyleSheet.create({
 		width: toDips(160),
 	},
 	dataInputContainer: {
-		width: toDips(434),
+		width: toDips(384),
 		height: toDips(70),
 		borderColor: '#DCDCDC',
 		borderWidth: 1,

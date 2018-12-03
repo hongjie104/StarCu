@@ -235,18 +235,18 @@ export default class MissionIntroduce extends PureComponent {
 					// 按钮
 					isEnabled === 1 ? (
 						<View
-							style={styles.submitBtn_disabeld}
+							style={[styles.submitBtn, styles.submitBtn_disabeld]}
 						>
-							<Text style={styles.submitBtnTxt}>
+							<Text style={[styles.submitBtnTxt, styles.submitBtnTxt_disabeld]}>
 								未开始
 							</Text>
 						</View>
 					) : (
 						isEnabled === -1 ? (
 							<View
-								style={styles.submitBtn_disabeld}
+								style={[styles.submitBtn, styles.submitBtn_disabeld]}
 							>
-								<Text style={styles.submitBtnTxt}>
+								<Text style={[styles.submitBtnTxt, styles.submitBtnTxt_disabeld]}>
 									已过期
 								</Text>
 							</View>
@@ -357,5 +357,8 @@ const styles = StyleSheet.create({
 	},
 	submitBtn_disabeld: {
 		backgroundColor: '#E9E9E9',
+	},
+	submitBtnTxt_disabeld: {
+		color: 'rgba(0,0,0,0.6)',
 	},
 });

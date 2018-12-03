@@ -47,11 +47,14 @@ export function login(phone, code) {
 
 // 获取今日任务
 export function getTodayMission(taskId = null) {
-	return post(`${SERVER_HOST}/app/app/taskList`, {
+	const params = taskId ? {
+		token: global.token,
+		taskId,
+	} : {
 		token: global.token,
 		date: formatDateTime(new Date(), 'yyyy-MM-dd'),
-		taskId,
-	});
+	};
+	return post(`${SERVER_HOST}/app/app/taskList`, params);
 }
 
 // 获取日历任务

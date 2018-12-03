@@ -174,11 +174,9 @@ export default class UserInfoScene extends PureComponent {
 				'是否保存修改内容',
 				[
 					{ text: '否', onPress: () => {
-						if (result) {
-							this.setState({
-								isCanEdit,
-							});
-						}
+						this.setState({
+							isCanEdit,
+						});
 					}, style: 'cancel'},
 					{ text: '是', onPress: () => {
 						this.onSubmit((result) => {

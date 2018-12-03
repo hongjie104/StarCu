@@ -88,6 +88,13 @@ export default class LoginScene extends PureComponent {
 				}
 			}).catch(e => {
 				toast(e);
+				if (this._interval) {
+					clearInterval(this._interval);
+					this._interval = null;
+				}
+				this.setState({
+					cd: 0, 
+				});
 			});
 		});
 	}

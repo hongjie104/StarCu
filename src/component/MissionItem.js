@@ -67,7 +67,6 @@ export default class MissionItem extends PureComponent {
 		const {
 			item,
 		} = this.state;
-		// console.warn(item);
 		return (
 			<TouchableOpacity
 				activeOpacity={0.8}

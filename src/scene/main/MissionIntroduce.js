@@ -243,13 +243,28 @@ export default class MissionIntroduce extends PureComponent {
 						</View>
 					) : (
 						isEnabled === -1 ? (
-							<View
-								style={[styles.submitBtn, styles.submitBtn_disabeld]}
-							>
-								<Text style={[styles.submitBtnTxt, styles.submitBtnTxt_disabeld]}>
-									已过期
-								</Text>
-							</View>
+							// 已完成了，尽管已过期，但是还是可以点的
+							type === 0 && status === 1 ? (
+								<TouchableOpacity
+									activeOpacity={0.8}
+									onPress={() => {
+										this.onSubmit();
+									}}
+									style={styles.submitBtn}
+								>
+									<Text style={styles.submitBtnTxt}>
+										{ status === 1 ? '已完成': '做任务' }
+									</Text>
+								</TouchableOpacity>
+							) : (
+								<View
+									style={[styles.submitBtn, styles.submitBtn_disabeld]}
+								>
+									<Text style={[styles.submitBtnTxt, styles.submitBtnTxt_disabeld]}>
+										已过期
+									</Text>
+								</View>
+							)
 						) : (
 							<TouchableOpacity
 								activeOpacity={0.8}
@@ -259,7 +274,7 @@ export default class MissionIntroduce extends PureComponent {
 								style={styles.submitBtn}
 							>
 								<Text style={styles.submitBtnTxt}>
-									{ type === 1 ? (status === 1 ? '接单' : '做任务') : '做任务' }
+									{ type === 1 ? (status === 1 ? '接单' : '做任务') : (status === 1 ? '已完成': '做任务') }
 								</Text>
 							</TouchableOpacity>
 						)

@@ -79,6 +79,7 @@ export default class MyScene extends PureComponent {
 			routeName: 'HelperScene',
 			params: {
 				url: 'http://101.132.113.94/helper.html',
+				title: '帮助中心',
 			},
 		});
 	}

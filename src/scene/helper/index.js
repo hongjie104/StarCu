@@ -5,12 +5,13 @@ import {
 	StyleSheet,
 	View,
 	WebView,
+	Text,
 } from 'react-native';
 
 export default class Helper extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
-		title: '帮助中心',
+		headerTitle: <Text style={{ color: 'white', fontSize: 16 }}>{navigation.state.params.title || 'null'}</Text>,
 	});
 
 	constructor(props) {
@@ -18,7 +19,6 @@ export default class Helper extends PureComponent {
 	}
 
 	render() {
-		// const { navigate, goBack } = this.props.navigation;
 		const { url } = this.props.navigation.state.params;
 		return (
 			<WebView

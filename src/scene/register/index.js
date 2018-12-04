@@ -105,7 +105,14 @@ export default class RegisterScene extends PureComponent {
 				}
 			}).catch(err => {
 				console.warn(err);
-				toast(err);
+				toast(err.errorMsg);
+				if (this._interval) {
+					clearInterval(this._interval);
+					this._interval = null;
+				}
+				this.setState({
+					cd: 0, 
+				});
 			});
 		});
 	}
@@ -266,7 +273,15 @@ export default class RegisterScene extends PureComponent {
 							/>
 						</TouchableOpacity>
 						<Text style={styles.protocolTxt}>
-							我已阅读并同意星促伙伴 <Text style={{ color: '#2579E0' }}>服务条款协议</Text>
+							我已阅读并同意星促伙伴 <Text style={{ color: '#2579E0' }} onPress={() => {
+								this.props.navigation.navigate({
+									routeName: 'HelperScene',
+									params: {
+										url: 'http://101.132.113.94/helpinfo.html',
+										title: '星促伙伴APP平台服务协议',
+									},
+								});
+							}}>服务条款协议</Text>
 						</Text>
 					</View>
 					{

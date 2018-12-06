@@ -28,6 +28,10 @@ export default class Mission extends PureComponent {
 	}
 
 	componentDidMount() {
+		this.fetchTodayMission();
+	}
+
+	fetchTodayMission() {
 		getTodayMission().then(result => {
 			const { expectedIncome, taskNum, tasks } = result.datas;
 			this.setState({

@@ -24,6 +24,15 @@ export default class MissionItem extends PureComponent {
 		};
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			item: {
+				...nextProps.item,
+				status: parseInt(nextProps.item.status),
+			},
+		});
+	}
+
 	onItemPress(mission) {
 		const { navigation: { navigate }, type } = this.props;
 		navigate({

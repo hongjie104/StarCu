@@ -105,6 +105,15 @@ export default class MissionIntroduce extends PureComponent {
 					await takeOrder(orderId);
 				} catch (err) {
 					toast(err);
+					this.setState({
+						loading: false,
+					}, () => {
+						if (err === '请先完善个人资料') {
+							this.props.navigation.navigate({
+								routeName: 'UserInfoScene',
+							});
+						}
+					});
 					return;
 				}
 				onTakeOrder && onTakeOrder(orderId)

@@ -79,11 +79,22 @@ export default class MainScene extends PureComponent {
 		},
 	};
 
+	static onShow = () => {
+		if (self) {
+			if (self._mission) {
+				self._mission.fetchTodayMission();
+			}
+		}
+	};
+
 	constructor(props) {
 		super(props);
 		this.state = {
 			curTabIndex: 0,
 		};
+	}
+
+	componentWillMount() {
 		self = this;
 	}
 
@@ -95,10 +106,11 @@ export default class MainScene extends PureComponent {
 
 	render() {
 		const { curTabIndex } = this.state;
+		this._mission = null;
 		return (
 			<View style={styles.container}>
 				{
-					curTabIndex === 0 && <Mission navigation={this.props.navigation} />
+					curTabIndex === 0 && <Mission navigation={this.props.navigation} ref={c => this._mission = c} />
 				}
 				{
 					curTabIndex === 1 && <Calendar navigation={this.props.navigation} />

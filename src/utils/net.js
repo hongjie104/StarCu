@@ -56,10 +56,10 @@ export function post(url, data) {
 				if (jsonData.errorCode === '0') {
 					resolve(jsonData.body);
 				} else {
-					reject(jsonData);
+					reject(jsonData.errorMsg);
 				}
 			})
-			.catch(e => reject(e));
+			.catch(e => reject(e.toString()));
 	});
 }
 
@@ -84,9 +84,9 @@ export function get(url) {
 				if (jsonData.errorCode === '0') {
 					resolve(jsonData.body);
 				} else {
-					reject(jsonData);
+					reject(jsonData.errorMsg);
 				}
 			})
-			.catch(e => reject(e));
+			.catch(e => reject(e.toString()));
 	});
 }

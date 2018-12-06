@@ -163,7 +163,8 @@ export default class UserInfoScene extends PureComponent {
 			cityData,
 			storeData,
 			inited: true,
-			isEmpty: myInfo.datas.full === '',
+			isEmpty: !myInfo.datas.fullName,
+			isCanEdit: !myInfo.datas.fullName,
 		});
 	}
 
@@ -457,6 +458,8 @@ export default class UserInfoScene extends PureComponent {
 					toast('修改成功');
 					this.setState({
 						uploading: false,
+						isCanEdit: false,
+						isEmpty: false,
 					});
 					callback && callback(true);
 				}

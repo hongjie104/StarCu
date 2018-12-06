@@ -14,6 +14,8 @@ import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
 import { getOrderArr } from '../../service';
 
+let self = null;
+
 export default class MsgScene extends PureComponent {
 	
 	static navigationOptions = {
@@ -27,6 +29,12 @@ export default class MsgScene extends PureComponent {
 		},
 	};
 
+	static onShow = () => {
+		if (self) {
+			self.fetchOrderArr();
+		}
+	};
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -35,6 +43,11 @@ export default class MsgScene extends PureComponent {
 	}
 
 	componentWillMount() {
+		self = this;
+		this.fetchOrderArr();
+	}
+
+	fetchOrderArr() {
 		getOrderArr().then(result => {
 			/*
 				statusDesc 状态描述 

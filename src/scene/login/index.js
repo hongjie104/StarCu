@@ -121,6 +121,7 @@ export default class LoginScene extends PureComponent {
 					});
 				});
 			}).catch(err => {
+				console.warn(err);
 				toast(err);
 			});
 		});

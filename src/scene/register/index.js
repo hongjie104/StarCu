@@ -104,8 +104,8 @@ export default class RegisterScene extends PureComponent {
 					toast('验证码已发送');
 				}
 			}).catch(err => {
-				console.warn(err);
-				toast(err.errorMsg);
+				// console.warn(err);
+				toast(err);
 				if (this._interval) {
 					clearInterval(this._interval);
 					this._interval = null;
@@ -134,6 +134,10 @@ export default class RegisterScene extends PureComponent {
 		saveDataToLocal('phone', phone, () => {
 			resiger(phone, code, invitationCode).then(result => {
 				const { token, uid } = result.datas;
+				if (!token || !uid) {
+					toast('token为空或者uid为空，请联系后端');
+					return;
+				}
 				global.token = token;
 				global.uid = uid;
 				saveDataToLocal('token', token, () => {

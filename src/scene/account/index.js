@@ -32,6 +32,7 @@ export default class AccountScene extends PureComponent {
 			deductionAmount: '0.00',
 			// 待入账金额
 			toBeCreditedAmount: '0.00',
+			amount: '0.00',
 		};
 	}
 
@@ -55,6 +56,7 @@ export default class AccountScene extends PureComponent {
 			deductionAmount,
 			// 待入账金额
 			toBeCreditedAmount,
+			amount,
 		} = this.state;
 		const { navigate } = this.props.navigation;
 		return (
@@ -65,7 +67,7 @@ export default class AccountScene extends PureComponent {
 						当前账户总额
 					</Text>
 					<Text style={styles.numMoneyTxt}>
-						¥2000.00
+						¥{ amount }
 					</Text>
 				</View>
 				<View style={styles.infoContainer}>

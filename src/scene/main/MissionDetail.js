@@ -47,16 +47,16 @@ class MissionDetail extends PureComponent {
 		// getMissionInfo(taskId).then(result => {
 		const { skus } = this.props.navigation.state.params;
 			// console.warn(result);
-			// let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
-			// let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
-			// let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
-			// let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
-			let img1 = '';
-			let img2 = '';
-			let img3 = '';
-			let img4 = '';
+			let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
+			let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
+			let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
+			let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
+			// let img1 = '';
+			// let img2 = '';
+			// let img3 = '';
+			// let img4 = '';
 			
-			console.warn(skus);
+			// console.warn(skus);
 			for (let i = 0; i < skus.length; i++) {
 				if (Array.isArray(skus[i].feedDatas)) {
 					const feedDatas = skus[i].feedDatas;
@@ -429,20 +429,22 @@ class MissionDetail extends PureComponent {
 					}
 					{
 						// 提交按钮
+					 	missionInfo && missionInfo.status !== 1 && (
+					 		<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onSubmit();
+								}}
+								style={styles.submitBtn}
+							>
+								<Text style={styles.submitBtnTxt}>
+									{
+										(missionInfo && missionInfo.tallyStatus) === 1 ? '再次提交' : '提交'
+									}
+								</Text>	
+							</TouchableOpacity>
+					 	)
 					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onSubmit();
-						}}
-						style={styles.submitBtn}
-					>
-						<Text style={styles.submitBtnTxt}>
-							{
-								(missionInfo && missionInfo.tallyStatus) === 1 ? '再次提交' : '提交'
-							}
-						</Text>	
-					</TouchableOpacity>
 				</KeyboardAwareScrollView>
 				{
 					showSpinner && <Spinner />

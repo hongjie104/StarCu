@@ -98,7 +98,7 @@ export default class MissionItem extends PureComponent {
 							}
 						/>
 						<Text style={styles.itemStatusTxt}>
-							{ type === 1 ? (item.status === 1 ? '未接单' : '已接单') : (item.status === 0 ? '未完成' : '已完成') }
+							{ type === 1 ? (item.status === 1 ? '未接单' : '已接单') : (item.status === 0 ? (item.isEnabled === -1 ? '已过期' : '未完成') : '已完成') }
 						</Text>
 					</ImageBackground>
 					<View style={styles.itemInfoSubContainer}>

@@ -32,6 +32,7 @@ export default class MissionIntroduce extends PureComponent {
 		let taskId = null;
 		let status = -1;
 		let orderId = -1;
+		let isEnabled = true;
 		if (this.props.navigation.state.params.type === 1) {
 			status = this.props.navigation.state.params.mission.status;
 			orderId = this.props.navigation.state.params.mission.orderId;
@@ -39,6 +40,7 @@ export default class MissionIntroduce extends PureComponent {
 			taskId = missionData ? missionData.taskId : null;
 		} else {
 			taskId = this.props.navigation.state.params.mission.taskId;
+			isEnabled = this.props.navigation.state.params.mission.isEnabled;
 		}
 		if (taskId) {
 			const missionData = await getMissionInfo(taskId);
@@ -64,6 +66,7 @@ export default class MissionIntroduce extends PureComponent {
 				loading: false,
 				orderId,
 				taskId,
+				isEnabled,
 			});
 		}
 	}
@@ -111,7 +114,7 @@ export default class MissionIntroduce extends PureComponent {
 			params: {
 				...this.state,
 				onMissionDone: taskId => {
-					if (this.status.taskId === taskId) {
+					if (this.state.taskId === taskId) {
 						if (this.props.navigation.state.params.type === 0) {
 							// 任务的话，就变成已完成状态
 							this.setState({
@@ -147,6 +150,7 @@ export default class MissionIntroduce extends PureComponent {
 			isEnabled,
 			loading,
 		} = this.state;
+		// console.warn(isEnabled, status);
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>

@@ -20,6 +20,7 @@ import toast from '../../utils/toast';
 import * as qiniu from '../../utils/qiniu';
 import { isCardno } from '../../utils/reg';
 import { QI_NIU_DOMAIN } from '../../config';
+import cityJsonArr from './city.json';
 
 class HeaderRight extends PureComponent {
 	constructor(props) {
@@ -78,6 +79,8 @@ export default class UserInfoScene extends PureComponent {
 				userImage1: '',
 				userImage2: '',
 			},
+			// 省的名字
+			province: null,
 			// 当前选中的城市
 			cityData: null,
 			// 当前选中的门店
@@ -124,31 +127,16 @@ export default class UserInfoScene extends PureComponent {
 			toast(e);
 			return;
 		}
-		try {
-			this.cityArr = await getCityArr();
-			this.cityArr = this.cityArr.datas.cityList;
-		} catch (e) {
-			toast(e);
-			return;
-		}
-		let cityData = null;
-		let cityId = null;
 		let storeData = null;
 		let storeId = null;
-		for (let i = 0; i < this.cityArr.length; i++) {
-			if (this.cityArr[i].id === myInfo.datas.currentCityId) {
-				cityData = this.cityArr[i];
-				cityId = cityData.id;
-				// 获取门店数据
-				this.storeArr = await getStoreArr(this.cityArr[i].id);
-				this.storeArr = this.storeArr.datas.storeList;
-				for (let i = 0; i < this.storeArr.length; i++) {
-					if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
-						storeData = this.storeArr[i];
-						storeId = storeData.id;
-						break;
-					}
-				}
+		const currentCityId = parseInt(myInfo.datas.currentCityId);
+		// 获取门店数据
+		this.storeArr = await getStoreArr(currentCityId);
+		this.storeArr = this.storeArr.datas.storeList;
+		for (let i = 0; i < this.storeArr.length; i++) {
+			if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
+				storeData = this.storeArr[i];
+				storeId = storeData.id;
 				break;
 			}
 		}
@@ -157,10 +145,11 @@ export default class UserInfoScene extends PureComponent {
 				...myInfo.datas,
 				userImage1: Array.isArray(myInfo.datas.personalPhoto) ? decodeURIComponent(myInfo.datas.personalPhoto[0]) : '',
 				userImage2: Array.isArray(myInfo.datas.personalPhoto) ? decodeURIComponent(myInfo.datas.personalPhoto[1]) : '',
-				cityId,
+				cityId: currentCityId,
 				storeId,
 			},
-			cityData,
+			province: myInfo.datas.currentCountyName,
+			cityData: { name: myInfo.datas.currentCityName, id: parseInt(currentCityId) },
 			storeData,
 			inited: true,
 			isEmpty: !myInfo.datas.fullName,
@@ -199,34 +188,64 @@ export default class UserInfoScene extends PureComponent {
 	}
 
 	initCityPicker() {
+
+		function createCityData() {
+			const data = [];
+			const len = cityJsonArr.length;
+			for (let i = 0; i < len; i++) {				
+				const _data = {};
+				_data[cityJsonArr[i]['name']] = cityJsonArr[i].city.map(c => c.name);
+				data.push(_data);
+			}
+			return data;
+		}
+
 		picker.init({
-			pickerData: this.cityArr.map(cityData => cityData.name),
+			pickerData: createCityData(),
+			// selectedValue: ['河北', '唐山', '古冶区'],
 			pickerConfirmBtnText: '确定',
 			pickerCancelBtnText: '取消',
 			pickerTitleText: '城市选择',
 			pickerBg: [255, 255, 255, 1],
 			onPickerConfirm: pickedValue => {
-				for (let i = 0; i < this.cityArr.length; i++) {
-					if (this.cityArr[i].name === pickedValue[0]) {
-						this.setState({
-							cityData: this.cityArr[i],
-							storeData: null,
-							myInfo: {
-								...this.state.myInfo,
-								cityId: this.cityArr[i].id,
-							},
-						}, () => {
-							// 获取门店数据
-							getStoreArr(this.cityArr[i].id).then(result => {
-								this.storeArr = result.datas.storeList;
-							}).catch(e => {
-								toast(e);
+				let finded = false;
+				for (let index = 0; index < cityJsonArr.length; index++) {
+					finded = false;
+					for (let x = 0; x < cityJsonArr[index].city.length; x++) {
+						if (cityJsonArr[index].city[x].name === pickedValue[1]) {
+							finded = true;
+							this.setState({
+								cityData: cityJsonArr[index].city[x],
+								storeData: null,
+								myInfo: {
+									...this.state.myInfo,
+									cityId: cityJsonArr[index].city[x].id,
+								},
+							}, () => {								
+								// 获取门店数据
+								getStoreArr(cityJsonArr[index].city[x].id).then(result => {
+									this.storeArr = result.datas.storeList;
+								}).catch(e => {
+									toast(e);
+								});
 							});
-						});
+						}
+						if (finded) {
+							break;
+						}
+					}
+					if (finded) {
 						break;
 					}
 				}
 			},
+			onPickerCancel: pickedValue => {
+				console.log('area', pickedValue);
+			},
+			onPickerSelect: pickedValue => {
+				// picker.select(['山东', '青岛', '黄岛区'])
+				console.log('area', pickedValue);
+			}
 		});
 	}
 
@@ -278,7 +297,7 @@ export default class UserInfoScene extends PureComponent {
 				if (this.initStorePicker()) {
 					picker.show();
 				} else {
-					toast('该城市的门店列表为空！');
+					toast('该地区的门店列表为空！');
 				}
 			}	
 		}
@@ -483,6 +502,7 @@ export default class UserInfoScene extends PureComponent {
 				userImage1,
 				userImage2,
 			},
+			province,
 			cityData,
 			storeData,
 			inited,
@@ -637,7 +657,7 @@ export default class UserInfoScene extends PureComponent {
 							所在城市：
 						</Text>
 						<Text style={styles.contentTxt}>
-							{ cityData ? cityData.name : '选择城市' }
+							{ cityData ? `${province} ${cityData.name}` : '选择城市' }
 						</Text>
 					</View>
 					{
@@ -713,7 +733,7 @@ const styles = StyleSheet.create({
 		fontSize: getFontSize(32),
 		// fontWeight: '500',
 		color: '#333',
-		width: toDips(225),
+		// width: toDips(225),
 	},
 	input: {
 		fontSize: getFontSize(32),

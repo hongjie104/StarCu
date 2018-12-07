@@ -19,7 +19,8 @@ import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
-import { getMissionInfo, updateMission } from '../../service';
+// import { getMissionInfo, updateMission } from '../../service';
+import { updateMission } from '../../service';
 import toast from '../../utils/toast';
 
 class MissionDetail extends PureComponent {
@@ -42,8 +43,9 @@ class MissionDetail extends PureComponent {
 	}
 
 	componentDidMount() {
-		const { taskId } = this.props.navigation.state.params;
-		getMissionInfo(taskId).then(result => {
+		// const { taskId } = ;
+		// getMissionInfo(taskId).then(result => {
+		const { skus } = this.props.navigation.state.params;
 			// console.warn(result);
 			// let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
 			// let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
@@ -53,7 +55,7 @@ class MissionDetail extends PureComponent {
 			let img2 = '';
 			let img3 = '';
 			let img4 = '';
-			const { skus } = result.datas;
+			
 			console.warn(skus);
 			for (let i = 0; i < skus.length; i++) {
 				if (Array.isArray(skus[i].feedDatas)) {
@@ -73,7 +75,7 @@ class MissionDetail extends PureComponent {
 				}
 			}
 			this.setState({
-				missionInfo: result.datas,
+				missionInfo: this.props.navigation.state.params,
 				skuDataArr: skus.map(sku => {
 					let skuNum = 0;
 					if (Array.isArray(sku.feedDatas)) {
@@ -95,9 +97,9 @@ class MissionDetail extends PureComponent {
 				img3,
 				img4,
 			});
-		}).catch(e => {
-			toast(e);
-		});
+		// }).catch(e => {
+		// 	toast(e);
+		// });
 	}
 
 	async uploadImg(uri) {
@@ -222,6 +224,9 @@ class MissionDetail extends PureComponent {
 							toast('提交成功');
 							this.setState({
 								showSpinner: false,
+							}, () => {
+								const { onMissionDone } = this.props.navigation.state.params;
+								onMissionDone && onMissionDone(taskId);
 							});
 						}).catch(e => {
 							toast(e);

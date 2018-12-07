@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
-import { takeOrder, getMissionByOrder } from '../../service';
+import { takeOrder, getMissionByOrder, getMissionInfo } from '../../service';
 import toast from '../../utils/toast';
 
 // 任务说明
@@ -23,73 +23,59 @@ export default class MissionIntroduce extends PureComponent {
 
 	constructor(props) {
 		super(props);
-		/*
-		{ statusDesc: '未接单',
-		  orderEndDate: '2018-09-06',
-		  orderDays: '14',
-		  standardPhoto: [ 'http://media.hqxyun.com/20181116095741.jpg' ],
-		  orderId: '853596988835840',
-		  orderBeginDate: '2018-09-06',
-		  require: '陈列要求',
-		  remark: '其他说明',
-		  orderTitle: 'wef',
-		  status: 1,
-		  orderContent: 'wef',
-		  username: '平台管理员',
-		  received: 0,
-		  key: '853596988835840' }
-		 */
-		/*
-		{ orderType: '堆头理货',
-  statusDesc: '未完成',
-  orderEndDate: '2018-11-30',
-  orderId: '2579483158448128',
-  orderStartDate: '2018-11-22',
-  orderTypeId: '1871479136913408',
-  orderTitle: '测试2测试2测试2测试2',
-  taskId: '2580334666385408',
-  key: '2580334666385408',
-  status: 0 }
-		 */
-		const { mission } = props.navigation.state.params;
-		// console.warn(mission);
 		this.state = {
-			...mission,
-			loading: false,
+			loading: true,
 		};
 	}
 
-	componentWillUnmount() {
-		this.setState({
-			loading: false,
-		});
+	async componentDidMount() {
+		let taskId = null;
+		let status = -1;
+		let orderId = -1;
+		if (this.props.navigation.state.params.type === 1) {
+			status = this.props.navigation.state.params.mission.status;
+			orderId = this.props.navigation.state.params.mission.orderId;
+			const missionData = await this.getFirstMissionByOrder(orderId);
+			taskId = missionData ? missionData.taskId : null;
+		} else {
+			taskId = this.props.navigation.state.params.mission.taskId;
+		}
+		if (taskId) {
+			const missionData = await getMissionInfo(taskId);
+			// { datas: 
+			// { orderType: '1871479136913408',
+			//   orderEndDate: '2018-12-31',
+			//   skus: 
+			//    [ { skuName: '闲趣自然清咸原味韧性饼干90克/包',
+			//        skuNo: '1591076',
+			//        skuId: '1',
+			//        status: 0 } ],
+			//   orderDays: 27,
+			//   standardPhoto: [ 'http://media.hqxyun.com/20181205205522.jpg' ],
+			//   orderBeginDate: '2018-12-05',
+			//   require: 'test11111',
+			//   remark: '123',
+			//   orderTitle: 'test11111',
+			//   orderTypeDesc: '堆头理货',
+			//   taskTotalAmount: '596.70' } }
+			this.setState({
+				...missionData.datas,
+				status: status !== -1 ? status : (missionData.datas.skus[0] ? missionData.datas.skus[0].status : -1),
+				loading: false,
+				orderId,
+				taskId,
+			});
+		}
 	}
 
+
 	async getFirstMissionByOrder(orderId) {
-		// status 1 是未接  2 是已接
 		const result = await getMissionByOrder(orderId);
 		const { tasks, taskNum } = result.datas;
 		if (taskNum > 0) {
 			return tasks[0];
 		}
 		toast('该订单的任务数量为0');
-		//.then(result => {
-			// { datas: 
-			//    { expectedIncome: 300,
-			//      tasks: 
-			//       [ { orderType: '堆头理货',
-			//           statusDesc: '未完成',
-			//           orderEndDate: '2018-09-20',
-			//           orderId: '853289351841792',
-			//           orderStartDate: '2018-09-06',
-			//           orderTypeId: '1871479136913408',
-			//           orderTitle: 'wef',
-			//           taskId: '853289791981568',
-			//           status: '0' } ],
-			//      taskNum: 1 } }
-		// }).catch(e => {
-		// 	toast(e);
-		// });
 	}
 
 	async onSubmit() {
@@ -118,69 +104,49 @@ export default class MissionIntroduce extends PureComponent {
 				}
 				onTakeOrder && onTakeOrder(orderId)
 			}
-			const missionData = await this.getFirstMissionByOrder(orderId);
-			if (missionData) {
-				// [ { orderType: '堆头理货',
-				// statusDesc: '未完成',
-				// orderEndDate: '2018-09-20',
-				// orderId: '853289351841792',
-				// orderStartDate: '2018-09-06',
-				// orderTypeId: '1871479136913408',
-				// orderTitle: 'wef',
-				// taskId: '853289791981568',
-				// status: '0' } ],
-				const { navigate } = this.props.navigation;
-				navigate({
-					routeName: 'MissionDetailScene',
-					params: missionData,
-				});
-			}
-		} else {
-			const { navigate } = this.props.navigation;
-			navigate({
-				routeName: 'MissionDetailScene',
-				params: {
-					...this.state,
-				},
-			});
 		}
+		const { navigate } = this.props.navigation;
+		navigate({
+			routeName: 'MissionDetailScene',
+			params: {
+				...this.state,
+				onMissionDone: taskId => {
+					if (this.status.taskId === taskId) {
+						if (this.props.navigation.state.params.type === 0) {
+							// 任务的话，就变成已完成状态
+							this.setState({
+								status: 1,
+							});
+						} else {
+							// 订单的话，就变成已接单的状态
+							this.setState({
+								status: 2,
+							});
+						}
+					}
+				},
+			},
+		});
 		this.setState({
 			loading: false,
 		});
 	}
 
 	render() {
-		/*
-		{ statusDesc: '未接单',
-		  orderEndDate: '2018-09-06',
-		  orderDays: '14',
-		  standardPhoto: [ 'http://media.hqxyun.com/20181116095741.jpg' ],
-		  orderId: '853596988835840',
-		  orderBeginDate: '2018-09-06',
-		  require: '陈列要求',
-		  remark: '其他说明',
-		  orderTitle: 'wef',
-		  status: 1,
-		  orderContent: 'wef',
-		  username: '平台管理员',
-		  received: 0,
-		  key: '853596988835840' }
-		 */
 		const {
+			taskTotalAmount,
 			orderTitle,
 			orderBeginDate,
 			orderStartDate,
 			orderEndDate,
 			orderDays,
-			orderContent,
+			orderTypeDesc,
 			standardPhoto,
 			status,
 			remark,
 			isEnabled,
 			loading,
 		} = this.state;
-		// type 0 是任务  1 是订单
-		const { type } = this.props.navigation.state.params;
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>
@@ -197,7 +163,13 @@ export default class MissionIntroduce extends PureComponent {
 						<View style={styles.misstionTitleRow}>
 							<Image style={styles.icon} source={require('../../imgs/xm2.png')} />
 							<Text style={styles.missionInfo}>
-								项目介绍:  { orderContent }
+								项目介绍:  { orderTypeDesc }
+							</Text>
+						</View>
+						<View style={styles.misstionTitleRow}>
+							<Image style={styles.icon} source={require('../../imgs/qb.png')} />
+							<Text style={styles.missionInfo}>
+								任务总金额:  { taskTotalAmount }元
 							</Text>
 						</View>
 					</View>
@@ -235,7 +207,7 @@ export default class MissionIntroduce extends PureComponent {
 						</View>
 						{
 							standardPhoto && standardPhoto.map((photo, i) => (
-								<Image key={i} style={styles.img} source={{ uri: 'photo' }} />
+								<Image key={i} style={styles.img} source={{ uri: photo }} />
 							))
 						}
 					</View>
@@ -253,7 +225,7 @@ export default class MissionIntroduce extends PureComponent {
 					) : (
 						isEnabled === -1 ? (
 							// 已完成了，尽管已过期，但是还是可以点的
-							type === 0 && status === 1 ? (
+							status === 1 ? (
 								<TouchableOpacity
 									activeOpacity={0.8}
 									onPress={() => {
@@ -283,7 +255,7 @@ export default class MissionIntroduce extends PureComponent {
 								style={styles.submitBtn}
 							>
 								<Text style={styles.submitBtnTxt}>
-									{ type === 1 ? (status === 1 ? '接单' : '做任务') : (status === 1 ? '已完成': '做任务') }
+									{ this.props.navigation.state.params.type === 1 ? (status === 1 ? '接单' : '做任务') : (status === 1 ? '已完成': '做任务') }
 								</Text>
 							</TouchableOpacity>
 						)

@@ -31,7 +31,7 @@ export default class RegisterScene extends PureComponent {
 			phone: '',
 			code: '',
 			// 邀请码
-			invitationCode: '',
+			invitationCode: __DEV__ ? '057372' : '',
 			protocolChecked: true,
 			cd: 0,
 		};

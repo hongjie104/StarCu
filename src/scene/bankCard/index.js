@@ -8,7 +8,10 @@ import {
 	Image,
 	TextInput,
 	TouchableOpacity,
+	TouchableWithoutFeedback,
+	Alert,
 } from 'react-native';
+const dismissKeyboard = require('dismissKeyboard');
 import ImagePicker from 'react-native-image-picker';
 import picker from 'react-native-picker';
 import Spinner from '../../component/Spinner';
@@ -19,25 +22,71 @@ import toast from '../../utils/toast';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN } from '../../config';
 
+class HeaderRight extends PureComponent {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isCanEdit: false,
+		};
+	}
+
+	render() {
+		const { isCanEdit } = this.state;
+		return (
+			<TouchableOpacity
+				activeOpacity={0.8}
+				onPress={() => {
+					this.setState({
+						isCanEdit: !isCanEdit,
+					}, () => {
+						this.props.navigation.state.params.onHeaderRightPress(this.state.isCanEdit);
+					});
+				}}
+				style={{flex: 1,}}
+			>
+				<Text
+					style={{
+						fontSize: getFontSize(34),
+						color: 'white',
+						marginRight: toDips(32),
+					}}
+				>
+					{ isCanEdit ? '保存' : '编辑' }
+				</Text>
+			</TouchableOpacity>
+		);
+	}
+}
+
 // 银行卡
 export default class BankCard extends PureComponent {
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 		title: '银行卡',
+		headerRight: <HeaderRight navigation={navigation} />,
 	});
 
 	constructor(props) {
 		super(props);
 		this.state = {
+			cardholdersName: '',
 			protocolChecked: true,
 			cardImage1: '',
 			cardImage2: '',
 			bankName: '',
 			uploading: false,
+			isCanEdit: false,
+			isEmpty: false,
 		};
 	}
 
 	async componentDidMount() {
+		this.props.navigation.setParams({
+			onHeaderRightPress: (isCanEdit) => {
+				this.onHeaderRightPress(isCanEdit);
+			},
+		});
+
 		const bankArr = await getBankList();
 		this.bankArr = bankArr.datas.bankList;
 		this.initBrankPicker();
@@ -58,7 +107,39 @@ export default class BankCard extends PureComponent {
 			bankName,
 			cardImage1: cardPhotoArr[0] || '',
 			cardImage2: cardPhotoArr[1] || '',
+			isCanEdit: !bankCard.cardholdersName,
+			isEmpty: !bankCard.cardholdersName,
 		});
+	}
+
+	onHeaderRightPress(isCanEdit) {
+		if (!isCanEdit) {
+			Alert.alert(
+				'提示',
+				'是否保存修改内容',
+				[
+					{ text: '否', onPress: () => {
+						this.setState({
+							isCanEdit,
+						});
+					}, style: 'cancel'},
+					{ text: '是', onPress: () => {
+						this.onSubmit((result) => {
+							if (result) {
+								this.setState({
+									isCanEdit,
+								});
+							}
+						});
+					} },
+				],
+				{ cancelable: false }
+			);
+		} else {
+			this.setState({
+				isCanEdit,
+			});
+		}
 	}
 
 	initBrankPicker() {
@@ -98,32 +179,34 @@ export default class BankCard extends PureComponent {
 	}
 
 	onPickImage(type) {
-		// type 1 是正面照 2 是反面照
-		ImagePicker.showImagePicker({
-			title: '挑选照片',
-			cancelButtonTitle: '取消',
-			takePhotoButtonTitle: '拍照',
-			chooseFromLibraryButtonTitle: '从相册选',
-			storageOptions: {
-				skipBackup: true,
-				path: 'images',
-			},
-		}, (response) => {
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			} else {
-				// You can also display the image using data:
-				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-				const source = { uri: response.uri };
-				this.setState({
-					[`cardImage${type}`]: response.uri,
-				});
-			}
-		});
+		if (this.state.isCanEdit) {
+			// type 1 是正面照 2 是反面照
+			ImagePicker.showImagePicker({
+				title: '挑选照片',
+				cancelButtonTitle: '取消',
+				takePhotoButtonTitle: '拍照',
+				chooseFromLibraryButtonTitle: '从相册选',
+				storageOptions: {
+					skipBackup: true,
+					path: 'images',
+				},
+			}, (response) => {
+				if (response.didCancel) {
+					console.log('User cancelled image picker');
+				} else if (response.error) {
+					console.log('ImagePicker Error: ', response.error);
+				} else if (response.customButton) {
+					console.log('User tapped custom button: ', response.customButton);
+				} else {
+					// You can also display the image using data:
+					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+					const source = { uri: response.uri };
+					this.setState({
+						[`cardImage${type}`]: response.uri,
+					});
+				}
+			});
+		}
 	}
 
 	onCardHoldersNameChange(cardholdersName) {
@@ -150,7 +233,7 @@ export default class BankCard extends PureComponent {
 		});
 	}
 
-	onSubmit() {
+	onSubmit(callback) {
 		const {
 			protocolChecked,
 			cardholdersName,
@@ -227,6 +310,11 @@ export default class BankCard extends PureComponent {
 						bankName,
 						bankId,
 						cardPhoto: `${cardImage1},${cardImage2}`,
+						updateBankName: () => {
+							const { updateBankName } = this.props.navigation.state.params;
+							updateBankName && updateBankName(bankName);
+							callback && callback(true);
+						},
 					},
 				});
 			});
@@ -243,168 +331,181 @@ export default class BankCard extends PureComponent {
 			bankCardNo,
 			bankName,
 			uploading,
+			isCanEdit,
+			isEmpty,
 		} = this.state;
 		return (
-			<View style={styles.container}>
-				<View style={styles.itemContainer}>
-					<Text style={styles.keyTxt}>
-						持卡人姓名：
-					</Text>
-					<TextInput
-						onChangeText={cardholdersName => {
-							this.onCardHoldersNameChange(cardholdersName);
-						}}
-						value={cardholdersName}
-						placeholder='请输入持卡人姓名'
-						placeholderTextColor='#B5B5B5'
-						style={styles.valTxt}
-						maxLength={6}
-					/>
-				</View>
-				<View style={styles.itemContainer}>
-					<Text style={styles.keyTxt}>
-						持卡人电话：
-					</Text>
-					<TextInput
-						onChangeText={cardholdersPhone => {
-							this.onCardHoldersPhoneChange(cardholdersPhone);
-						}}
-						value={cardholdersPhone}
-						placeholder='请输入持卡人手机号码'
-						placeholderTextColor='#B5B5B5'
-						style={styles.valTxt}
-						maxLength={11}
-						keyboardType='numeric'
-					/>
-				</View>
-				<View style={styles.itemContainer}>
-					<Text style={styles.keyTxt}>
-						银行卡号：
-					</Text>
-					<TextInput
-						onChangeText={bankCardNo => {
-							this.onBankCardNoChange(bankCardNo);
-						}}
-						value={bankCardNo}
-						placeholder='请输入银行卡号'
-						placeholderTextColor='#B5B5B5'
-						style={styles.valTxt}
-						maxLength={19}
-						keyboardType='numeric'
-					/>
-				</View>
-				<View style={styles.itemContainer}>
-					<Text style={styles.keyTxt}>
-						开户行：
-					</Text>
-					{
-						// <TextInput
-						// 	onChangeText={bankName => {
-						// 		this.onBankNameChange(bankName);
-						// 	}}
-						// 	value={bankName}
-						// 	placeholder='请输入开户银行'
-						// 	placeholderTextColor='#B5B5B5'
-						// 	style={styles.valTxt}
-						// />
-						<Text
+			<TouchableWithoutFeedback style={styles.container} onPress={dismissKeyboard}>
+				<View style={styles.container}>
+					<View style={styles.itemContainer}>
+						<Text style={styles.keyTxt}>
+							持卡人姓名：
+						</Text>
+						<TextInput
+							editable={isCanEdit}
+							onChangeText={cardholdersName => {
+								this.onCardHoldersNameChange(cardholdersName);
+							}}
+							value={cardholdersName}
+							placeholder='请输入持卡人姓名'
+							placeholderTextColor='#B5B5B5'
 							style={styles.valTxt}
+							maxLength={6}
+						/>
+					</View>
+					<View style={styles.itemContainer}>
+						<Text style={styles.keyTxt}>
+							持卡人电话：
+						</Text>
+						<TextInput
+							editable={isCanEdit}
+							onChangeText={cardholdersPhone => {
+								this.onCardHoldersPhoneChange(cardholdersPhone);
+							}}
+							value={cardholdersPhone}
+							placeholder='请输入持卡人手机号码'
+							placeholderTextColor='#B5B5B5'
+							style={styles.valTxt}
+							maxLength={11}
+							keyboardType='numeric'
+						/>
+					</View>
+					<View style={styles.itemContainer}>
+						<Text style={styles.keyTxt}>
+							银行卡号：
+						</Text>
+						<TextInput
+							editable={isCanEdit}
+							onChangeText={bankCardNo => {
+								this.onBankCardNoChange(bankCardNo);
+							}}
+							value={bankCardNo}
+							placeholder='请输入银行卡号'
+							placeholderTextColor='#B5B5B5'
+							style={styles.valTxt}
+							maxLength={19}
+							keyboardType='numeric'
+						/>
+					</View>
+					<View style={styles.itemContainer}>
+						<Text style={styles.keyTxt}>
+							开户行：
+						</Text>
+						{
+							// <TextInput
+							// 	onChangeText={bankName => {
+							// 		this.onBankNameChange(bankName);
+							// 	}}
+							// 	value={bankName}
+							// 	placeholder='请输入开户银行'
+							// 	placeholderTextColor='#B5B5B5'
+							// 	style={styles.valTxt}
+							// />
+							<Text
+								style={styles.valTxt}
+								onPress={() => {
+									if (isCanEdit) {
+										if (!picker.isPickerShow()) {
+											picker.show();
+										}
+									}
+								}}
+							>
+								{ bankName }
+							</Text>
+						}
+					</View>
+					<View style={[styles.itemContainer, { height: toDips(141) }]}>
+						<Text style={styles.keyTxt}>
+							银行卡照片：
+						</Text>
+						{
+							// 正面照
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
 							onPress={() => {
-								if (!picker.isPickerShow()) {
-									picker.show();
-								}
+								this.onPickImage(1);
 							}}
 						>
-							{ bankName }
-						</Text>
-					}
-				</View>
-				<View style={[styles.itemContainer, { height: toDips(141) }]}>
-					<Text style={styles.keyTxt}>
-						银行卡照片：
-					</Text>
-					{
-						// 正面照
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(1);
-						}}
-					>
-						{
-							cardImage1 ? (
-								<Image style={styles.phoneBgImg} source={{ uri: cardImage1 }} />
-							) : (
-								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
-							)
-						}
-					</TouchableOpacity>
-					<Text style={[styles.valTxt, { marginLeft: toDips(15), marginRight: toDips(49) }]}>
-						正面
-					</Text>
-					{
-						// 反面照
-					}
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.onPickImage(2);
-						}}
-					>
-						{
-							cardImage2 ? (
-								<Image style={styles.phoneBgImg} source={{ uri: cardImage2 }} />
-							) : (
-								<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
-							)
-						}
-					</TouchableOpacity>
-					<Text style={[styles.valTxt, { marginLeft: toDips(15) }]}>
-						反面
-					</Text>
-				</View>
-				{
-					// 协议
-				}
-				<View style={styles.protocolContainer}>
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							this.setState({
-								protocolChecked: !protocolChecked,
-							});
-						}}
-					>
-						<Image
-							style={styles.checkBoxImg}
-							source={
-								protocolChecked ? require('../../imgs/wgou.png') : require('../../imgs/gou.png')
+							{
+								cardImage1 ? (
+									<Image style={styles.phoneBgImg} source={{ uri: cardImage1 }} />
+								) : (
+									<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+								)
 							}
-						/>
-					</TouchableOpacity>
-					<Text style={styles.protocolTxt}>
-						本人声明确认使用此银行卡进行此账户费用提现
-					</Text>
+						</TouchableOpacity>
+						<Text style={[styles.valTxt, { marginLeft: toDips(15), marginRight: toDips(49) }]}>
+							正面
+						</Text>
+						{
+							// 反面照
+						}
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								this.onPickImage(2);
+							}}
+						>
+							{
+								cardImage2 ? (
+									<Image style={styles.phoneBgImg} source={{ uri: cardImage2 }} />
+								) : (
+									<Image style={styles.phoneBgImg} source={require('../../imgs/jia2.png')} />
+								)
+							}
+						</TouchableOpacity>
+						<Text style={[styles.valTxt, { marginLeft: toDips(15) }]}>
+							反面
+						</Text>
+					</View>
+					{
+						// 协议
+						isEmpty && (
+							<View style={styles.protocolContainer}>
+								<TouchableOpacity
+									activeOpacity={0.8}
+									onPress={() => {
+										this.setState({
+											protocolChecked: !protocolChecked,
+										});
+									}}
+								>
+									<Image
+										style={styles.checkBoxImg}
+										source={
+											protocolChecked ? require('../../imgs/wgou.png') : require('../../imgs/gou.png')
+										}
+									/>
+								</TouchableOpacity>
+								<Text style={styles.protocolTxt}>
+									本人声明确认使用此银行卡进行此账户费用提现
+								</Text>
+							</View>
+						)
+					}
+					{
+						// 保存按钮
+						isEmpty && (
+							<TouchableOpacity
+								activeOpacity={0.8}
+								onPress={() => {
+									this.onSubmit();
+								}}
+								style={styles.saveBtn}
+							>
+								<Text style={styles.saveBtnTxt}>
+									保存
+								</Text>
+							</TouchableOpacity>
+						)
+					}
+					{
+						uploading && <Spinner />
+					}
 				</View>
-				{
-					// 保存按钮
-				}
-				<TouchableOpacity
-					activeOpacity={0.8}
-					onPress={() => {
-						this.onSubmit();
-					}}
-					style={styles.saveBtn}
-				>
-					<Text style={styles.saveBtnTxt}>
-						保存
-					</Text>
-				</TouchableOpacity>
-				{
-					uploading && <Spinner />
-				}
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

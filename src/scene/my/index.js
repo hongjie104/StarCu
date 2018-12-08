@@ -170,6 +170,13 @@ export default class MyScene extends PureComponent {
 						onPress={() => {
 							navigate({
 								routeName: 'BankCardScene',
+								params: {
+									updateBankName: bankName => {
+										this.setState({
+											bankName, 
+										});
+									},
+								},
 							});
 						}}
 						style={styles.infoContainer}

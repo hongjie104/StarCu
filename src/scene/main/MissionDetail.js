@@ -47,10 +47,10 @@ class MissionDetail extends PureComponent {
 		// getMissionInfo(taskId).then(result => {
 		const { skus } = this.props.navigation.state.params;
 			// console.warn(result);
-			let img1 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
-			let img2 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
-			let img3 = __TEST__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
-			let img4 = __TEST__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
+			let img1 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
+			let img2 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
+			let img3 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
+			let img4 = __DEV__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
 			// let img1 = '';
 			// let img2 = '';
 			// let img3 = '';
@@ -114,32 +114,35 @@ class MissionDetail extends PureComponent {
 	}
 
 	onPickImage(type) {
-		// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
-		ImagePicker.launchCamera({
-			title: '挑选照片',
-			cancelButtonTitle: '取消',
-			takePhotoButtonTitle: '拍照',
-			chooseFromLibraryButtonTitle: '从相册选',
-			storageOptions: {
-				skipBackup: true,
-				path: 'images',
-			},
-		}, (response) => {
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			} else {
-				// You can also display the image using data:
-				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-				const source = { uri: response.uri };
-				this.setState({
-					[`img${type}`]: response.uri,
-				});
-			}
-		});
+		const { missionInfo } = this.state;
+		if (missionInfo.canEdit) {
+			// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
+			ImagePicker.launchCamera({
+				title: '挑选照片',
+				cancelButtonTitle: '取消',
+				takePhotoButtonTitle: '拍照',
+				chooseFromLibraryButtonTitle: '从相册选',
+				storageOptions: {
+					skipBackup: true,
+					path: 'images',
+				},
+			}, (response) => {
+				if (response.didCancel) {
+					console.log('User cancelled image picker');
+				} else if (response.error) {
+					console.log('ImagePicker Error: ', response.error);
+				} else if (response.customButton) {
+					console.log('User tapped custom button: ', response.customButton);
+				} else {
+					// You can also display the image using data:
+					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+					const source = { uri: response.uri };
+					this.setState({
+						[`img${type}`]: response.uri,
+					});
+				}
+			});
+		}
 	}
 
 	scrollToInput(reactNode) {
@@ -251,6 +254,7 @@ class MissionDetail extends PureComponent {
 			skuDataArr,
 			showSpinner,
 		} = this.state;
+		const canEdit = missionInfo ? missionInfo.canEdit : false;
 		return (
 			<View style={styles.container}>
 				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid>
@@ -398,7 +402,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 								<View style={styles.dataInputContainer}>
 									<TextInput
-										editable={skuDataArr.filter(item => item.skuId === sku.skuId )[0].outOfStockFlag === 0}
+										editable={canEdit && skuDataArr.filter(item => item.skuId === sku.skuId )[0].outOfStockFlag === 0}
 										keyboardType='numeric'
 										onChangeText={text => {
 											this.onSkuNumChange(sku.skuId, text);
@@ -429,7 +433,7 @@ class MissionDetail extends PureComponent {
 					}
 					{
 						// 提交按钮
-					 	missionInfo && missionInfo.status !== 1 && (
+					 	canEdit && (
 					 		<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
@@ -556,6 +560,8 @@ const styles = StyleSheet.create({
 		width: toDips(400),
 		height: toDips(70),
 		marginLeft: toDips(26),
+		textAlignVertical: 'center',
+		includeFontPadding: false,
 	},
 	submitBtn: {
 		alignSelf: 'center',

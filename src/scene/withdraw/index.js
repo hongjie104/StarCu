@@ -93,8 +93,8 @@ export default class WithdrawScene extends PureComponent {
 			return;
 		}
 		const amount = parseFloat(value);
-		if (amount < 1) {
-			toast('可提现金额不能少于1元');
+		if (amount < 50) {
+			toast('可提现金额不能少于50元');
 			return;
 		}
 		const withdrawableAmountValue = parseFloat(withdrawableAmount);

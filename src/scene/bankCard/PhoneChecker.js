@@ -78,6 +78,9 @@ export default class PhoneChecker extends PureComponent {
 		const data = { ...this.props.navigation.state.params, phoneNo: global.phone };
 		updateBank(data, code).then(result => {
 			toast('修改成功');
+			const { updateBankName } = this.props.navigation.state.params;
+			updateBankName && updateBankName();
+			this.props.navigation.goBack();
 		}).catch(e => {
 			toast(e);
 		});

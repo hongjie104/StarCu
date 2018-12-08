@@ -131,14 +131,18 @@ export default class UserInfoScene extends PureComponent {
 		let storeId = null;
 		const currentCityId = parseInt(myInfo.datas.currentCityId);
 		// 获取门店数据
-		this.storeArr = await getStoreArr(currentCityId);
-		this.storeArr = this.storeArr.datas.storeList;
-		for (let i = 0; i < this.storeArr.length; i++) {
-			if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
-				storeData = this.storeArr[i];
-				storeId = storeData.id;
-				break;
+		if (!isNaN(currentCityId)) {
+			this.storeArr = await getStoreArr(currentCityId);
+			this.storeArr = this.storeArr.datas.storeList;
+			for (let i = 0; i < this.storeArr.length; i++) {
+				if (this.storeArr[i].id === myInfo.datas.currentStoreId) {
+					storeData = this.storeArr[i];
+					storeId = storeData.id;
+					break;
+				}
 			}
+		} else {
+			this.storeArr = [];
 		}
 		this.setState({
 			myInfo: {
@@ -207,6 +211,7 @@ export default class UserInfoScene extends PureComponent {
 			pickerCancelBtnText: '取消',
 			pickerTitleText: '城市选择',
 			pickerBg: [255, 255, 255, 1],
+			pickerTextEllipsisLen: 6,
 			onPickerConfirm: pickedValue => {
 				let finded = false;
 				for (let index = 0; index < cityJsonArr.length; index++) {
@@ -215,6 +220,7 @@ export default class UserInfoScene extends PureComponent {
 						if (cityJsonArr[index].city[x].name === pickedValue[1]) {
 							finded = true;
 							this.setState({
+								province: cityJsonArr[index].name,
 								cityData: cityJsonArr[index].city[x],
 								storeData: null,
 								myInfo: {
@@ -258,6 +264,7 @@ export default class UserInfoScene extends PureComponent {
 				pickerCancelBtnText: '取消',
 				pickerTitleText: '门店选择',
 				pickerBg: [255, 255, 255, 1],
+				pickerTextEllipsisLen: 90,
 				onPickerConfirm: pickedValue => {
 					for (let i = 0; i < this.storeArr.length; i++) {
 						if (this.storeArr[i].name === pickedValue[0]) {
@@ -657,7 +664,7 @@ export default class UserInfoScene extends PureComponent {
 							所在城市：
 						</Text>
 						<Text style={styles.contentTxt}>
-							{ cityData ? `${province} ${cityData.name}` : '选择城市' }
+							{ province && cityData ? `${province} ${cityData.name}` : '选择城市' }
 						</Text>
 					</View>
 					{

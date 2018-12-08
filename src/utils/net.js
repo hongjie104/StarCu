@@ -3,7 +3,7 @@ import qs from 'qs';
 // import * as utils from './utils';
 import { __TEST__ } from '../config';
 
-const TIME_OUT = 12000;
+const TIME_OUT = 30000;
 
 let isConnected = true;
 

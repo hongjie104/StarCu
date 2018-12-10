@@ -22,6 +22,8 @@ import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
 // import { getMissionInfo, updateMission } from '../../service';
 import { updateMission } from '../../service';
 import toast from '../../utils/toast';
+import { getLocation } from '../../utils/geolocation';
+import Base64 from '../../utils/Base64';
 
 class MissionDetail extends PureComponent {
 	
@@ -102,7 +104,7 @@ class MissionDetail extends PureComponent {
 		// });
 	}
 
-	async uploadImg(uri) {
+	async uploadImg(uri, imgSuffix) {
 		let data = null;
 		try {
 			data =  await qiniu.upload(uri, `${global.uid}_${new Date().getTime()}.jpg`);
@@ -110,7 +112,8 @@ class MissionDetail extends PureComponent {
 			toast('上传照片失败，请重试');
 			return false;
 		}
-		return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
+		// return `${QI_NIU_DOMAIN}/${data.key}?imageView2/2/w/600/h/400`;
+		return `${QI_NIU_DOMAIN}/${data.key}${imgSuffix}`;
 	}
 
 	onPickImage(type) {
@@ -211,17 +214,23 @@ class MissionDetail extends PureComponent {
 					this.setState({
 						showSpinner: true,
 					}, async () => {
+						// 先获取地理位置
+						const location = await getLocation();
+						const { province, city } = location.result.addressComponent;
+						const str = Base64.encode(`${province} ${city}`).replace(/\//g, '_').replace(/\+/g, '-');
+						const imgSuffix = `?watermark/2/text/${str}/fontsize/240/dx/10/dy/10`;
+
 						if (!img1.startsWith('http')) {
-							img1 = await this.uploadImg(img1);
+							img1 = await this.uploadImg(img1, imgSuffix);
 						}
 						if (!img2.startsWith('http')) {
-							img2 = await this.uploadImg(img2);
+							img2 = await this.uploadImg(img2, imgSuffix);
 						}
 						if (!img3.startsWith('http')) {
-							img3 = await this.uploadImg(img3);
+							img3 = await this.uploadImg(img3, imgSuffix);
 						}
 						if (!img4.startsWith('http')) {
-							img4 = await this.uploadImg(img4);
+							img4 = await this.uploadImg(img4, imgSuffix);
 						}
 						updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
 							toast('提交成功');

@@ -179,6 +179,8 @@ export default class BankCard extends PureComponent {
 	}
 
 	onPickImage(type) {
+		dismissKeyboard();
+		picker.hide();
 		if (this.state.isCanEdit) {
 			// type 1 是正面照 2 是反面照
 			ImagePicker.showImagePicker({
@@ -406,6 +408,7 @@ export default class BankCard extends PureComponent {
 								onPress={() => {
 									if (isCanEdit) {
 										if (!picker.isPickerShow()) {
+											dismissKeyboard();
 											picker.show();
 										}
 									}

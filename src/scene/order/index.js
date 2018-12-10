@@ -9,6 +9,7 @@ import {
 	Image,
 	ScrollView,
 } from 'react-native';
+import Spinner from '../../component/Spinner';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import toast from '../../utils/toast';
@@ -39,6 +40,7 @@ export default class MsgScene extends PureComponent {
 		super(props);
 		this.state = {
 			missionList: [],
+			loading: true,
 		};
 	}
 
@@ -78,6 +80,7 @@ export default class MsgScene extends PureComponent {
 			];
 			this.setState({
 				missionList,
+				loading: false,
 			});
 		}).catch(e => {
 			toast(e);
@@ -85,7 +88,7 @@ export default class MsgScene extends PureComponent {
 	}
 
 	render() {
-		const { missionList } = this.state;
+		const { missionList, loading } = this.state;
 		return (
 			<View style={styles.container}>
 				{
@@ -100,6 +103,9 @@ export default class MsgScene extends PureComponent {
 					) : (
 						<Image style={styles.emptyImg} source={require('../../imgs/empty.png')} />
 					)
+				}
+				{
+					loading && <Spinner />
 				}
 			</View>
 		);

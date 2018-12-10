@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) 想要使用您的相机，请允许！</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>$(PRODUCT_NAME) 想要知道您的地址位置，请允许！</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) 想要使用您的摄像头，请允许！</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

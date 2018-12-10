@@ -39,7 +39,7 @@ export default class MissionIntroduce extends PureComponent {
 			status = this.props.navigation.state.params.mission.status;
 			orderId = this.props.navigation.state.params.mission.orderId;
 			const missionData = await this.getFirstMissionByOrder(orderId);
-			taskId = missionData ? missionData.taskId : null;
+			taskId = missionData.task ? missionData.task.taskId : null;
 			taskTotalAmount = missionData ? missionData.orderAmount : null;
 			taskTotalAmountLabel = '任务总金额';
 		} else {
@@ -83,7 +83,10 @@ export default class MissionIntroduce extends PureComponent {
 		const result = await getMissionByOrder(orderId);
 		const { tasks, taskNum } = result.datas;
 		if (taskNum > 0) {
-			return tasks[0];
+			return {
+				task: tasks[0],
+				orderAmount: result.datas.orderAmount,
+			};
 		}
 		toast('该订单的任务数量为0');
 	}

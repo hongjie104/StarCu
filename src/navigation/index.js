@@ -28,6 +28,7 @@ YellowBox.ignoreWarnings([
 	'Module CDVFileTransfer',
 	'Module ZipPlugin',
 	'Class CDVPlugin',
+	'RCTBridge required',
 ]);
 
 const TabNavigation = createBottomTabNavigator({

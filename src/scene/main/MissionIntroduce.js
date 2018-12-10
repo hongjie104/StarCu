@@ -33,11 +33,15 @@ export default class MissionIntroduce extends PureComponent {
 		let status = -1;
 		let orderId = -1;
 		let isEnabled = true;
+		let taskTotalAmount = null;
+		let taskTotalAmountLabel = '任务金额';
 		if (this.props.navigation.state.params.type === 1) {
 			status = this.props.navigation.state.params.mission.status;
 			orderId = this.props.navigation.state.params.mission.orderId;
 			const missionData = await this.getFirstMissionByOrder(orderId);
 			taskId = missionData ? missionData.taskId : null;
+			taskTotalAmount = missionData ? missionData.orderAmount : null;
+			taskTotalAmountLabel = '任务总金额';
 		} else {
 			taskId = this.props.navigation.state.params.mission.taskId;
 			isEnabled = this.props.navigation.state.params.mission.isEnabled;
@@ -60,8 +64,11 @@ export default class MissionIntroduce extends PureComponent {
 			//   orderTitle: 'test11111',
 			//   orderTypeDesc: '堆头理货',
 			//   taskTotalAmount: '596.70' } }
+			// console.warn(missionData);
 			this.setState({
 				...missionData.datas,
+				taskTotalAmount: taskTotalAmount || missionData.datas.taskTotalAmount,
+				taskTotalAmountLabel,
 				status: status !== -1 ? status : (missionData.datas.skus[0] ? missionData.datas.skus[0].status : -1),
 				loading: false,
 				orderId,
@@ -138,6 +145,7 @@ export default class MissionIntroduce extends PureComponent {
 	render() {
 		const {
 			taskTotalAmount,
+			taskTotalAmountLabel,
 			orderTitle,
 			orderBeginDate,
 			orderStartDate,
@@ -173,7 +181,7 @@ export default class MissionIntroduce extends PureComponent {
 						<View style={styles.misstionTitleRow}>
 							<Image style={styles.icon} source={require('../../imgs/qb.png')} />
 							<Text style={styles.missionInfo}>
-								任务总金额:  { taskTotalAmount }元
+								{ taskTotalAmountLabel }:  { taskTotalAmount }元
 							</Text>
 						</View>
 					</View>

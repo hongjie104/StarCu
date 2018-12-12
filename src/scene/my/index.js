@@ -99,6 +99,7 @@ export default class MyScene extends PureComponent {
 			// tags	标签，数组形式，且必须是企业中已经存在的标签
 			// source	顾客来源
 			// comment	备注
+			// TODO: 这里要设置成玩家的名字
 			name: '张三',
 		}, () => {
 			openMeiQia();

@@ -19,11 +19,11 @@ import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
-// import { getMissionInfo, updateMission } from '../../service';
 import { updateMission } from '../../service';
 import toast from '../../utils/toast';
 import { getLocation } from '../../utils/geolocation';
 import Base64 from '../../utils/Base64';
+import { formatDateTime } from '../../utils/datetime';
 
 class MissionDetail extends PureComponent {
 	
@@ -218,7 +218,7 @@ class MissionDetail extends PureComponent {
 						const location = await getLocation();
 						const { province, city } = location.result.addressComponent;
 						const str = Base64.encode(`${province} ${city}`).replace(/\//g, '_').replace(/\+/g, '-');
-						const imgSuffix = `?watermark/2/text/${str}/fontsize/240/dx/10/dy/10`;
+						const imgSuffix = `?watermark/2/text/${str}/fontsize/960/dx/10/dy/10`;
 
 						if (!img1.startsWith('http')) {
 							img1 = await this.uploadImg(img1, imgSuffix);
@@ -264,6 +264,12 @@ class MissionDetail extends PureComponent {
 			showSpinner,
 		} = this.state;
 		const canEdit = missionInfo ? missionInfo.canEdit : false;
+		let taskTime = 0;
+		let nowTime = 0;
+		if (missionInfo) {
+			taskTime = new Date(missionInfo.taskDate).getTime();
+			nowTime = new Date().getTime();
+		}
 		return (
 			<View style={styles.container}>
 				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid>
@@ -442,7 +448,7 @@ class MissionDetail extends PureComponent {
 					}
 					{
 						// 提交按钮
-					 	canEdit && (
+					 	canEdit ? (
 					 		<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
@@ -456,6 +462,16 @@ class MissionDetail extends PureComponent {
 									}
 								</Text>	
 							</TouchableOpacity>
+					 	) : (
+					 		nowTime < taskTime ? (
+					 			<View									
+									style={styles.submitBtn}
+								>
+									<Text style={styles.submitBtnTxt}>
+										未开始
+									</Text>	
+								</View>
+				 			) : null
 					 	)
 					}
 				</KeyboardAwareScrollView>

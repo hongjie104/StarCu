@@ -115,7 +115,7 @@ export default class MissionIntroduce extends PureComponent {
 					});
 					return;
 				}
-				onTakeOrder && onTakeOrder(orderId)
+				onTakeOrder && onTakeOrder(orderId);
 			}
 		}
 		const { navigate } = this.props.navigation;
@@ -198,12 +198,6 @@ export default class MissionIntroduce extends PureComponent {
 						<Text style={styles.des}>
 							{ this.state.require }
 						</Text>
-						{
-							// <Text style={styles.des}>
-							// 	2.(服务器没有传)
-							// </Text>
-						}
-
 						<View style={styles.desTitleContainer}>
 							<View style={styles.desTitleIcon} />
 							<Text style={styles.desTitleTxt}>

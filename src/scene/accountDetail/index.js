@@ -29,6 +29,7 @@ export default class AccountDetail extends PureComponent {
 				proName 项目名称
 				billNo 流水号
 				typeDes 类型
+				typeId 3 是提现
 			 */
 			billArr: [],
 			loading: true,
@@ -62,34 +63,54 @@ export default class AccountDetail extends PureComponent {
 				<ScrollView style={styles.container}>
 					{
 						billArr.map((bill, i) => (
-							<View style={styles.itemContainer} key={i}>
-								<View style={styles.itemTitle}>
-									<Text style={styles.titleTxt}>
-										流水号：{ bill.billNo }
+							bill.typeId === 3 ? (
+								<View style={styles.itemContainer}>
+									<View style={styles.itemTitle}>
+										<Text style={styles.titleTxt}>
+											流水号：2018010199912
+										</Text>
+										<Text style={styles.titleTxt}>
+											{ bill.stateDesc }
+										</Text>
+									</View>
+									<Text style={styles.contentTxt}>
+										提现： { bill.amount }元
 									</Text>
-									<Text style={styles.titleTxt}>
-										{
-											bill.state === '0' ? '审核中' : (bill.state === '1' ? '审核通过' : '审核失败')
-										}
+									<Text style={styles.contentTxt}>
+										发生日期：{ bill.date }
 									</Text>
 								</View>
-								<Text style={styles.contentTxt}>
-									收入：{ bill.amount }元
-								</Text>
-								{
-									bill.salesDeduction && (
-										<Text style={styles.contentTxt}>
-											扣款：{ bill.salesDeduction }元
+							) : (
+								<View style={styles.itemContainer} key={i}>
+									<View style={styles.itemTitle}>
+										<Text style={styles.titleTxt}>
+											流水号：{ bill.billNo }
 										</Text>
-									)
-								}
-								<Text style={styles.contentTxt}>
-									项目名称：{ bill.proName }
-								</Text>
-								<Text style={styles.contentTxt}>
-									发生日期：{ bill.date }
-								</Text>
-							</View>
+										<Text style={styles.titleTxt}>
+											{
+												// bill.state === '0' ? '审核中' : (bill.state === '1' ? '审核通过' : '审核失败')
+												bill.stateDesc
+											}
+										</Text>
+									</View>
+									<Text style={styles.contentTxt}>
+										收入：{ bill.amount }元
+									</Text>
+									{
+										bill.salesDeduction && (
+											<Text style={styles.contentTxt}>
+												扣款：{ bill.salesDeduction }元
+											</Text>
+										)
+									}
+									<Text style={styles.contentTxt}>
+										项目名称：{ bill.proName }
+									</Text>
+									<Text style={styles.contentTxt}>
+										发生日期：{ bill.date }
+									</Text>
+								</View>
+							)
 						))
 					}
 				</ScrollView>

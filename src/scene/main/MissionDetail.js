@@ -239,6 +239,7 @@ class MissionDetail extends PureComponent {
 							}, () => {
 								const { onMissionDone } = this.props.navigation.state.params;
 								onMissionDone && onMissionDone(taskId);
+								this.props.navigation.goBack();
 							});
 						}).catch(e => {
 							toast(e);

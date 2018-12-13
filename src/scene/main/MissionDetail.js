@@ -49,14 +49,14 @@ class MissionDetail extends PureComponent {
 		// getMissionInfo(taskId).then(result => {
 		const { skus } = this.props.navigation.state.params;
 			// console.warn(result);
-			let img1 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
-			let img2 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
-			let img3 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
-			let img4 = __DEV__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
-			// let img1 = '';
-			// let img2 = '';
-			// let img3 = '';
-			// let img4 = '';
+			// let img1 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1542974794639&di=6078b02f950776bd7e0db9b21e237966&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F8%2F5121d1d75db08.jpg' : '';
+			// let img2 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=4efc120002d666c14f5c32e2f1de31f3&src=http://img4q.duitang.com/uploads/item/201207/03/20120703151527_23RQB.thumb.700_0.jpeg' : '';
+			// let img3 = __DEV__ ? 'https://timgsa.baidu.com/timg?image&quality=80&size=b10000_10000&sec=1542964770&di=5fe709d61b55cef89b58ae782b99e66b&src=http://img.mp.itc.cn/upload/20160321/c40e1ef85ec44540ac5a2eeed9d12cf8_th.jpg' : '';
+			// let img4 = __DEV__ ? 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1510874208,1865362337&fm=11&gp=0.jpg' : '';
+			let img1 = '';
+			let img2 = '';
+			let img3 = '';
+			let img4 = '';
 			
 			// console.warn(skus);
 			for (let i = 0; i < skus.length; i++) {
@@ -178,6 +178,17 @@ class MissionDetail extends PureComponent {
 		});	
 	}
 
+	async createImgSuffix() {
+		// 先获取地理位置
+		const location = await getLocation();
+		if (location) {
+			const { province, city } = location.result.addressComponent;
+			const str = Base64.encode(`${province} ${city}`).replace(/\//g, '_').replace(/\+/g, '-');
+			return `?watermark/2/text/${str}/fontsize/960/dx/10/dy/10`;
+		}
+		return '';
+	}
+
 	onSubmit() {
 		const {
 			skuDataArr,
@@ -214,22 +225,27 @@ class MissionDetail extends PureComponent {
 					this.setState({
 						showSpinner: true,
 					}, async () => {
-						// 先获取地理位置
-						const location = await getLocation();
-						const { province, city } = location.result.addressComponent;
-						const str = Base64.encode(`${province} ${city}`).replace(/\//g, '_').replace(/\+/g, '-');
-						const imgSuffix = `?watermark/2/text/${str}/fontsize/960/dx/10/dy/10`;
-
+						let imgSuffix = null;
 						if (!img1.startsWith('http')) {
+							imgSuffix = await this.createImgSuffix();
 							img1 = await this.uploadImg(img1, imgSuffix);
 						}
 						if (!img2.startsWith('http')) {
+							if (!imgSuffix) {
+								imgSuffix = await this.createImgSuffix();
+							}
 							img2 = await this.uploadImg(img2, imgSuffix);
 						}
 						if (!img3.startsWith('http')) {
+							if (!imgSuffix) {
+								imgSuffix = await this.createImgSuffix();
+							}
 							img3 = await this.uploadImg(img3, imgSuffix);
 						}
 						if (!img4.startsWith('http')) {
+							if (!imgSuffix) {
+								imgSuffix = await this.createImgSuffix();
+							}
 							img4 = await this.uploadImg(img4, imgSuffix);
 						}
 						updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
@@ -247,7 +263,7 @@ class MissionDetail extends PureComponent {
 								showSpinner: false,
 							});
 						});
-					});			
+					});
 				} },
 			],
 			{ cancelable: false }

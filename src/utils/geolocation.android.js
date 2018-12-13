@@ -1,8 +1,19 @@
 'use strict';
 
+import { Initializer, Location } from 'react-native-baidumap-sdk';
+
 import qs from 'qs';
 import toast from './toast';
 import { get } from './net';
+import { BAI_DU_AK_WEB } from '../config';
+
+// console.log('开始准备初始化百度SDK');
+Initializer.init().then(() => {
+	console.log('百度SDK初始化成功');
+	toast('百度SDK初始化成功');
+}).catch(e => {
+	console.warn('aaa', e);
+});
 
 // 经度：positionData.longitude
 // 纬度：positionData.latitude
@@ -12,7 +23,8 @@ function getAddress(initialPosition) {
 	return new Promise((resolve, reject) => {
 		const baiduLocationConfig = {
 			// callback: 'renderReverse',
-			ak: '3nHjylGdT3z5jSldf2o2E1qyF85YDLZ4',
+			// ak: '3nHjylGdT3z5jSldf2o2E1qyF85YDLZ4',
+			ak: BAI_DU_AK_WEB,
 			pois: 1,
 			output: 'json',
 			latest_admin: 1,
@@ -38,31 +50,27 @@ function getAddress(initialPosition) {
 			}).catch((err) => {
 				console.warn('获取地址信息出错', err);
 				reject(err);
-			});		
+			});
 	});
 }
 
 
 export function getLocation() {
-	return new Promise((resolve, reject) => {
-		navigator.geolocation.getCurrentPosition(initialPosition => {
-			// { coords: 
-			// { altitudeAccuracy: -1,
-			// accuracy: 5,
-			// heading: -1,
-			// longitude: -122.406417,
-			// altitude: 0,
-			// latitude: 37.785834,
-			// speed: -1 },
-			// timestamp: 1544431670664.213 }
-			getAddress(initialPosition).then(result => {
+	return new Promise(async (resolve, reject) => {
+		await Location.init();
+		Location.addLocationListener(location => {
+			Location.stop();
+			getAddress({
+				coords: {
+					longitude: location.longitude,
+					latitude: location.latitude,
+				},
+			}).then(result => {
 				resolve(result);
 			}).catch(e => {
 				reject(e);
 			});
-		}, (error) => {
-			reject(error.message);
-			console.warn(error.message);
-		}, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+		});
+		Location.start();
 	});
 }

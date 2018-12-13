@@ -33,6 +33,7 @@ export default class App extends PureComponent {
 		}, err => {
 			this.loadUid();
 		});
+		
 	}
 
 	loadUid(token = null) {
@@ -89,10 +90,7 @@ export default class App extends PureComponent {
 			return <View style={{flex: 1}}></View>
 		}
 		return (
-			<AppNavigation ref={c => this._navigation = c} />
+			<AppNavigation ref={c => this._navigation = c} />			
 		);
 	}
 }
-
-
-// c6f534c6a19b43b2fc04036748c8d782b2a7d32b

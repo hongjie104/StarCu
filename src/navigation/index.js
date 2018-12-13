@@ -27,6 +27,7 @@ import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackV
 YellowBox.ignoreWarnings([
 	'Module CDVFileTransfer',
 	'Module ZipPlugin',
+	'Module RCTSplashScreen',
 	'Class CDVPlugin',
 	'RCTBridge required',
 ]);

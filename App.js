@@ -6,6 +6,7 @@ import {
 	View,
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import SplashScreen from 'react-native-smart-splash-screen';
 import createAppNavigation from './src/navigation';
 import toast from './src/utils/toast';
 import * as deviceInfo from './src/utils/deviceInfo';
@@ -75,6 +76,11 @@ export default class App extends PureComponent {
         }
 		this.setState({
 			checkingLocalData: false,
+		});
+		SplashScreen.close({
+			animationType: SplashScreen.animationType.scale,
+			duration: 850,
+			delay: 500,
 		});
 	}
 

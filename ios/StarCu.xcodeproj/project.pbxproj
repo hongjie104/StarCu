@@ -18,7 +18,6 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
@@ -192,6 +191,9 @@
 		6C6B59C2219BBE55006A0CA3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59C1219BBE55006A0CA3 /* SystemConfiguration.framework */; };
 		6C6B59C4219BBE60006A0CA3 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59C3219BBE60006A0CA3 /* MobileCoreServices.framework */; };
 		6C6B59C6219BBE67006A0CA3 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C6B59C5219BBE67006A0CA3 /* QuickLook.framework */; };
+		6C96C7F221C1EB8200DED0C5 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C96C7D321C1EB6B00DED0C5 /* libRCTSplashScreen.a */; };
+		6C96C7F621C1EC4A00DED0C5 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C96C7F421C1EC4A00DED0C5 /* LaunchScreen.xib */; };
+		6C96C7F721C1EC4A00DED0C5 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C96C7F521C1EC4A00DED0C5 /* splash.png */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		990D3C4574E54F3F88B3D9A6 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67751ABCFA3E43EDA1D3D34F /* libRNDeviceInfo.a */; };
 		9C09EB9D180A4495BFB3553E /* libRCTFileTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD7A220B532A48F1B4889016 /* libRCTFileTransfer.a */; };
@@ -464,6 +466,13 @@
 			remoteGlobalIDString = 17D41E551D7EE0CA0031415E;
 			remoteInfo = RCTBEEPickerManager;
 		};
+		6C96C7D221C1EB6B00DED0C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6C96C7BD21C1EB6B00DED0C5 /* RCTSplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9F90C2241D619E9400F3E238;
+			remoteInfo = RCTSplashScreen;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -567,7 +576,6 @@
 		13B07F961A680F5B00A75B9A /* StarCu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StarCu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = StarCu/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = StarCu/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = StarCu/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = StarCu/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = StarCu/main.m; sourceTree = "<group>"; };
@@ -886,6 +894,9 @@
 		6C6B59C1219BBE55006A0CA3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6C6B59C3219BBE60006A0CA3 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6C6B59C5219BBE67006A0CA3 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		6C96C7BD21C1EB6B00DED0C5 /* RCTSplashScreen.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSplashScreen.xcodeproj; path = "../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen.xcodeproj"; sourceTree = "<group>"; };
+		6C96C7F421C1EC4A00DED0C5 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		6C96C7F521C1EC4A00DED0C5 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		99479418E6B744CDBCD12A2C /* RCTToast.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
@@ -915,6 +926,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C96C7F221C1EB8200DED0C5 /* libRCTSplashScreen.a in Frameworks */,
 				6C6B59C2219BBE55006A0CA3 /* SystemConfiguration.framework in Frameworks */,
 				6C6B59C0219BBE4D006A0CA3 /* CoreTelephony.framework in Frameworks */,
 				6C6B59BA219BBE2E006A0CA3 /* libsqlite3.tbd in Frameworks */,
@@ -1065,7 +1077,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = StarCu;
@@ -1876,6 +1887,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6C96C7BE21C1EB6B00DED0C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6C96C7D321C1EB6B00DED0C5 /* libRCTSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6C96C7F321C1EC4A00DED0C5 /* SplashScreenResource */ = {
+			isa = PBXGroup;
+			children = (
+				6C96C7F421C1EC4A00DED0C5 /* LaunchScreen.xib */,
+				6C96C7F521C1EC4A00DED0C5 /* splash.png */,
+			);
+			name = SplashScreenResource;
+			path = "../node_modules/react-native-smart-splash-screen/ios/SplashScreenResource";
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1888,6 +1917,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6C96C7BD21C1EB6B00DED0C5 /* RCTSplashScreen.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -1924,6 +1954,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6C96C7F321C1EC4A00DED0C5 /* SplashScreenResource */,
 				6C49BCFE219BDF9E00249A65 /* UMeng */,
 				6C49BB08219BC46F00249A65 /* Modules */,
 				6C49BACC219BBF9500249A65 /* MeiQia */,
@@ -2193,6 +2224,10 @@
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
+				},
+				{
+					ProductGroup = 6C96C7BE21C1EB6B00DED0C5 /* Products */;
+					ProjectRef = 6C96C7BD21C1EB6B00DED0C5 /* RCTSplashScreen.xcodeproj */;
 				},
 				{
 					ProductGroup = 832341B11AAA6A8300B99B32 /* Products */;
@@ -2487,6 +2522,13 @@
 			remoteRef = 6C63C3942188290600F12610 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		6C96C7D321C1EB6B00DED0C5 /* libRCTSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTSplashScreen.a;
+			remoteRef = 6C96C7D221C1EB6B00DED0C5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2585,8 +2627,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C96C7F721C1EC4A00DED0C5 /* splash.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				6C96C7F621C1EC4A00DED0C5 /* LaunchScreen.xib in Resources */,
 				6C49BCE2219BCA2C00249A65 /* MQChatViewAsset.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2830,18 +2873,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				13B07FB21A68108700A75B9A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = StarCu;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2961,6 +2992,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen/**",
 				);
 				INFOPLIST_FILE = StarCu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3005,6 +3037,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-picker/ios/RCTBEEPickerManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-smart-splash-screen/ios/RCTSplashScreen/RCTSplashScreen/**",
 				);
 				INFOPLIST_FILE = StarCu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

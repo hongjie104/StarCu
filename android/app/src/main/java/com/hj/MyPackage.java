@@ -20,6 +20,7 @@ public class MyPackage implements ReactPackage {
         List<NativeModule> modules=new ArrayList<>();
         modules.add(new UMengModule(reactContext));
         modules.add(new MeiQiaModule(reactContext));
+        modules.add(new BaiDuMapModule(reactContext));
         return modules;
     }
 

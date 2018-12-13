@@ -105,7 +105,7 @@ export default class MainScene extends PureComponent {
 	}
 
 	render() {
-		const { curTabIndex } = this.state;
+		const { curTabIndex } = this.state;		
 		this._mission = null;
 		return (
 			<View style={styles.container}>

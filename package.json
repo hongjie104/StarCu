@@ -14,7 +14,7 @@
     "qs": "^6.5.2",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
-    "react-native-baidumap-sdk": "^0.6.0",
+    "react-native-baidu-map": "^1.0.1",
     "react-native-device-info": "^0.24.3",
     "react-native-fs": "^2.12.0",
     "react-native-image-picker": "^0.27.1",

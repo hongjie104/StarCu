@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.ReactApplication;
-import cn.qiuxiang.react.baidumap.BaiduMapPackage;
 import com.hj.MyPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.beefe.picker.PickerViewPackage;
@@ -37,7 +36,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new BaiduMapPackage(),
             new ImagePickerPackage(),
             new PickerViewPackage(),
             new RNFSPackage(),

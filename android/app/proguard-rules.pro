@@ -83,3 +83,8 @@
     @org.xutils.view.annotation.Event <methods>;
 }
 -dontwarn org.xutils.**
+
+// baidu map
+-keep class com.baidu.** {;}
+-keep class vi.com.** {;}
+-dontwarn com.baidu.**

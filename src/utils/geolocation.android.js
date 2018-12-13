@@ -1,19 +1,14 @@
 'use strict';
 
-import { Initializer, Location } from 'react-native-baidumap-sdk';
+import { NativeModules } from 'react-native';
+
+const { BaiDuMapModule } = NativeModules;
+
 
 import qs from 'qs';
 import toast from './toast';
 import { get } from './net';
 import { BAI_DU_AK_WEB } from '../config';
-
-// console.log('开始准备初始化百度SDK');
-Initializer.init().then(() => {
-	console.log('百度SDK初始化成功');
-	toast('百度SDK初始化成功');
-}).catch(e => {
-	console.warn('aaa', e);
-});
 
 // 经度：positionData.longitude
 // 纬度：positionData.latitude
@@ -57,20 +52,17 @@ function getAddress(initialPosition) {
 
 export function getLocation() {
 	return new Promise(async (resolve, reject) => {
-		await Location.init();
-		Location.addLocationListener(location => {
-			Location.stop();
+		BaiDuMapModule.start(({longitude, latitude}) => {
 			getAddress({
 				coords: {
-					longitude: location.longitude,
-					latitude: location.latitude,
+					longitude,
+					latitude,
 				},
 			}).then(result => {
 				resolve(result);
 			}).catch(e => {
 				reject(e);
-			});
+			})
 		});
-		Location.start();
 	});
 }

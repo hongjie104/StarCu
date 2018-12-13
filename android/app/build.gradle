@@ -142,6 +142,7 @@ android {
             }
         }
     }
+    buildToolsVersion '28.0.2'
 }
 
 dependencies {
@@ -153,6 +154,7 @@ dependencies {
     compile project(':@remobile_react-native-zip')
     compile project(':@remobile_react-native-toast')
     compile project(':@remobile_react-native-file-transfer')
+    compile project(':react-native-smart-splashscreen')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation 'com.facebook.react:react-native:+'

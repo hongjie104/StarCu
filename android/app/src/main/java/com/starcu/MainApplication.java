@@ -11,6 +11,7 @@ import com.meiqia.core.callback.OnInitCallback;
 import com.meiqia.meiqiasdk.util.MQConfig;
 import com.rnfs.RNFSPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.reactnativecomponent.splashscreen.RCTSplashScreenPackage;
 import com.remobile.zip.RCTZipPackage;
 import com.remobile.toast.RCTToastPackage;
 import com.remobile.filetransfer.RCTFileTransferPackage;
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RCTZipPackage(),
             new RCTToastPackage(),
             new RCTFileTransferPackage(),
+            new RCTSplashScreenPackage(),
             new MyPackage()
       );
     }

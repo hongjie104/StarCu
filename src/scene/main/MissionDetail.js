@@ -19,7 +19,7 @@ import Spinner from '../../component/Spinner';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
-import { updateMission } from '../../service';
+import { updateMission, getMyInfo } from '../../service';
 import toast from '../../utils/toast';
 import { getLocation } from '../../utils/geolocation';
 import Base64 from '../../utils/Base64';
@@ -178,13 +178,13 @@ class MissionDetail extends PureComponent {
 		});	
 	}
 
-	async createImgSuffix() {
+	async createImgSuffix(storeName) {
 		// 先获取地理位置
 		const location = await getLocation();
 		if (location) {
-			const { province, city } = location.result.addressComponent;
-			const str = Base64.encode(`${province} ${city}`).replace(/\//g, '_').replace(/\+/g, '-');
-			return `?watermark/2/text/${str}/fontsize/960/dx/10/dy/10`;
+			const { province, city, district } = location.result.addressComponent;
+			const str = Base64.encode(`${formatDateTime()} ${province} ${city} ${district} ${storeName}`).replace(/\//g, '_').replace(/\+/g, '-');
+			return `?watermark/2/text/${str}/fontsize/2400/dx/10/dy/10`;
 		}
 		return '';
 	}
@@ -225,26 +225,29 @@ class MissionDetail extends PureComponent {
 					this.setState({
 						showSpinner: true,
 					}, async () => {
+						const userInfo = await getMyInfo();
+						const storeName = userInfo.datas.currentStoreName;
+
 						let imgSuffix = null;
 						if (!img1.startsWith('http')) {
-							imgSuffix = await this.createImgSuffix();
+							imgSuffix = await this.createImgSuffix(storeName);
 							img1 = await this.uploadImg(img1, imgSuffix);
 						}
 						if (!img2.startsWith('http')) {
 							if (!imgSuffix) {
-								imgSuffix = await this.createImgSuffix();
+								imgSuffix = await this.createImgSuffix(storeName);
 							}
 							img2 = await this.uploadImg(img2, imgSuffix);
 						}
 						if (!img3.startsWith('http')) {
 							if (!imgSuffix) {
-								imgSuffix = await this.createImgSuffix();
+								imgSuffix = await this.createImgSuffix(storeName);
 							}
 							img3 = await this.uploadImg(img3, imgSuffix);
 						}
 						if (!img4.startsWith('http')) {
 							if (!imgSuffix) {
-								imgSuffix = await this.createImgSuffix();
+								imgSuffix = await this.createImgSuffix(storeName);
 							}
 							img4 = await this.uploadImg(img4, imgSuffix);
 						}
@@ -592,7 +595,7 @@ const styles = StyleSheet.create({
 	},
 	dataInputContainer: {
 		width: toDips(384),
-		height: toDips(70),
+		height: toDips(80),
 		borderColor: '#DCDCDC',
 		borderWidth: 1,
 		borderRadius: toDips(9),
@@ -600,7 +603,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		width: toDips(400),
-		height: toDips(70),
+		height: toDips(80),
 		marginLeft: toDips(26),
 		textAlignVertical: 'center',
 		includeFontPadding: false,

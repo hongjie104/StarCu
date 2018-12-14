@@ -171,8 +171,8 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation 'com.facebook.react:react-native:+'
     // implementation 'org.lovebing.reactnative:baidu-map:1.0.1'
-    compile 'com.umeng.umsdk:analytics:7.5.4'
-    compile 'com.umeng.umsdk:common:1.5.4'
+    // compile 'com.umeng.umsdk:analytics:7.5.4'
+    // compile 'com.umeng.umsdk:common:1.5.4'
     compile 'com.meiqia:meiqiasdk:3.5.0@aar'
     //    compile 'com.android.support:support-v4:23.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'

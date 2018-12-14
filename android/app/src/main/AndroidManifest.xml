@@ -31,7 +31,9 @@
       <meta-data
       android:name="com.baidu.lbsapi.API_KEY"
       android:value="6SAd82w7FaGTdzGPMRybIG1Y5yZsBhPt" />
-      <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+        <meta-data android:value="5bd6d02db465f58007000136" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="starcu" android:name="UMENG_CHANNEL"/>
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

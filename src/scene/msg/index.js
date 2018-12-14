@@ -12,6 +12,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import OrderMsgList from './Order';
 import SystemMsgList from './System';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { onEvent } from '../../utils/umeng';
 
 export default class MsgScene extends PureComponent {
 
@@ -24,6 +25,10 @@ export default class MsgScene extends PureComponent {
 		tabBarLabel: ({ focused }) => {
 			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>消息</Text>;
 		},
+	};
+
+	static onShow = () => {
+		onEvent('msg');
 	};
 
 	constructor(props) {

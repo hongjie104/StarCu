@@ -12,6 +12,7 @@ import {
 import Mission from './Mission';
 import Calendar from './Calendar';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { onEvent } from '../../utils/umeng';
 
 let self = null;
 
@@ -25,6 +26,11 @@ class HeaderTitle extends React.Component{
 	}
 
 	onTabChanged(index) {
+		if (index === 0) {
+			onEvent('today_mission');
+		} else {
+			onEvent('calendar');
+		}
 		this.setState({
 			curTabIndex: index,
 		}, () => {
@@ -85,6 +91,7 @@ export default class MainScene extends PureComponent {
 				self._mission.fetchTodayMission();
 			}
 		}
+		onEvent('tab_task');
 	};
 
 	constructor(props) {

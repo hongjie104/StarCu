@@ -12,6 +12,7 @@ import {
 import Spinner from '../../component/Spinner';
 import MissionItem from '../../component/MissionItem';
 import { toDips, getFontSize } from '../../utils/dimensions';
+import { onEvent } from '../../utils/umeng';
 import toast from '../../utils/toast';
 import { getOrderArr } from '../../service';
 
@@ -34,6 +35,7 @@ export default class MsgScene extends PureComponent {
 		if (self) {
 			self.fetchOrderArr();
 		}
+		onEvent('order');
 	};
 
 	constructor(props) {

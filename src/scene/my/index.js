@@ -14,6 +14,7 @@ import navigationUtil from '../../utils/navigation';
 import { getMine, getBank, getBankList } from '../../service';
 import toast from '../../utils/toast';
 import { removeLocalData } from '../../utils/storage';
+import { onEvent } from '../../utils/umeng';
 import { open as openMeiQia, setClientInfo as setClientInfoForMeiQia } from '../../utils/meiQia';
 
 export default class MyScene extends PureComponent {
@@ -27,6 +28,10 @@ export default class MyScene extends PureComponent {
 		tabBarLabel: ({ focused }) => {
 			return <Text style={[{ fontSize: getFontSize(26), alignSelf: 'center', }, focused ? { color: '#DD4124' } : { color: '#878787' }]}>我的</Text>;
 		},
+	};
+
+	static onShow = () => {
+		onEvent('my');
 	};
 
 	constructor(props) {
@@ -74,6 +79,7 @@ export default class MyScene extends PureComponent {
 	}
 
 	onHelp() {
+		onEvent('help');
 		const { navigation: { navigate } } = this.props;
 		navigate({
 			routeName: 'HelperScene',
@@ -85,6 +91,7 @@ export default class MyScene extends PureComponent {
 	}
 
 	onContactCustomerService() {
+		onEvent('customer_service');
 		setClientInfoForMeiQia({
 			// name	真实姓名
 			// gender	性别
@@ -110,6 +117,7 @@ export default class MyScene extends PureComponent {
 	}
 
 	onLogout() {
+		onEvent('logout');
 		global.token = null;
 		global.uid = null;
 		removeLocalData('token');
@@ -146,6 +154,7 @@ export default class MyScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
+							onEvent('money');
 							navigate({
 								routeName: 'AccountScene',
 							});
@@ -169,6 +178,7 @@ export default class MyScene extends PureComponent {
 					<TouchableOpacity
 						activeOpacity={0.8}
 						onPress={() => {
+							onEvent('bankCard');
 							navigate({
 								routeName: 'BankCardScene',
 								params: {
@@ -199,6 +209,7 @@ export default class MyScene extends PureComponent {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					onPress={() => {
+						onEvent('my_info');
 						navigate({
 							routeName: 'UserInfoScene',
 						});

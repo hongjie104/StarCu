@@ -27,7 +27,7 @@
   }];
   
   // 初始化友盟
-  [UMConfigure initWithAppkey:@"5beba697f1f556e30c000349" channel:@"App Store"];
+  [UMConfigure initWithAppkey:@"5bd6d0d2f1f556fe34000146" channel:@"App Store"];
   
   NSURL *jsCodeLocation;
 

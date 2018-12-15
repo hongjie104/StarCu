@@ -78,7 +78,7 @@ public class MainApplication extends Application implements ReactApplication {
       }
     });
     // 友盟
-    // UMConfigure.setLogEnabled(true);
+     UMConfigure.setLogEnabled(true);
     UMConfigure.init(this.getApplicationContext(), UMConfigure.DEVICE_TYPE_PHONE, "");
   }
 }

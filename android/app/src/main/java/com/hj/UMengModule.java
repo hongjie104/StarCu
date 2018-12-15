@@ -1,5 +1,7 @@
 package com.hj;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -17,6 +19,7 @@ public class UMengModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void onEvent(String eventID) {
         MobclickAgent.onEvent(getReactApplicationContext(), eventID);
+        Log.i("UMengModule", "eventID = " + eventID);
     }
 
     @ReactMethod

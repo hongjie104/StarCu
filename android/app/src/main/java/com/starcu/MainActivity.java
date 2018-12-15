@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import com.facebook.react.ReactActivity;
 
 import com.reactnativecomponent.splashscreen.RCTSplashScreen;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends ReactActivity {
 
@@ -29,6 +30,19 @@ public class MainActivity extends ReactActivity {
         // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
         //     setTranslucentStatus(true);
         // }
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_DUM_NORMAL);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     // //设置透明状态栏

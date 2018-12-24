@@ -17,7 +17,7 @@ import toast from '../../utils/toast';
 import { isPhone } from '../../utils/reg';
 import { resiger, getReigsterCode } from '../../service';
 import { saveDataToLocal } from '../../utils/storage';
-import { __TEST__ } from '../../config';
+import { __TEST__, SERVER_HOST } from '../../config';
 
 export default class RegisterScene extends PureComponent {
 	
@@ -281,7 +281,7 @@ export default class RegisterScene extends PureComponent {
 								this.props.navigation.navigate({
 									routeName: 'HelperScene',
 									params: {
-										url: 'http://101.132.113.94/helpinfo.html',
+										url: `${SERVER_HOST}/helpinfo.html`,
 										title: '星促伙伴APP平台服务协议',
 									},
 								});

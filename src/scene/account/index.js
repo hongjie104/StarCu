@@ -13,6 +13,7 @@ import WithdrawIntroduce from './IntroduceModal';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import { getAccountInfo } from '../../service';
 import toast from '../../utils/toast';
+import { SERVER_HOST } from '../../config';
 
 // 账户页面
 export default class AccountScene extends PureComponent {
@@ -150,7 +151,7 @@ export default class AccountScene extends PureComponent {
 						navigate({
 							routeName: 'HelperScene',
 							params: {
-								url: 'http://101.132.113.94/accountCenter.html',
+								url: `${SERVER_HOST}/accountCenter.html`,
 								title: '常见问题',
 							},
 						});

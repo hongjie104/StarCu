@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
 	<key>CFBundleDisplayName</key>
-	<string>StarCu</string>
+	<string>星促伙伴</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -38,11 +38,11 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) 想要使用您的相机，请允许！</string>
+	<string>$(PRODUCT_NAME) 会在上传身份证或者个人照片服务中访问您的相机权限</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) 想要知道您的地址位置，请允许！</string>
+	<string>$(PRODUCT_NAME) 会在上传任务照片服务中获取您的地理位置</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) 想要使用您的摄像头，请允许！</string>
+	<string>$(PRODUCT_NAME) 会在拍摄任务照片服务中获取您的摄像头权限</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) 想要保存图片到您的相册，请允许！</string>
 	<key>NSPhotoLibraryUsageDescription</key>

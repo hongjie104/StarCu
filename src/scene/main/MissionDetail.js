@@ -201,19 +201,19 @@ class MissionDetail extends PureComponent {
 			img4,
 		} = this.state;
 		if (!img1) {
-			toast('请选择理货前正面照');
+			toast('请选择理货前牌面(1)');
 			return;
 		}
 		if (!img2) {
-			toast('请选择理货前左侧照');
+			toast('请选择理货前牌面(2)');
 			return;
 		}
 		if (!img3) {
-			toast('请选择理货后正面照');
+			toast('请选择理货后牌面(1)');
 			return;
 		}
 		if (!img4) {
-			toast('请选择理货后左侧照');
+			toast('请选择理货后牌面(2)');
 			return;
 		}
 		Alert.alert(
@@ -307,7 +307,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 							</View>
 							<Text style={styles.phoneItemTxt}>
-								理货前牌面（正面）
+								理货前牌面（1）
 							</Text>
 						</View>
 						{
@@ -337,7 +337,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 							</View>
 							<Text style={styles.phoneItemTxt}>
-								理货前牌面（左侧）
+								理货前牌面（2）
 							</Text>
 						</View>
 						{
@@ -367,7 +367,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 							</View>
 							<Text style={styles.phoneItemTxt}>
-								理货后牌面（正面）
+								理货后牌面（1）
 							</Text>
 						</View>
 						{
@@ -397,7 +397,7 @@ class MissionDetail extends PureComponent {
 								</Text>
 							</View>
 							<Text style={styles.phoneItemTxt}>
-								理货后牌面（左侧）
+								理货后牌面（2）
 							</Text>
 						</View>
 						{

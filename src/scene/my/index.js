@@ -16,6 +16,7 @@ import toast from '../../utils/toast';
 import { removeLocalData } from '../../utils/storage';
 import { onEvent } from '../../utils/umeng';
 import { open as openMeiQia, setClientInfo as setClientInfoForMeiQia } from '../../utils/meiQia';
+import { SERVER_HOST } from '../../config';
 
 export default class MyScene extends PureComponent {
 	
@@ -84,7 +85,7 @@ export default class MyScene extends PureComponent {
 		navigate({
 			routeName: 'HelperScene',
 			params: {
-				url: 'http://101.132.113.94/helper.html',
+				url: `${SERVER_HOST}/helper.html`,
 				title: '帮助中心',
 			},
 		});

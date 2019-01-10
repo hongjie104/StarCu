@@ -41,6 +41,7 @@ class MissionDetail extends PureComponent {
 			img4: '',
 			skuDataArr: [],
 			showSpinner: false,
+			tip: '',
 		};
 	}
 
@@ -119,8 +120,9 @@ class MissionDetail extends PureComponent {
 	onPickImage(type) {
 		const { missionInfo } = this.state;
 		if (missionInfo.canEdit) {
+			const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
 			// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
-			ImagePicker.launchCamera({
+			launchCamera({
 				title: '挑选照片',
 				cancelButtonTitle: '取消',
 				takePhotoButtonTitle: '拍照',
@@ -230,6 +232,9 @@ class MissionDetail extends PureComponent {
 
 						let imgSuffix = null;
 						if (!img1.startsWith('http')) {
+							this.setState({
+								tip: '准备上传理货前牌面(1)照片', 
+							});
 							imgSuffix = await this.createImgSuffix(storeName);
 							img1 = await this.uploadImg(img1, imgSuffix);
 						}
@@ -237,24 +242,37 @@ class MissionDetail extends PureComponent {
 							if (!imgSuffix) {
 								imgSuffix = await this.createImgSuffix(storeName);
 							}
+							this.setState({
+								tip: '准备上传理货前牌面(2)照片', 
+							});
 							img2 = await this.uploadImg(img2, imgSuffix);
 						}
 						if (!img3.startsWith('http')) {
 							if (!imgSuffix) {
 								imgSuffix = await this.createImgSuffix(storeName);
 							}
+							this.setState({
+								tip: '准备上传理货后牌面(1)照片', 
+							});
 							img3 = await this.uploadImg(img3, imgSuffix);
 						}
 						if (!img4.startsWith('http')) {
 							if (!imgSuffix) {
 								imgSuffix = await this.createImgSuffix(storeName);
 							}
+							this.setState({
+								tip: '准备上传理货后牌面(2)照片', 
+							});
 							img4 = await this.uploadImg(img4, imgSuffix);
 						}
+						this.setState({
+							tip: '提交数据中', 
+						});
 						updateMission(taskId, img1, img2, img3, img4, JSON.stringify(skuDataArr)).then(result => {
 							toast('提交成功');
 							this.setState({
 								showSpinner: false,
+								tip: '',
 							}, () => {
 								const { onMissionDone } = this.props.navigation.state.params;
 								onMissionDone && onMissionDone(taskId);
@@ -264,6 +282,7 @@ class MissionDetail extends PureComponent {
 							toast(e);
 							this.setState({
 								showSpinner: false,
+								tip: '',
 							});
 						});
 					});
@@ -282,6 +301,7 @@ class MissionDetail extends PureComponent {
 			missionInfo,
 			skuDataArr,
 			showSpinner,
+			tip,
 		} = this.state;
 		const canEdit = missionInfo ? missionInfo.canEdit : false;
 		let taskTime = 0;
@@ -480,7 +500,7 @@ class MissionDetail extends PureComponent {
 									{
 										(missionInfo && missionInfo.tallyStatus) === 1 ? '再次提交' : '提交'
 									}
-								</Text>	
+								</Text>
 							</TouchableOpacity>
 					 	) : (
 					 		nowTime < taskTime ? (
@@ -496,7 +516,7 @@ class MissionDetail extends PureComponent {
 					}
 				</KeyboardAwareScrollView>
 				{
-					showSpinner && <Spinner />
+					showSpinner && <Spinner tip={tip} />
 				}
 			</View>
 		);

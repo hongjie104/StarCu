@@ -5,6 +5,7 @@ import {
 	StyleSheet,
 	View,
 	ActivityIndicator,
+	Text,
 } from 'react-native';
 
 const ColorPropType = require('ColorPropType');
@@ -21,7 +22,7 @@ export default class Spinner extends Component {
 	}
 
 	render() {
-		let { color, size } = this.props;
+		const { color, size, tip } = this.props;
 		return (
 			<View style={styles.container}>
 				<ActivityIndicator
@@ -29,6 +30,9 @@ export default class Spinner extends Component {
 					color={color}
 					size={size}
 				/>
+				<Text>
+					{ tip || '' }
+				</Text>
 			</View>
 		);
 	}

@@ -389,7 +389,18 @@ export default class BankCard extends PureComponent {
 							keyboardType='numeric'
 						/>
 					</View>
-					<View style={styles.itemContainer}>
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							if (isCanEdit) {
+								if (!picker.isPickerShow()) {
+									dismissKeyboard();
+									picker.show();
+								}
+							}
+						}}
+						style={styles.itemContainer}
+					>
 						<Text style={styles.keyTxt}>
 							开户行：
 						</Text>
@@ -405,19 +416,11 @@ export default class BankCard extends PureComponent {
 							// />
 							<Text
 								style={styles.valTxt}
-								onPress={() => {
-									if (isCanEdit) {
-										if (!picker.isPickerShow()) {
-											dismissKeyboard();
-											picker.show();
-										}
-									}
-								}}
 							>
 								{ bankName }
 							</Text>
 						}
-					</View>
+					</TouchableOpacity>
 					<View style={[styles.itemContainer, { height: toDips(141) }]}>
 						<Text style={styles.keyTxt}>
 							银行卡照片：

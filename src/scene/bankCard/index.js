@@ -181,6 +181,10 @@ export default class BankCard extends PureComponent {
 	onPickImage(type) {
 		dismissKeyboard();
 		picker.hide();
+		if (this.state.bankName === '点击选择') {
+			toast('请先选择开户银行');
+			return;
+		}
 		if (this.state.isCanEdit) {
 			// type 1 是正面照 2 是反面照
 			ImagePicker.showImagePicker({

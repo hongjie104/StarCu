@@ -7,6 +7,7 @@ import { toDips, getFontSize } from '../utils/dimensions';
 
 import MainScene from '../scene/main';
 import MissionDetailScene from '../scene/main/MissionDetail';
+import MissionFeedbackScene from '../scene/main/MissionFeedback';
 import MissionIntroduceScene from '../scene/main/MissionIntroduce';
 import OrderScene from '../scene/order';
 import MsgScene from '../scene/msg';
@@ -61,6 +62,7 @@ export default function createAppNavigation(isLogedIn) {
 		LoginScene,
 		MissionIntroduceScene,
 		MissionDetailScene,
+		MissionFeedbackScene,
 		AccountScene,
 		// 提现
 		WithdrawScene,
@@ -74,7 +76,7 @@ export default function createAppNavigation(isLogedIn) {
 		HelperScene,
 		ProtocolScene,
 	}, {
-		initialRouteName: isLogedIn ? 'main' : 'LoginScene',
+		initialRouteName: isLogedIn ? 'main' : 'MissionFeedbackScene',
 		// mode: 'card',
 		// headerMode: 'none',
 		// headerTintColor: '#DD4124',

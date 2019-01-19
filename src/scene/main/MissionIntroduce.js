@@ -35,6 +35,7 @@ export default class MissionIntroduce extends PureComponent {
 		let isEnabled = true;
 		let taskTotalAmount = null;
 		let taskTotalAmountLabel = '任务金额';
+		let serviceCode = '';
 		if (this.props.navigation.state.params.type === 1) {
 			status = this.props.navigation.state.params.mission.status;
 			orderId = this.props.navigation.state.params.mission.orderId;
@@ -42,12 +43,16 @@ export default class MissionIntroduce extends PureComponent {
 			taskId = missionData.task ? missionData.task.taskId : null;
 			taskTotalAmount = missionData ? missionData.orderAmount : null;
 			taskTotalAmountLabel = '任务总金额';
+			serviceCode = missionData.task ? missionData.task.serviceCode : '';
 		} else {
 			taskId = this.props.navigation.state.params.mission.taskId;
 			isEnabled = this.props.navigation.state.params.mission.isEnabled;
+			serviceCode = this.props.navigation.state.params.mission.serviceCode;
 		}
 		if (taskId) {
 			const missionData = await getMissionInfo(taskId);
+			// console.warn(missionData);
+			serviceCode = missionData.datas.serviceCode;
 			// { datas: 
 			// { orderType: '1871479136913408',
 			//   orderEndDate: '2018-12-31',
@@ -74,6 +79,7 @@ export default class MissionIntroduce extends PureComponent {
 				orderId,
 				taskId,
 				isEnabled,
+				serviceCode,
 			});
 		}
 	}
@@ -95,7 +101,7 @@ export default class MissionIntroduce extends PureComponent {
 		this.setState({
 			loading: true,
 		});
-		const { status, orderId } = this.state;
+		const { status, orderId, serviceCode } = this.state;
 		const { type, onTakeOrder } = this.props.navigation.state.params;
 		if (type === 1) {
 			if (status === 1) {
@@ -119,27 +125,51 @@ export default class MissionIntroduce extends PureComponent {
 			}
 		}
 		const { navigate } = this.props.navigation;
-		navigate({
-			routeName: 'MissionDetailScene',
-			params: {
-				...this.state,
-				onMissionDone: taskId => {
-					if (this.state.taskId === taskId) {
-						if (this.props.navigation.state.params.type === 0) {
-							// 任务的话，就变成已完成状态
+		if (serviceCode === 'mdgj') {
+			navigate({
+				routeName: 'MissionFeedbackScene2',
+				params: {
+					...this.state,
+					onMissionDone: taskId => {
+						if (this.state.taskId === taskId) {
 							this.setState({
-								status: 1,
-							});
-						} else {
-							// 订单的话，就变成已接单的状态
-							this.setState({
-								status: 2,
+								loading: true,
+							}, async () => {
+								const missionData = await getMissionInfo(taskId);
+								this.setState({
+									...missionData.datas,
+									// 任务的话，就变成已完成状态 订单的话，就变成已接单的状态
+									status: this.props.navigation.state.params.type === 0 ? 1 : 2,
+									loading: false,									
+								});
 							});
 						}
-					}
+					},
 				},
-			},
-		});
+			});
+		} else {
+			navigate({
+				routeName: 'MissionDetailScene',
+				params: {
+					...this.state,
+					onMissionDone: taskId => {
+						if (this.state.taskId === taskId) {
+							if (this.props.navigation.state.params.type === 0) {
+								// 任务的话，就变成已完成状态
+								this.setState({
+									status: 1,
+								});
+							} else {
+								// 订单的话，就变成已接单的状态
+								this.setState({
+									status: 2,
+								});
+							}
+						}
+					},
+				},
+			});
+		}
 		this.setState({
 			loading: false,
 		});

@@ -336,6 +336,10 @@ export default class UserInfoScene extends PureComponent {
 		// type 1 是个人照1 2 是个人照2
 		ImagePicker.showImagePicker({
 			title: '挑选照片',
+			// 加了这两句控制大小
+			maxWidth: 800,
+			// 加了这两句控制大小
+			maxHeight: 800,
 			cancelButtonTitle: '取消',
 			takePhotoButtonTitle: '拍照',
 			chooseFromLibraryButtonTitle: '从相册选',

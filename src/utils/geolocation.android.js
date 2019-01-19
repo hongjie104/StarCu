@@ -34,7 +34,7 @@ function getAddress(initialPosition) {
 		const { longitude, latitude } = initialPosition.coords;
 		const location = latitude + ',' + longitude;
 		const baiduUrl = baiduLocationURL + '?' + qs.stringify({ ...baiduLocationConfig }) + '&location=' + location;
-		// console.warn(baiduUrl);
+		console.warn(baiduUrl);
 
 		fetch(baiduUrl)
 			.then(response => response.text())

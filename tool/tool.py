@@ -1,4 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import json
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 def get_city_data(parent_id):
@@ -39,6 +46,7 @@ if __name__ == '__main__':
 	# print(result[0])
 	f = open('city.json', 'w')
 	f.write(json.dumps(result).encode('utf-8').decode('unicode_escape'))
+	# f.write(json.dumps(result).encode('gbk'))
 	f.close()
 	print('done')
 		

@@ -105,6 +105,8 @@ export default class Calendar extends PureComponent {
 		// firstDateTime 再减去7天，为了获取更早一周的数据
 		getMissionCalendar(formatDateTime(new Date(firstDateTime - 604800000), 'yyyy-MM-dd'), formatDateTime(new Date(tmpDate.getTime() + 604800000), 'yyyy-MM-dd')).then(result => {
 			const { taskCalendar } = result.datas;
+			console.warn('======');
+			console.warn(taskCalendar);
 			const missionArr = taskCalendar.map(missionData => {				
 				const dateArr = missionData.date.split('-');
 				return {
@@ -207,6 +209,7 @@ export default class Calendar extends PureComponent {
 	}
 
 	onDatePress({ missionData, year, month, date }) {
+		console.warn(missionData);
 		const now = new Date();
 		let newMissionData = missionData || [];
 		newMissionData = newMissionData.map(m => {

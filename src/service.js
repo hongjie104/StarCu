@@ -110,6 +110,18 @@ export function updateMission(missionId, beforeTally, beforeTallyLeft, afterTall
 	});
 }
 
+// 保存理货信息
+export function updateMission2(missionId, crdPicture, specialPicture, specialDisplay, datas) {
+	return post(`${SERVER_HOST}/app/app/task/save`, {
+		token: global.token,
+		taskId: missionId,
+		crdPicture,
+		specialPicture,
+		specialDisplay,
+		datas,
+	});
+}
+
 // 获取订单消息
 export function getOrderMsg(page, pageSize) {
 	return post(`${SERVER_HOST}/app/app/orderMessage`, {
@@ -232,5 +244,12 @@ export function reflect(amount, reflectKey) {
 		token: global.token,
 		amount,
 		reflectKey,
+	});
+}
+
+export function getDataFromDic(dictCode) {
+	return post(`${SERVER_HOST}/app/app/dict/list`, {
+		token: global.token,
+		dictCode,
 	});
 }

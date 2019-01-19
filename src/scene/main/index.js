@@ -13,6 +13,8 @@ import Mission from './Mission';
 import Calendar from './Calendar';
 import { toDips, getFontSize } from '../../utils/dimensions';
 import { onEvent } from '../../utils/umeng';
+import { getLocation } from '../../utils/geolocation';
+import * as globalData from '../../globalData';
 
 let self = null;
 
@@ -103,6 +105,13 @@ export default class MainScene extends PureComponent {
 
 	componentWillMount() {
 		self = this;
+	}
+
+	async componentDidMount() {
+		const location = await getLocation();
+		globalData.province = location.result.addressComponent;
+		globalData.city = location.result.city;
+		globalData.district = location.result.district;
 	}
 
 	onTabChanged(index) {

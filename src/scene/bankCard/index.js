@@ -189,6 +189,10 @@ export default class BankCard extends PureComponent {
 			// type 1 是正面照 2 是反面照
 			ImagePicker.showImagePicker({
 				title: '挑选照片',
+				// 加了这两句控制大小
+				maxWidth: 800,
+				// 加了这两句控制大小
+				maxHeight: 800,
 				cancelButtonTitle: '取消',
 				takePhotoButtonTitle: '拍照',
 				chooseFromLibraryButtonTitle: '从相册选',

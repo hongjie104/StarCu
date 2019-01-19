@@ -22,7 +22,7 @@ import * as qiniu from '../../utils/qiniu';
 import { QI_NIU_DOMAIN, __TEST__ } from '../../config';
 import { updateMission, getMyInfo } from '../../service';
 import toast from '../../utils/toast';
-import { getLocation } from '../../utils/geolocation';
+import * as globalData from '../../globalData';
 import Base64 from '../../utils/Base64';
 import { formatDateTime } from '../../utils/datetime';
 
@@ -125,6 +125,10 @@ class MissionDetail extends PureComponent {
 			// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
 			launchCamera({
 				title: '挑选照片',
+				// 加了这两句控制大小
+				maxWidth: 800,
+				// 加了这两句控制大小
+				maxHeight: 800,
 				cancelButtonTitle: '取消',
 				takePhotoButtonTitle: '拍照',
 				chooseFromLibraryButtonTitle: '从相册选',
@@ -182,14 +186,9 @@ class MissionDetail extends PureComponent {
 	}
 
 	async createImgSuffix(storeName) {
-		// 先获取地理位置
-		const location = await getLocation();
-		if (location) {
-			const { province, city, district } = location.result.addressComponent;
-			const str = Base64.encode(`${formatDateTime()} ${province} ${city} ${district} ${storeName}`).replace(/\//g, '_').replace(/\+/g, '-');
-			return `?watermark/2/text/${str}/fontsize/2400/dx/10/dy/10`;
-		}
-		return '';
+		const { province, city, district } = globalData;
+		const str = Base64.encode(`${formatDateTime()} ${province} ${city} ${district} ${storeName}`).replace(/\//g, '_').replace(/\+/g, '-');
+		return `?watermark/2/text/${str}/fontsize/360/dx/10/dy/10`;
 	}
 
 	onSubmit() {

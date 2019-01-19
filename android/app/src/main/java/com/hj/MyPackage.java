@@ -21,6 +21,7 @@ public class MyPackage implements ReactPackage {
         modules.add(new UMengModule(reactContext));
         modules.add(new MeiQiaModule(reactContext));
         modules.add(new BaiDuMapModule(reactContext));
+        modules.add(new ImageModule(reactContext));
         return modules;
     }
 

@@ -140,9 +140,11 @@ export default class MissionIntroduce extends PureComponent {
 									...missionData.datas,
 									// 任务的话，就变成已完成状态 订单的话，就变成已接单的状态
 									status: this.props.navigation.state.params.type === 0 ? 1 : 2,
-									loading: false,									
+									loading: false,
 								});
 							});
+							const { onMissionDone } = this.props.navigation.state.params;
+							onMissionDone && onMissionDone(taskId);
 						}
 					},
 				},
@@ -165,6 +167,8 @@ export default class MissionIntroduce extends PureComponent {
 									status: 2,
 								});
 							}
+							const { onMissionDone } = this.props.navigation.state.params;
+							onMissionDone && onMissionDone(taskId);
 						}
 					},
 				},

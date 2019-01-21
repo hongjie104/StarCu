@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -198,13 +199,13 @@
 		9C09EB9D180A4495BFB3553E /* libRCTFileTransfer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD7A220B532A48F1B4889016 /* libRCTFileTransfer.a */; };
 		ABFE1B31A1584EA49C645BB1 /* libRCTBEEPickerManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE395505A7024FC18CCAD054 /* libRCTBEEPickerManager.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B64308ED5A90426C83381682 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA7E8A477EA4CC59EA6F8D5 /* libRCTImageResizer.a */; };
 		BAC05F4F672D47BB86F9C636 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 014DAFC8FC9843ACA459DFA0 /* libRNFS.a */; };
 		BF716925F76E4AF5A3ECB149 /* libRCTCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B9FD6FA097C423F96F3174E /* libRCTCordova.a */; };
 		CCA2032721F3094E00A35B2D /* ImageModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA2032621F3094E00A35B2D /* ImageModule.m */; };
 		D3B90F533F1A44009E60E027 /* libRCTToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E71BA6E108E470B8C3186AE /* libRCTToast.a */; };
 		E5292BDAEF5F49EFA216EE7A /* libRCTZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F5C6DC67436C48F18BD07D8D /* libRCTZip.a */; };
 		EF8699A13A604DA4BF3E8D55 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E85FD14EB6C1474185CBA8DB /* libRNDeviceInfo-tvOS.a */; };
-		B64308ED5A90426C83381682 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DA7E8A477EA4CC59EA6F8D5 /* libRCTImageResizer.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -466,6 +467,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 17D41E551D7EE0CA0031415E;
 			remoteInfo = RCTBEEPickerManager;
+		};
+		6C66013521F563E100A6E677 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6AE5A081E6540B799A8F6E2 /* RCTImageResizer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
+			remoteInfo = RCTImageResizer;
 		};
 		6C96C7D221C1EB6B00DED0C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -900,6 +908,7 @@
 		6C96C7F521C1EC4A00DED0C5 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8DA7E8A477EA4CC59EA6F8D5 /* libRCTImageResizer.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTImageResizer.a; sourceTree = "<group>"; };
 		99479418E6B744CDBCD12A2C /* RCTToast.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTToast.xcodeproj; path = "../node_modules/@remobile/react-native-toast/ios/RCTToast.xcodeproj"; sourceTree = "<group>"; };
 		A0084E45FBD946E19610561A /* RCTFileTransfer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFileTransfer.xcodeproj; path = "../node_modules/@remobile/react-native-file-transfer/ios/RCTFileTransfer.xcodeproj"; sourceTree = "<group>"; };
 		AB4F49F277AE40C7AAD63BBB /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
@@ -912,10 +921,9 @@
 		CCA2035821F3096E00A35B2D /* ImageModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageModule.h; sourceTree = "<group>"; };
 		CEB1B7E189C8470FBE938BC4 /* RCTZip.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTZip.xcodeproj; path = "../node_modules/@remobile/react-native-zip/ios/RCTZip.xcodeproj"; sourceTree = "<group>"; };
 		D40F076FA7314C0488E68F5B /* libRCTVideo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTVideo.a; sourceTree = "<group>"; };
+		E6AE5A081E6540B799A8F6E2 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
 		E85FD14EB6C1474185CBA8DB /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		F5C6DC67436C48F18BD07D8D /* libRCTZip.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTZip.a; sourceTree = "<group>"; };
-		E6AE5A081E6540B799A8F6E2 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; name = "RCTImageResizer.xcodeproj"; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		8DA7E8A477EA4CC59EA6F8D5 /* libRCTImageResizer.a */ = {isa = PBXFileReference; name = "libRCTImageResizer.a"; path = "libRCTImageResizer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1895,6 +1903,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6C66013221F563E100A6E677 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6C66013621F563E100A6E677 /* libRCTImageResizer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6C96C7BE21C1EB6B00DED0C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2013,6 +2029,7 @@
 				E85FD14EB6C1474185CBA8DB /* libRNDeviceInfo-tvOS.a */,
 				BE395505A7024FC18CCAD054 /* libRCTBEEPickerManager.a */,
 				AB4F49F277AE40C7AAD63BBB /* libRNImagePicker.a */,
+				8DA7E8A477EA4CC59EA6F8D5 /* libRCTImageResizer.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2221,6 +2238,10 @@
 				{
 					ProductGroup = 00C302BC1ABCB91800DB3ED1 /* Products */;
 					ProjectRef = 00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */;
+				},
+				{
+					ProductGroup = 6C66013221F563E100A6E677 /* Products */;
+					ProjectRef = E6AE5A081E6540B799A8F6E2 /* RCTImageResizer.xcodeproj */;
 				},
 				{
 					ProductGroup = 78C398B11ACF4ADC00677621 /* Products */;
@@ -2529,6 +2550,13 @@
 			fileType = archive.ar;
 			path = libRCTBEEPickerManager.a;
 			remoteRef = 6C63C3942188290600F12610 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6C66013621F563E100A6E677 /* libRCTImageResizer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTImageResizer.a;
+			remoteRef = 6C66013521F563E100A6E677 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		6C96C7D321C1EB6B00DED0C5 /* libRCTSplashScreen.a */ = {

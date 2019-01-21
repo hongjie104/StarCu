@@ -82,6 +82,7 @@ export default class MissionFeedback extends PureComponent {
 		const { mfdDate } = skus[0].feedDatas;
 		const mfdDateArr = mfdDate ? mfdDate.split('-') : [];
 		console.warn(skus);
+		const now = new Date();
 		this.setState({
 			curIndex: 0,
 			fenXiao: skus[0].feedDatas.distributionStr || fenXiaoNameArr[0],
@@ -95,9 +96,9 @@ export default class MissionFeedback extends PureComponent {
 			price: skus[0].feedDatas.goodsPrice || '',
 			mianShu: skus[0].feedDatas.displaySurfaces || '',
 			// mfdDate   最早生产日期
-			year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : 2019,
-			month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : 1,
-			date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : 1,
+			year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : now.getFullYear(),
+			month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : now.getMonth() + 1,
+			date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : now.getDate(),
 			loading: false,
 			huoDongArr,
 			huoDongNameArr,
@@ -125,12 +126,15 @@ export default class MissionFeedback extends PureComponent {
 			onPickerConfirm: pickedValue => {
 				const { curIndex, fenXiaoArr } = this.state;
 				const skus = [...this.state.skus];
-				skus[curIndex].feedDatas.distribution = fenXiaoArr.filter(t => t.name === pickedValue[0])[0].code;
-				skus[curIndex].feedDatas.distributionStr = pickedValue[0];
-				this.setState({
-					fenXiao: pickedValue[0],
-					skus,
-				});
+				const a = fenXiaoArr.filter(t => t.name === pickedValue[0]);
+				if (Array.isArray(a) && a[0]) {
+					skus[curIndex].feedDatas.distribution = a[0].code;
+					skus[curIndex].feedDatas.distributionStr = pickedValue[0];
+					this.setState({
+						fenXiao: pickedValue[0],
+						skus,
+					});
+				}
 			},
 		});
 	}
@@ -147,39 +151,71 @@ export default class MissionFeedback extends PureComponent {
 			onPickerConfirm: pickedValue => {
 				const { curIndex, zhuangTaiArr } = this.state;
 				const skus = [...this.state.skus];
-				skus[curIndex].feedDatas.goodsState = zhuangTaiArr.filter(t => t.name === pickedValue[0])[0].code;
-				skus[curIndex].feedDatas.goodsStateStr = pickedValue[0];
-				this.setState({
-					zhuangTai: pickedValue[0],
-					skus,
-				});
+				const a = zhuangTaiArr.filter(t => t.name === pickedValue[0]);
+				if (Array.isArray(a) && a[0]) {
+					skus[curIndex].feedDatas.goodsState = a[0].code;
+					skus[curIndex].feedDatas.goodsStateStr = pickedValue[0];
+					this.setState({
+						zhuangTai: pickedValue[0],
+						skus,
+					});
+				}
 			},
 		});
 	}
 
 	_createDateData() {
 		const now = new Date();
+		const nowYear = now.getFullYear();
+		const nowMonth = now.getMonth() + 1;
+		const nowDate = now.getDate();
 		const date = [];
-		for (let i = 2000; i <= now.getFullYear(); i++) {
+		for (let i = 2000; i <= nowYear; i++) {
 			const month = [];
 			for (let j = 1; j < 13; j++) {
+				if (i === nowYear) {
+					if (j > nowMonth) continue;
+				}
 				const day = [];
 				if (j === 2) {
 					for (let k = 1; k < 29; k++) {
-						day.push(k);
+						if (i === nowYear && j === nowMonth) {
+							if (k <= nowDate) {
+								day.push(k);
+							}
+						} else {
+							day.push(k);
+						}
 					}
 					// Leap day for years that are divisible by 4, such as 2000, 2004
 					if (i % 4 === 0) {
-						day.push(29);
+						if (i === nowYear && j === nowMonth) {
+							if (29 <= nowDate) {
+								day.push(29);
+							}
+						} else {
+							day.push(29);
+						}
 					}
-				}
-				else if (j in { 1: 1, 3: 1, 5: 1, 7: 1, 8: 1, 10: 1, 12: 1 }){
+				} else if (j in { 1: 1, 3: 1, 5: 1, 7: 1, 8: 1, 10: 1, 12: 1 }) {
 					for (let k = 1; k < 32; k++) {
-						day.push(k);
+						if (i === nowYear && j === nowMonth) {
+							if (k <= nowDate) {
+								day.push(k);
+							}
+						} else {
+							day.push(k);
+						}
 					}
 				} else {
 					for (let k = 1; k < 31; k++) {
-						day.push(k);
+						if (i === nowYear && j === nowMonth) {
+							if (k <= nowDate) {
+								day.push(k);
+							}
+						} else {
+							day.push(k);
+						}
 					}
 				}
 				const _month = {};
@@ -230,18 +266,22 @@ export default class MissionFeedback extends PureComponent {
 			onPickerConfirm: pickedValue => {
 				const { curIndex, huoDongArr } = this.state;
 				const skus = [...this.state.skus];
-				skus[curIndex].feedDatas.salesPromotion = huoDongArr.filter(t => t.name === pickedValue[0])[0].code;
-				skus[curIndex].feedDatas.salesPromotionStr = pickedValue[0];
-				this.setState({
-					huoDong: pickedValue[0],
-					skus,
-				});
+				const a = huoDongArr.filter(t => t.name === pickedValue[0]);
+				if (Array.isArray(a) && a[0]) {
+					skus[curIndex].feedDatas.salesPromotion = a[0].code;
+					skus[curIndex].feedDatas.salesPromotionStr = pickedValue[0];
+					this.setState({
+						huoDong: pickedValue[0],
+						skus,
+					});
+				}
 			},
 		});
 	}
 
 	showImagePicker() {
-		ImagePicker.showImagePicker({
+		const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
+		launchCamera({
 			// 加了这两句控制大小
 			maxWidth: 800,
 			// 加了这两句控制大小
@@ -304,6 +344,7 @@ export default class MissionFeedback extends PureComponent {
 			const newIndex = curIndex - 1;
 			const { mfdDate } = skus[newIndex].feedDatas;
 			const mfdDateArr = mfdDate ? mfdDate.split('-') : [];
+			const now = new Date();
 			this.setState({
 				skus,
 				curIndex: newIndex,
@@ -312,9 +353,9 @@ export default class MissionFeedback extends PureComponent {
 				price: skus[newIndex].feedDatas.goodsPrice || '',
 				mianShu: skus[newIndex].feedDatas.displaySurfaces || '',
 				// mfdDate   最早生产日期
-				year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : 2019,
-				month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : 1,
-				date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : 1,
+				year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : now.getFullYear(),
+				month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : now.getMonth() + 1,
+				date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : now.getDate(),
 				huoDong: skus[newIndex].feedDatas.salesPromotionStr || huoDongNameArr[0],
 				huoDongContent: skus[newIndex].feedDatas.salesRemark || '',
 				xiaoLiang: skus[newIndex].feedDatas.yestodayNum || '',
@@ -372,6 +413,7 @@ export default class MissionFeedback extends PureComponent {
 		}
 		const { mfdDate } = skus[newIndex].feedDatas;
 		const mfdDateArr = mfdDate ? mfdDate.split('-') : [];
+		const now = new Date();
 		this.setState({
 			skus,
 			curIndex: newIndex,
@@ -384,9 +426,9 @@ export default class MissionFeedback extends PureComponent {
 			huoDongContent: skus[newIndex].feedDatas.salesRemark || '',
 			xiaoLiang: skus[newIndex].feedDatas.yestodayNum || '',
 			kuCun: skus[newIndex].feedDatas.stockNum || '',
-			year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : 2019,
-			month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : 1,
-			date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : 1,
+			year: mfdDateArr[0] ? parseInt(mfdDateArr[0]) : now.getFullYear(),
+			month: mfdDateArr[1] ? parseInt(mfdDateArr[1]) : now.getMonth() + 1,
+			date: mfdDateArr[2] ? parseInt(mfdDateArr[2]) : now.getDate(),
 			posImg: skus[newIndex].feedDatas.posPicture,
 		}, async () => {
 			if (curIndex === total - 1) {
@@ -396,21 +438,25 @@ export default class MissionFeedback extends PureComponent {
 
 				for (let i = 0; i < feedDatas.length; i++) {
 					feedDatas[i].skuid = skus[i].skuId;
-					if (!feedDatas[i].goodsPrice) {
-						toast(`请填写第${i + 1}个商品的价格`);
-						return;
-					}
-					if (!feedDatas[i].displaySurfaces) {
-						toast(`请填写第${i + 1}个商品的陈列面数`);
-						return;
-					}
-					if (!feedDatas[i].yestodayNum) {
-						toast(`请填写第${i + 1}个商品的昨日销量`);
-						return;
-					}
-					if (!feedDatas[i].stockNum) {
-						toast(`请填写第${i + 1}个商品的商品库存`);
-						return;
+					if (feedDatas[i].distributionStr !== '无') {
+						if (feedDatas[i].goodsStateStr !== '缺货') {
+							if (isNaN(feedDatas[i].goodsPrice)) {
+								toast(`请正确填写第${i + 1}个商品的价格`);
+								return;
+							}
+							if (isNaN(feedDatas[i].displaySurfaces)) {
+								toast(`请正确填写第${i + 1}个商品的陈列面数`);
+								return;
+							}
+							if (isNaN(feedDatas[i].yestodayNum)) {
+								toast(`请正确填写第${i + 1}个商品的昨日销量`);
+								return;
+							}
+							if (isNaN(feedDatas[i].stockNum)) {
+								toast(`请正确填写第${i + 1}个商品的商品库存`);
+								return;
+							}
+						}
 					}
 					if (feedDatas[i].posPicture) {
 						const userInfo = await getMyInfo();
@@ -500,214 +546,226 @@ export default class MissionFeedback extends PureComponent {
 								<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
 							</TouchableOpacity>
 						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								商品状态
-							</Text>
-							<TouchableOpacity
-								activeOpacity={0.8}
-								onPress={() => {
-									this.initZhuangTaiPicker();
-									picker.show();
-								}}
-								style={styles.valContainer}
-							>
-								<Text style={styles.val}>
-									{ zhuangTai }
-								</Text>
-								<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
-							</TouchableOpacity>
-						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								商品价格(元）
-							</Text>
-							<View style={styles.valContainer}>
-								<TextInput
-									onChangeText={priceTxt => {
-										const newSkus = [...this.state.skus];
-										newSkus[curIndex].feedDatas.goodsPrice = priceTxt;
-										this.setState({
-											price: priceTxt,
-											skus: newSkus,
-										});
-									}}
-									onFocus={(event: Event) => {
-										this.scrollToInput(findNodeHandle(event.target));
-									}}
-									value={price}
-									placeholder='请输入商品价格'
-									placeholderTextColor='#999999'
-									style={styles.input}
-									maxLength={20}
-									keyboardType='numeric'
-								/>
-							</View>
-						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								陈列面数(个）
-							</Text>
-							<View style={styles.valContainer}>
-								<TextInput
-									onChangeText={txt => {
-										const newSkus = [...this.state.skus];
-										newSkus[curIndex].feedDatas.displaySurfaces = txt;
-										this.setState({
-											mianShu: txt,
-											skus: newSkus,
-										});
-									}}
-									onFocus={(event: Event) => {
-										this.scrollToInput(findNodeHandle(event.target));
-									}}
-									value={mianShu}
-									placeholder='请输入陈列面数'
-									placeholderTextColor='#999999'
-									style={styles.input}
-									maxLength={20}
-									keyboardType='numeric'
-								/>
-							</View>
-						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								最早生产日期
-							</Text>
-							<TouchableOpacity
-								activeOpacity={0.8}
-								onPress={() => {
-									this.initDatePicker();
-									picker.show();
-								}}
-								style={styles.valContainer}
-							>
-								<Text style={styles.val}>
-									{ year }-{ month < 10 ? `0${month}` : month }-{ date < 10 ? `0${date}` : date }
-								</Text>
-								<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
-							</TouchableOpacity>
-						</View>
-						<View style={{ backgroundColor: 'white', }}>
-							<View style={styles.rowContainer}>
-								<Text style={styles.key}>
-									促销活动信息
-								</Text>
-								<TouchableOpacity
-									activeOpacity={0.8}
-									onPress={() => {
-										this.initHuoDongPicker();
-										picker.show();
-									}}
-									style={styles.valContainer}
-								>
-									<Text style={styles.val}>
-										{ huoDong }
-									</Text>
-									<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
-								</TouchableOpacity>
-							</View>
-							{
-								huoDong === '买赠' && (
-									<View style={styles.huoDongInputContainer}>
-										<TextInput
-											multiline
-											onChangeText={txt => {
-												const newSkus = [...this.state.skus];
-												newSkus[curIndex].feedDatas.salesRemark = txt;
-												this.setState({
-													huoDongContent: txt,
-													skus: newSkus,
-												});
+						{
+							fenXiao !== '无' && (
+								<View>
+									<View style={styles.rowContainer}>
+										<Text style={styles.key}>
+											商品状态
+										</Text>
+										<TouchableOpacity
+											activeOpacity={0.8}
+											onPress={() => {
+												this.initZhuangTaiPicker();
+												picker.show();
 											}}
-											onFocus={(event: Event) => {
-												this.scrollToInput(findNodeHandle(event.target));
-											}}
-											value={huoDongContent}
-											placeholder='请输入买赠活动内容（30字以内）'
-											placeholderTextColor='#999999'
-											style={[styles.input, { width: toDips(578), marginTop: toDips(30), }]}
-											maxLength={30}
-											keyboardType='default'
-										/>
+											style={styles.valContainer}
+										>
+											<Text style={styles.val}>
+												{ zhuangTai }
+											</Text>
+											<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
+										</TouchableOpacity>
 									</View>
-								)
-							}
-						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								昨日销量（个）
-							</Text>
-							<View style={styles.valContainer}>
-								<TextInput
-									onChangeText={txt => {
-										const newSkus = [...this.state.skus];
-										newSkus[curIndex].feedDatas.yestodayNum = txt;
-										this.setState({
-											xiaoLiang: txt,
-											skus: newSkus,
-										});
-									}}
-									onFocus={(event: Event) => {
-										this.scrollToInput(findNodeHandle(event.target));
-									}}
-									value={xiaoLiang}
-									placeholder='请输入昨日销量'
-									placeholderTextColor='#999999'
-									style={styles.input}
-									maxLength={20}
-									keyboardType='numeric'
-								/>
-							</View>
-						</View>
-						<View style={styles.rowContainer}>
-							<Text style={styles.key}>
-								商品库存（个）
-							</Text>
-							<View style={styles.valContainer}>
-								<TextInput
-									onChangeText={txt => {
-										const newSkus = [...this.state.skus];
-										newSkus[curIndex].feedDatas.stockNum = txt;
-										this.setState({
-											kuCun: txt,
-											skus: newSkus,
-										});
-									}}
-									onFocus={(event: Event) => {
-										this.scrollToInput(findNodeHandle(event.target));
-									}}
-									value={kuCun}
-									placeholder='请输入商品库存'
-									placeholderTextColor='#999999'
-									style={styles.input}
-									maxLength={20}
-									keyboardType='numeric'
-								/>
-							</View>
-						</View>
-						<View style={styles.photoContainer}>
-							<View>
-								<Text style={[styles.key, styles.photoTxt]}>
-									POS数据照片
-								</Text>
-								<Text style={[styles.key, { color: '#999' }]}>
-									(非必填）
-								</Text>
-							</View>
-							<TouchableOpacity
-								activeOpacity={0.8}
-								onPress={() => {
-									this.showImagePicker();
-								}}
-								style={styles.photoCell}
-							>
-								<Image
-									style={posImg ? styles.imgPos : styles.img10}
-									source={posImg ? { uri: posImg } : require('../../imgs/10.png')}
-								/>
-							</TouchableOpacity>
-						</View>
+									{
+										zhuangTai !== '缺货' && (
+											<View>
+												<View style={styles.rowContainer}>
+													<Text style={styles.key}>
+														商品价格(元）
+													</Text>
+													<View style={styles.valContainer}>
+														<TextInput
+															onChangeText={priceTxt => {
+																const newSkus = [...this.state.skus];
+																newSkus[curIndex].feedDatas.goodsPrice = priceTxt;
+																this.setState({
+																	price: priceTxt,
+																	skus: newSkus,
+																});
+															}}
+															onFocus={(event: Event) => {
+																this.scrollToInput(findNodeHandle(event.target));
+															}}
+															value={price}
+															placeholder='请输入商品价格'
+															placeholderTextColor='#999999'
+															style={styles.input}
+															maxLength={20}
+															keyboardType='numeric'
+														/>
+													</View>
+												</View>
+												<View style={styles.rowContainer}>
+													<Text style={styles.key}>
+														陈列面数(个）
+													</Text>
+													<View style={styles.valContainer}>
+														<TextInput
+															onChangeText={txt => {
+																const newSkus = [...this.state.skus];
+																newSkus[curIndex].feedDatas.displaySurfaces = txt;
+																this.setState({
+																	mianShu: txt,
+																	skus: newSkus,
+																});
+															}}
+															onFocus={(event: Event) => {
+																this.scrollToInput(findNodeHandle(event.target));
+															}}
+															value={mianShu}
+															placeholder='请输入陈列面数'
+															placeholderTextColor='#999999'
+															style={styles.input}
+															maxLength={20}
+															keyboardType='numeric'
+														/>
+													</View>
+												</View>
+												<View style={styles.rowContainer}>
+													<Text style={styles.key}>
+														最早生产日期
+													</Text>
+													<TouchableOpacity
+														activeOpacity={0.8}
+														onPress={() => {
+															this.initDatePicker();
+															picker.show();
+														}}
+														style={styles.valContainer}
+													>
+														<Text style={styles.val}>
+															{ year }-{ month < 10 ? `0${month}` : month }-{ date < 10 ? `0${date}` : date }
+														</Text>
+														<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
+													</TouchableOpacity>
+												</View>
+												<View style={{ backgroundColor: 'white', }}>
+													<View style={styles.rowContainer}>
+														<Text style={styles.key}>
+															促销活动信息
+														</Text>
+														<TouchableOpacity
+															activeOpacity={0.8}
+															onPress={() => {
+																this.initHuoDongPicker();
+																picker.show();
+															}}
+															style={styles.valContainer}
+														>
+															<Text style={styles.val}>
+																{ huoDong }
+															</Text>
+															<Image style={styles.arrowImg} source={require('../../imgs/back.png')} />
+														</TouchableOpacity>
+													</View>
+													{
+														(huoDong === '买赠' || huoDong === '其他') && (
+															<View style={styles.huoDongInputContainer}>
+																<TextInput
+																	multiline
+																	onChangeText={txt => {
+																		const newSkus = [...this.state.skus];
+																		newSkus[curIndex].feedDatas.salesRemark = txt;
+																		this.setState({
+																			huoDongContent: txt,
+																			skus: newSkus,
+																		});
+																	}}
+																	onFocus={(event: Event) => {
+																		this.scrollToInput(findNodeHandle(event.target));
+																	}}
+																	value={huoDongContent}
+																	placeholder={'请输入' + huoDong + '活动内容（30字以内）'}
+																	placeholderTextColor='#999999'
+																	style={[styles.input, { width: toDips(578), marginTop: toDips(30), }]}
+																	maxLength={30}
+																	keyboardType='default'
+																/>
+															</View>
+														)
+													}
+												</View>
+												<View style={styles.rowContainer}>
+													<Text style={styles.key}>
+														昨日销量（个）
+													</Text>
+													<View style={styles.valContainer}>
+														<TextInput
+															onChangeText={txt => {
+																const newSkus = [...this.state.skus];
+																newSkus[curIndex].feedDatas.yestodayNum = txt;
+																this.setState({
+																	xiaoLiang: txt,
+																	skus: newSkus,
+																});
+															}}
+															onFocus={(event: Event) => {
+																this.scrollToInput(findNodeHandle(event.target));
+															}}
+															value={xiaoLiang}
+															placeholder='请输入昨日销量'
+															placeholderTextColor='#999999'
+															style={styles.input}
+															maxLength={20}
+															keyboardType='numeric'
+														/>
+													</View>
+												</View>
+												<View style={styles.rowContainer}>
+													<Text style={styles.key}>
+														商品库存（个）
+													</Text>
+													<View style={styles.valContainer}>
+														<TextInput
+															onChangeText={txt => {
+																const newSkus = [...this.state.skus];
+																newSkus[curIndex].feedDatas.stockNum = txt;
+																this.setState({
+																	kuCun: txt,
+																	skus: newSkus,
+																});
+															}}
+															onFocus={(event: Event) => {
+																this.scrollToInput(findNodeHandle(event.target));
+															}}
+															value={kuCun}
+															placeholder='请输入商品库存'
+															placeholderTextColor='#999999'
+															style={styles.input}
+															maxLength={20}
+															keyboardType='numeric'
+														/>
+													</View>
+												</View>
+												<View style={styles.photoContainer}>
+													<View>
+														<Text style={[styles.key, styles.photoTxt]}>
+															POS数据照片
+														</Text>
+														<Text style={[styles.key, { color: '#999' }]}>
+															(非必填）
+														</Text>
+													</View>
+													<TouchableOpacity
+														activeOpacity={0.8}
+														onPress={() => {
+															this.showImagePicker();
+														}}
+														style={styles.photoCell}
+													>
+														<Image
+															style={posImg ? styles.imgPos : styles.img10}
+															source={posImg ? { uri: posImg } : require('../../imgs/10.png')}
+														/>
+													</TouchableOpacity>
+												</View>
+											</View>		
+										)
+									}
+								</View>
+							)
+						}
 						<View style={styles.btnContainer}>
 							<TouchableOpacity
 								activeOpacity={0.8}

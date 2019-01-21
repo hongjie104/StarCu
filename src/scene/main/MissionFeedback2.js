@@ -104,8 +104,13 @@ export default class MissionFeedback2 extends PureComponent {
 		});
 	}
 
+	componentWillUnmount() {
+		picker.hide();
+	}
+
 	showImagePicker(title, stateKey) {
-		ImagePicker.showImagePicker({
+		const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
+		launchCamera({
 			title,
 			// 加了这两句控制大小
 			maxWidth: 800,

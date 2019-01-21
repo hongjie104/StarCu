@@ -41,6 +41,18 @@ export default class MissionItem extends PureComponent {
 				mission,
 				type,
 				onTakeOrder: type === 1 ? orderId => { this.onTakeOrder(orderId); } : null,
+				onMissionDone: taskId => {
+					if (this.state.item.taskId === taskId) {
+						// 任务的话，就变成已完成状态 订单的话，就变成已接单的状态
+						console.warn(this.state.item);
+						this.setState({
+							item: {
+								...this.state.item,
+								status: this.props.type === 0 ? 1 : 2,
+							},
+						});
+					}
+				},
 			},
 		});
 	}

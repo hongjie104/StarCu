@@ -142,7 +142,7 @@ export default class MissionFeedback extends PureComponent {
 	// 初始化商品状态的picker
 	initZhuangTaiPicker() {
 		picker.init({
-			selectedValue: [this.state.fenXiao],
+			selectedValue: [this.state.zhuangTai],
 			pickerData: this.state.zhuangTaiNameArr,
 			pickerConfirmBtnText: '确定',
 			pickerCancelBtnText: '取消',

@@ -87,25 +87,27 @@ export default class MissionFeedback2 extends PureComponent {
 			chenLieArr: data.datas.items,
 			chenLie: specialDisplayStr,
 			loading: false,
-		}, () => {
-			picker.init({
-				selectedValue: [this.state.huoDong],
-				pickerData: chenLieNameArr,
-				pickerConfirmBtnText: '确定',
-				pickerCancelBtnText: '取消',
-				pickerTitleText: '特殊陈列',
-				pickerBg: [255, 255, 255, 1],
-				onPickerConfirm: pickedValue => {
-					this.setState({
-						chenLie: pickedValue[0],
-					});
-				},
-			});
 		});
 	}
 
 	componentWillUnmount() {
 		picker.hide();
+	}
+
+	initPicker() {
+		picker.init({
+			selectedValue: [this.state.huoDong],
+			pickerData: this.state.chenLieNameArr,
+			pickerConfirmBtnText: '确定',
+			pickerCancelBtnText: '取消',
+			pickerTitleText: '特殊陈列',
+			pickerBg: [255, 255, 255, 1],
+			onPickerConfirm: pickedValue => {
+				this.setState({
+					chenLie: pickedValue[0],
+				});
+			},
+		});
 	}
 
 	showImagePicker(title, stateKey) {
@@ -301,6 +303,7 @@ export default class MissionFeedback2 extends PureComponent {
 								<TouchableOpacity
 									activeOpacity={0.8}
 									onPress={() => {
+										this.initPicker();
 										picker.show();
 									}}
 									style={styles.chenLieValContainer}

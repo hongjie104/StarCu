@@ -440,19 +440,19 @@ export default class MissionFeedback extends PureComponent {
 					feedDatas[i].skuid = skus[i].skuId;
 					if (feedDatas[i].distributionStr !== '无') {
 						if (feedDatas[i].goodsStateStr !== '缺货') {
-							if (isNaN(feedDatas[i].goodsPrice)) {
+							if (feedDatas[i].goodsPrice === '' || isNaN(feedDatas[i].goodsPrice)) {
 								toast(`请正确填写第${i + 1}个商品的价格`);
 								return;
 							}
-							if (isNaN(feedDatas[i].displaySurfaces)) {
+							if (feedDatas[i].displaySurfaces === '' || isNaN(feedDatas[i].displaySurfaces)) {
 								toast(`请正确填写第${i + 1}个商品的陈列面数`);
 								return;
 							}
-							if (isNaN(feedDatas[i].yestodayNum)) {
+							if (feedDatas[i].yestodayNum === '' || isNaN(feedDatas[i].yestodayNum)) {
 								toast(`请正确填写第${i + 1}个商品的昨日销量`);
 								return;
 							}
-							if (isNaN(feedDatas[i].stockNum)) {
+							if (feedDatas[i].stockNum === '' || isNaN(feedDatas[i].stockNum)) {
 								toast(`请正确填写第${i + 1}个商品的商品库存`);
 								return;
 							}
@@ -518,6 +518,8 @@ export default class MissionFeedback extends PureComponent {
 		if (loading) {
 			return <Spinner />;
 		}
+		const { isEnabled } = this.props.navigation.state.params;
+		const looseScales = parseInt(skus[curIndex].looseScales);
 		return (
 			<View style={styles.container}>
 				<KeyboardAwareScrollView innerRef={ref => {this.scroll = ref;}} enableOnAndroid style={styles.container}>
@@ -688,7 +690,7 @@ export default class MissionFeedback extends PureComponent {
 												</View>
 												<View style={styles.rowContainer}>
 													<Text style={styles.key}>
-														昨日销量（个）
+														昨日销量（{ looseScales === 1 ? 'kg' : '个' }）
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
@@ -714,7 +716,7 @@ export default class MissionFeedback extends PureComponent {
 												</View>
 												<View style={styles.rowContainer}>
 													<Text style={styles.key}>
-														商品库存（个）
+														商品库存（{ looseScales === 1 ? 'kg' : '个' }）
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
@@ -778,19 +780,23 @@ export default class MissionFeedback extends PureComponent {
 									上一个
 								</Text>
 							</TouchableOpacity>
-							<TouchableOpacity
-								activeOpacity={0.8}
-								onPress={() => {
-									this.onSubmit();
-								}}
-								style={styles.nextBtn}
-							>
-								<Text style={styles.btnTxt}>
-									{
-										total - 1 === curIndex ? '提交' : '下一个'
-									}
-								</Text>
-							</TouchableOpacity>
+							{
+								(total - 1 !== curIndex || isEnabled !== -1) && (
+									<TouchableOpacity
+										activeOpacity={0.8}
+										onPress={() => {
+											this.onSubmit();
+										}}
+										style={styles.nextBtn}
+									>
+										<Text style={styles.btnTxt}>
+											{
+												total - 1 === curIndex ? '提交' : '下一个'
+											}
+										</Text>
+									</TouchableOpacity>
+								)
+							}
 						</View>
 					</TouchableOpacity>
 				</KeyboardAwareScrollView>

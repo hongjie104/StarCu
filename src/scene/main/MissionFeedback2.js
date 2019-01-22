@@ -375,7 +375,7 @@ export default class MissionFeedback2 extends PureComponent {
 					style={styles.nextBtn}
 				>
 					<Text style={styles.btnTxt}>
-						下一个
+						下一页
 					</Text>
 				</TouchableOpacity>
 				{

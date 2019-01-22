@@ -109,9 +109,9 @@ export default class MainScene extends PureComponent {
 
 	async componentDidMount() {
 		const location = await getLocation();
-		globalData.province = location.result.addressComponent;
-		globalData.city = location.result.city;
-		globalData.district = location.result.district;
+		globalData.province = location.result.addressComponent.province;
+		globalData.city = location.result.addressComponent.city;
+		globalData.district = location.result.addressComponent.district;
 	}
 
 	onTabChanged(index) {

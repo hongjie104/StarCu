@@ -439,7 +439,7 @@ export default class MissionFeedback extends PureComponent {
 				for (let i = 0; i < feedDatas.length; i++) {
 					feedDatas[i].skuid = skus[i].skuId;
 					if (feedDatas[i].distributionStr !== '无') {
-						if (feedDatas[i].goodsStateStr !== '缺货') {
+						if (feedDatas[i].goodsStateStr !== '缺货' && feedDatas[i].goodsStateStr !== '滞销退货') {
 							if (feedDatas[i].goodsPrice === '' || isNaN(feedDatas[i].goodsPrice)) {
 								toast(`请正确填写第${i + 1}个商品的价格`);
 								return;
@@ -570,7 +570,7 @@ export default class MissionFeedback extends PureComponent {
 										</TouchableOpacity>
 									</View>
 									{
-										zhuangTai !== '缺货' && (
+										zhuangTai !== '缺货' && zhuangTai !== '滞销退货' && (
 											<View>
 												<View style={styles.rowContainer}>
 													<Text style={styles.key}>

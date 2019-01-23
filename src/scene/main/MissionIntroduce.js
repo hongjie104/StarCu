@@ -32,7 +32,7 @@ export default class MissionIntroduce extends PureComponent {
 		let taskId = null;
 		let status = -1;
 		let orderId = -1;
-		let isEnabled = true;
+		let isEnabled = 0;
 		let taskTotalAmount = null;
 		let taskTotalAmountLabel = '任务金额';
 		let serviceCode = '';
@@ -51,7 +51,19 @@ export default class MissionIntroduce extends PureComponent {
 		}
 		if (taskId) {
 			const missionData = await getMissionInfo(taskId);
-			// console.warn(missionData);
+			console.warn(missionData);
+			let { taskDate } = missionData.datas;
+			const a = taskDate.split('-');
+			taskDate = new Date(parseInt(a[0]), parseInt(a[1]) - 1, parseInt(a[2]));
+			let now = new Date();
+			now = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			if (now.getTime() > taskDate.getTime()) {
+				isEnabled = -1;
+			} else if (now.getTime() < taskDate.getTime()) {
+				isEnabled = 1;
+			} else {
+				isEnabled = 0;
+			}
 			serviceCode = missionData.datas.serviceCode;
 			// { datas: 
 			// { orderType: '1871479136913408',
@@ -196,6 +208,13 @@ export default class MissionIntroduce extends PureComponent {
 			loading,
 		} = this.state;
 		// console.warn(isEnabled, status);
+		const now = new Date();
+		let orderBegin = now;
+		if (orderBeginDate) {
+			const a = orderBeginDate.split('-');
+			orderBegin = new Date(parseInt(a[0]), parseInt(a[1]) - 1, parseInt(a[2]));	
+		}
+		
 		return (
 			<View style={styles.container}>
 				<ScrollView style={styles.container}>
@@ -257,7 +276,7 @@ export default class MissionIntroduce extends PureComponent {
 				</ScrollView>
 				{
 					// 按钮
-					isEnabled === 1 ? (
+					(isEnabled === 1 || now.getTime() < orderBegin.getTime()) ? (
 						<View
 							style={[styles.submitBtn, styles.submitBtn_disabeld]}
 						>

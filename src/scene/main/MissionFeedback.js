@@ -518,7 +518,8 @@ export default class MissionFeedback extends PureComponent {
 		if (loading) {
 			return <Spinner />;
 		}
-		const { isEnabled } = this.props.navigation.state.params;
+		let { isEnabled } = this.props.navigation.state.params;
+		isEnabled = isEnabled !== -1;
 		const looseScales = parseInt(skus[curIndex].looseScales);
 		return (
 			<View style={styles.container}>
@@ -537,8 +538,10 @@ export default class MissionFeedback extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this.initFenXiaoPicker();
-									picker.show();
+									if (isEnabled) {
+										this.initFenXiaoPicker();
+										picker.show();
+									}
 								}}
 								style={styles.valContainer}
 							>
@@ -558,8 +561,10 @@ export default class MissionFeedback extends PureComponent {
 										<TouchableOpacity
 											activeOpacity={0.8}
 											onPress={() => {
-												this.initZhuangTaiPicker();
-												picker.show();
+												if (isEnabled) {
+													this.initZhuangTaiPicker();
+													picker.show();
+												}
 											}}
 											style={styles.valContainer}
 										>
@@ -578,6 +583,7 @@ export default class MissionFeedback extends PureComponent {
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
+															editable={isEnabled}
 															onChangeText={priceTxt => {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.goodsPrice = priceTxt;
@@ -604,6 +610,7 @@ export default class MissionFeedback extends PureComponent {
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
+															editable={isEnabled}
 															onChangeText={txt => {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.displaySurfaces = txt;
@@ -631,8 +638,10 @@ export default class MissionFeedback extends PureComponent {
 													<TouchableOpacity
 														activeOpacity={0.8}
 														onPress={() => {
-															this.initDatePicker();
-															picker.show();
+															if (isEnabled) {
+																this.initDatePicker();
+																picker.show();
+															}
 														}}
 														style={styles.valContainer}
 													>
@@ -650,8 +659,10 @@ export default class MissionFeedback extends PureComponent {
 														<TouchableOpacity
 															activeOpacity={0.8}
 															onPress={() => {
-																this.initHuoDongPicker();
-																picker.show();
+																if (isEnabled) {
+																	this.initHuoDongPicker();
+																	picker.show();
+																}
 															}}
 															style={styles.valContainer}
 														>
@@ -665,6 +676,7 @@ export default class MissionFeedback extends PureComponent {
 														(huoDong === '买赠' || huoDong === '其他') && (
 															<View style={styles.huoDongInputContainer}>
 																<TextInput
+																	editable={isEnabled}
 																	multiline
 																	onChangeText={txt => {
 																		const newSkus = [...this.state.skus];
@@ -694,6 +706,7 @@ export default class MissionFeedback extends PureComponent {
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
+															editable={isEnabled}
 															onChangeText={txt => {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.yestodayNum = txt;
@@ -720,6 +733,7 @@ export default class MissionFeedback extends PureComponent {
 													</Text>
 													<View style={styles.valContainer}>
 														<TextInput
+															editable={isEnabled}
 															onChangeText={txt => {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.stockNum = txt;
@@ -752,7 +766,9 @@ export default class MissionFeedback extends PureComponent {
 													<TouchableOpacity
 														activeOpacity={0.8}
 														onPress={() => {
-															this.showImagePicker();
+															if (isEnabled) {
+																this.showImagePicker();
+															}
 														}}
 														style={styles.photoCell}
 													>
@@ -781,7 +797,7 @@ export default class MissionFeedback extends PureComponent {
 								</Text>
 							</TouchableOpacity>
 							{
-								(total - 1 !== curIndex || isEnabled !== -1) && (
+								(total - 1 !== curIndex || isEnabled) && (
 									<TouchableOpacity
 										activeOpacity={0.8}
 										onPress={() => {

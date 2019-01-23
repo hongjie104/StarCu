@@ -235,6 +235,8 @@ export default class MissionFeedback2 extends PureComponent {
 			chenLieUri4,
 			loading,
 		} = this.state;
+		let { isEnabled } = this.props.navigation.state.params;
+		isEnabled = isEnabled !== -1;
 		return (
 			<View style={styles.container}>
 				<View>
@@ -247,7 +249,9 @@ export default class MissionFeedback2 extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this.showImagePicker('选择牌面照片', 'paiMianUri1');
+									if (isEnabled) {
+										this.showImagePicker('选择牌面照片', 'paiMianUri1');
+									}
 								}}
 								style={styles.photoCell}
 							>
@@ -259,7 +263,9 @@ export default class MissionFeedback2 extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this.showImagePicker('选择牌面照片', 'paiMianUri2');
+									if (isEnabled) {
+										this.showImagePicker('选择牌面照片', 'paiMianUri2');
+									}
 								}}
 								style={styles.photoCell}
 							>
@@ -271,7 +277,9 @@ export default class MissionFeedback2 extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this.showImagePicker('选择牌面照片', 'paiMianUri3');
+									if (isEnabled) {
+										this.showImagePicker('选择牌面照片', 'paiMianUri3');
+									}
 								}}
 								style={styles.photoCell}
 							>
@@ -283,7 +291,9 @@ export default class MissionFeedback2 extends PureComponent {
 							<TouchableOpacity
 								activeOpacity={0.8}
 								onPress={() => {
-									this.showImagePicker('选择牌面照片', 'paiMianUri4');
+									if (isEnabled) {
+										this.showImagePicker('选择牌面照片', 'paiMianUri4');
+									}
 								}}
 								style={styles.photoCell}
 							>
@@ -303,8 +313,10 @@ export default class MissionFeedback2 extends PureComponent {
 								<TouchableOpacity
 									activeOpacity={0.8}
 									onPress={() => {
-										this.initPicker();
-										picker.show();
+										if (isEnabled) {
+											this.initPicker();
+											picker.show();
+										}
 									}}
 									style={styles.chenLieValContainer}
 								>
@@ -320,7 +332,9 @@ export default class MissionFeedback2 extends PureComponent {
 									<TouchableOpacity
 										activeOpacity={0.8}
 										onPress={() => {
-											this.showImagePicker('选择特殊陈列', 'chenLieUri1');
+											if (isEnabled) {
+												this.showImagePicker('选择特殊陈列', 'chenLieUri1');
+											}
 										}}
 										style={styles.photoCell}
 									>
@@ -332,7 +346,9 @@ export default class MissionFeedback2 extends PureComponent {
 									<TouchableOpacity
 										activeOpacity={0.8}
 										onPress={() => {
-											this.showImagePicker('选择特殊陈列', 'chenLieUri2');
+											if (isEnabled) {
+												this.showImagePicker('选择特殊陈列', 'chenLieUri2');
+											}
 										}}
 										style={styles.photoCell}
 									>
@@ -344,7 +360,9 @@ export default class MissionFeedback2 extends PureComponent {
 									<TouchableOpacity
 										activeOpacity={0.8}
 										onPress={() => {
-											this.showImagePicker('选择特殊陈列', 'chenLieUri3');
+											if (isEnabled) {
+												this.showImagePicker('选择特殊陈列', 'chenLieUri3');
+											}
 										}}
 										style={styles.photoCell}
 									>
@@ -356,7 +374,9 @@ export default class MissionFeedback2 extends PureComponent {
 									<TouchableOpacity
 										activeOpacity={0.8}
 										onPress={() => {
-											this.showImagePicker('选择特殊陈列', 'chenLieUri4');
+											if (isEnabled) {
+												this.showImagePicker('选择特殊陈列', 'chenLieUri4');
+											}
 										}}
 										style={styles.photoCell}
 									>

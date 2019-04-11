@@ -31,7 +31,7 @@ function timeout(promise, ms) {
  */
 export function post(url, data) {
 	// if (__TEST__) {
-		return get(`${url}?${qs.stringify(data || {})}`);
+		// return get(`${url}?${qs.stringify(data || {})}`);
 	// }
 	return new Promise((resolve, reject) => {
 		if (!isConnected) {

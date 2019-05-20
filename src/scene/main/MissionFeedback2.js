@@ -21,6 +21,7 @@ import { QI_NIU_DOMAIN } from '../../config';
 import * as globalData from '../../globalData';
 import Base64 from '../../utils/Base64';
 import { formatDateTime } from '../../utils/datetime';
+import { requestCameraPermission } from '../../utils/permission';
 
 export default class MissionFeedback2 extends PureComponent {
 	
@@ -110,37 +111,40 @@ export default class MissionFeedback2 extends PureComponent {
 		});
 	}
 
-	showImagePicker(title, stateKey) {
+	async showImagePicker(title, stateKey) {
 		const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
-		launchCamera({
-			title,
-			// 加了这两句控制大小
-			maxWidth: 800,
-			// 加了这两句控制大小
-			maxHeight: 800,
-			cancelButtonTitle: '取消',
-			takePhotoButtonTitle: '拍照',
-			chooseFromLibraryButtonTitle: '从相册选',
-			storageOptions: {
-				skipBackup: true,
-				path: 'images',
-			},
-		}, (response) => {
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			} else {
-				// You can also display the image using data:
-				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-				const source = { uri: response.uri };
-				this.setState({
-					[`${stateKey}`]: response.uri,
-				});
-			}
-		});
+		const cameraPermission = await requestCameraPermission();
+		if (cameraPermission) {
+			launchCamera({
+				title,
+				// 加了这两句控制大小
+				maxWidth: 800,
+				// 加了这两句控制大小
+				maxHeight: 800,
+				cancelButtonTitle: '取消',
+				takePhotoButtonTitle: '拍照',
+				chooseFromLibraryButtonTitle: '从相册选',
+				storageOptions: {
+					skipBackup: true,
+					path: 'images',
+				},
+			}, (response) => {
+				if (response.didCancel) {
+					console.log('User cancelled image picker');
+				} else if (response.error) {
+					console.log('ImagePicker Error: ', response.error);
+				} else if (response.customButton) {
+					console.log('User tapped custom button: ', response.customButton);
+				} else {
+					// You can also display the image using data:
+					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+					const source = { uri: response.uri };
+					this.setState({
+						[`${stateKey}`]: response.uri,
+					});
+				}
+			});
+		}
 	}
 
 	async createImgSuffix(storeName) {
@@ -187,37 +191,44 @@ export default class MissionFeedback2 extends PureComponent {
 				return;
 			}
 		}
-		const userInfo = await getMyInfo();
-		const storeName = userInfo.datas.currentStoreName;
-		const imgSuffix = await this.createImgSuffix(storeName);
+		this.setState({
+			loading: true,
+		}, async () => {
+			const userInfo = await getMyInfo();
+			const storeName = userInfo.datas.currentStoreName;
+			const imgSuffix = await this.createImgSuffix(storeName);
 
-		if (paiMianUri1) paiMianUri1 = await this.uploadImg(paiMianUri1, imgSuffix);
-		if (paiMianUri2) paiMianUri2 = await this.uploadImg(paiMianUri2, imgSuffix);
-		if (paiMianUri3) paiMianUri3 = await this.uploadImg(paiMianUri3, imgSuffix);
-		if (paiMianUri4) paiMianUri4 = await this.uploadImg(paiMianUri4, imgSuffix);
+			if (paiMianUri1) paiMianUri1 = await this.uploadImg(paiMianUri1, imgSuffix);
+			if (paiMianUri2) paiMianUri2 = await this.uploadImg(paiMianUri2, imgSuffix);
+			if (paiMianUri3) paiMianUri3 = await this.uploadImg(paiMianUri3, imgSuffix);
+			if (paiMianUri4) paiMianUri4 = await this.uploadImg(paiMianUri4, imgSuffix);
 
-		if (chenLie !== '无') {
-			if (chenLieUri1) chenLieUri1 = await this.uploadImg(chenLieUri1, imgSuffix);
-			if (chenLieUri2) chenLieUri2 = await this.uploadImg(chenLieUri2, imgSuffix);
-			if (chenLieUri3) chenLieUri3 = await this.uploadImg(chenLieUri3, imgSuffix);
-			if (chenLieUri4) chenLieUri4 = await this.uploadImg(chenLieUri4, imgSuffix);
-		}
-		
-		const { navigate } = this.props.navigation;
-		navigate({
-			routeName: 'MissionFeedbackScene',
-			params: {
-				...this.props.navigation.state.params,
-				...this.state,
-				paiMianUri1,
-				paiMianUri2,
-				paiMianUri3,
-				paiMianUri4,
-				chenLieUri1,
-				chenLieUri2,
-				chenLieUri3,
-				chenLieUri4,
-			},
+			if (chenLie !== '无') {
+				if (chenLieUri1) chenLieUri1 = await this.uploadImg(chenLieUri1, imgSuffix);
+				if (chenLieUri2) chenLieUri2 = await this.uploadImg(chenLieUri2, imgSuffix);
+				if (chenLieUri3) chenLieUri3 = await this.uploadImg(chenLieUri3, imgSuffix);
+				if (chenLieUri4) chenLieUri4 = await this.uploadImg(chenLieUri4, imgSuffix);
+			}
+			this.setState({
+				loading: false,
+			}, () => {
+				const { navigate } = this.props.navigation;
+				navigate({
+					routeName: 'MissionFeedbackScene',
+					params: {
+						...this.props.navigation.state.params,
+						...this.state,
+						paiMianUri1,
+						paiMianUri2,
+						paiMianUri3,
+						paiMianUri4,
+						chenLieUri1,
+						chenLieUri2,
+						chenLieUri3,
+						chenLieUri4,
+					},
+				});
+			});
 		});
 	}
 

@@ -25,6 +25,7 @@ import toast from '../../utils/toast';
 import * as globalData from '../../globalData';
 import Base64 from '../../utils/Base64';
 import { formatDateTime } from '../../utils/datetime';
+import { requestCameraPermission } from '../../utils/permission';
 
 class MissionDetail extends PureComponent {
 	
@@ -118,40 +119,43 @@ class MissionDetail extends PureComponent {
 		return `${QI_NIU_DOMAIN}/${data.key}${imgSuffix}`;
 	}
 
-	onPickImage(type) {
+	async onPickImage(type) {
 		const { missionInfo } = this.state;
 		if (missionInfo.canEdit) {
 			const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
-			// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
-			launchCamera({
-				title: '挑选照片',
-				// 加了这两句控制大小
-				maxWidth: 800,
-				// 加了这两句控制大小
-				maxHeight: 800,
-				cancelButtonTitle: '取消',
-				takePhotoButtonTitle: '拍照',
-				chooseFromLibraryButtonTitle: '从相册选',
-				storageOptions: {
-					skipBackup: true,
-					path: 'images',
-				},
-			}, (response) => {
-				if (response.didCancel) {
-					console.log('User cancelled image picker');
-				} else if (response.error) {
-					console.log('ImagePicker Error: ', response.error);
-				} else if (response.customButton) {
-					console.log('User tapped custom button: ', response.customButton);
-				} else {
-					// You can also display the image using data:
-					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-					const source = { uri: response.uri };
-					this.setState({
-						[`img${type}`]: response.uri,
-					});
-				}
-			});
+			const cameraPermission = await requestCameraPermission();
+			if (cameraPermission) {
+				// type 1 是理货前的正面照 2 是理货前的左侧照 3 是理货后的正面照 4 是理货后的左侧照
+				launchCamera({
+					title: '挑选照片',
+					// 加了这两句控制大小
+					maxWidth: 800,
+					// 加了这两句控制大小
+					maxHeight: 800,
+					cancelButtonTitle: '取消',
+					takePhotoButtonTitle: '拍照',
+					chooseFromLibraryButtonTitle: '从相册选',
+					storageOptions: {
+						skipBackup: true,
+						path: 'images',
+					},
+				}, (response) => {
+					if (response.didCancel) {
+						console.log('User cancelled image picker');
+					} else if (response.error) {
+						console.log('ImagePicker Error: ', response.error);
+					} else if (response.customButton) {
+						console.log('User tapped custom button: ', response.customButton);
+					} else {
+						// You can also display the image using data:
+						// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+						const source = { uri: response.uri };
+						this.setState({
+							[`img${type}`]: response.uri,
+						});
+					}
+				});
+			}
 		}
 	}
 

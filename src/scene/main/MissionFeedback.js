@@ -25,6 +25,7 @@ import { QI_NIU_DOMAIN } from '../../config';
 import * as globalData from '../../globalData';
 import Base64 from '../../utils/Base64';
 import { formatDateTime } from '../../utils/datetime';
+import { requestCameraPermission } from '../../utils/permission';
 
 export default class MissionFeedback extends PureComponent {
 	
@@ -279,41 +280,44 @@ export default class MissionFeedback extends PureComponent {
 		});
 	}
 
-	showImagePicker() {
+	async showImagePicker() {
 		const launchCamera = __DEV__ ? ImagePicker.showImagePicker : ImagePicker.launchCamera;
-		launchCamera({
-			// 加了这两句控制大小
-			maxWidth: 800,
-			// 加了这两句控制大小
-			maxHeight: 800,
-			title: '挑选POS数据照片',
-			cancelButtonTitle: '取消',
-			takePhotoButtonTitle: '拍照',
-			chooseFromLibraryButtonTitle: '从相册选',
-			storageOptions: {
-				skipBackup: true,
-				path: 'images',
-			},
-		}, (response) => {
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			} else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			} else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			} else {
-				// You can also display the image using data:
-				// const source = { uri: 'data:image/jpeg;base64,' + response.data };
-				const source = { uri: response.uri };
-				const { curIndex } = this.state;
-				const skus = [...this.state.skus];
-				skus[curIndex].feedDatas.posPicture = response.uri;
-				this.setState({
-					posImg: response.uri,
-					skus,
-				});
-			}
-		});
+		const cameraPermission = await requestCameraPermission();
+		if (cameraPermission) {
+			launchCamera({
+				// 加了这两句控制大小
+				maxWidth: 800,
+				// 加了这两句控制大小
+				maxHeight: 800,
+				title: '挑选POS数据照片',
+				cancelButtonTitle: '取消',
+				takePhotoButtonTitle: '拍照',
+				chooseFromLibraryButtonTitle: '从相册选',
+				storageOptions: {
+					skipBackup: true,
+					path: 'images',
+				},
+			}, (response) => {
+				if (response.didCancel) {
+					console.log('User cancelled image picker');
+				} else if (response.error) {
+					console.log('ImagePicker Error: ', response.error);
+				} else if (response.customButton) {
+					console.log('User tapped custom button: ', response.customButton);
+				} else {
+					// You can also display the image using data:
+					// const source = { uri: 'data:image/jpeg;base64,' + response.data };
+					const source = { uri: response.uri };
+					const { curIndex } = this.state;
+					const skus = [...this.state.skus];
+					skus[curIndex].feedDatas.posPicture = response.uri;
+					this.setState({
+						posImg: response.uri,
+						skus,
+					});
+				}
+			});
+		}
 	}
 
 	scrollToInput(reactNode) {
@@ -588,7 +592,7 @@ export default class MissionFeedback extends PureComponent {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.goodsPrice = priceTxt;
 																this.setState({
-																	price: priceTxt,
+																	price: priceTxt.replace(/[^\d\.]/g, ''),
 																	skus: newSkus,
 																});
 															}}
@@ -615,7 +619,7 @@ export default class MissionFeedback extends PureComponent {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.displaySurfaces = txt;
 																this.setState({
-																	mianShu: txt,
+																	mianShu: txt.replace(/[^\d]/g, ''),
 																	skus: newSkus,
 																});
 															}}
@@ -711,7 +715,7 @@ export default class MissionFeedback extends PureComponent {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.yestodayNum = txt;
 																this.setState({
-																	xiaoLiang: txt,
+																	xiaoLiang: txt.replace(/[^\d]/g, ''),
 																	skus: newSkus,
 																});
 															}}
@@ -738,7 +742,7 @@ export default class MissionFeedback extends PureComponent {
 																const newSkus = [...this.state.skus];
 																newSkus[curIndex].feedDatas.stockNum = txt;
 																this.setState({
-																	kuCun: txt,
+																	kuCun: txt.replace(/[^\d]/g, ''),
 																	skus: newSkus,
 																});
 															}}

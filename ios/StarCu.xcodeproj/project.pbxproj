@@ -3030,7 +3030,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.starcu.starcu;
 				PRODUCT_NAME = StarCu;
 				PROVISIONING_PROFILE = "33ff96ba-23b7-4c4c-9dc0-ee2cbdc15e67";
-				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-01";
+				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-04";
 				SDKROOT = iphoneos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -3078,7 +3078,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.starcu.starcu;
 				PRODUCT_NAME = StarCu;
 				PROVISIONING_PROFILE = "33ff96ba-23b7-4c4c-9dc0-ee2cbdc15e67";
-				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-01";
+				PROVISIONING_PROFILE_SPECIFIER = "starcu-adhoc-04";
 				SDKROOT = iphoneos;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

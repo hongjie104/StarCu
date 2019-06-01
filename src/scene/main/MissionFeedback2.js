@@ -105,7 +105,7 @@ export default class MissionFeedback2 extends PureComponent {
 			pickerBg: [255, 255, 255, 1],
 			onPickerConfirm: pickedValue => {
 				this.setState({
-					chenLie: pickedValue[0],
+					chenLie: pickedValue[0].includes('null') ? this.state.chenLieNameArr[0] : pickedValue[0],
 				});
 			},
 		});

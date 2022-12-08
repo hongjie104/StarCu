@@ -11,7 +11,7 @@
     "@remobile/react-native-file-transfer": "^1.0.8",
     "@remobile/react-native-toast": "^1.0.7",
     "@remobile/react-native-zip": "^1.0.5",
-    "qs": "^6.5.2",
+    "qs": "^6.5.3",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.70.2",
     "react-native-baidu-map": "^1.0.1",
